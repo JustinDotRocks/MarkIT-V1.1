@@ -11,8 +11,7 @@ const App: React.FC = () => {
 				activeMode={activeMode}
 				setActiveMode={setActiveMode}
 			/>
-			{activeMode === 'setup' && <SideBar />}
-			{/* Other components here */}
+			<SideBar activeMode={activeMode} />
 		</div>
 	);
 };
