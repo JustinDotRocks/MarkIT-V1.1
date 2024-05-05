@@ -48,6 +48,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 		console.log('Add Obstacle button clicked.');
 	};
 
+	const logAddTable = (tableType: string) => {
+		console.log(`Add ${tableType} Table button clicked.`);
+	};
+
 	const handleVendorDetailsChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -139,7 +143,40 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 						>
 							Add Obstacle
 						</button>
-						{/* More buttons can be added similarly */}
+						{/* Add Tables Section */}
+						<div>
+							<h2 className='text-lg font-bold'>
+								Add Tables
+							</h2>
+							<button
+								onClick={() =>
+									logAddTable(
+										"8' Rectangle"
+									)
+								}
+								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+							>
+								Add 8' Rectangle
+							</button>
+							<button
+								onClick={() =>
+									logAddTable(
+										"6' Rectangle"
+									)
+								}
+								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+							>
+								Add 6' Rectangle
+							</button>
+							<button
+								onClick={() =>
+									logAddTable("5' Round")
+								}
+								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+							>
+								Add 5' Round
+							</button>
+						</div>
 					</div>
 				</div>
 			)}
