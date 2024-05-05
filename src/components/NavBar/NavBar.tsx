@@ -1,9 +1,12 @@
 // src/components/NavBar.tsx
-import React, { useState } from 'react';
+import React from 'react';
 
-const NavBar: React.FC = () => {
-	const [activeMode, setActiveMode] = useState<'setup' | 'vendor'>('setup');
+type NavBarProps = {
+	activeMode: 'setup' | 'vendor';
+	setActiveMode: (mode: 'setup' | 'vendor') => void;
+};
 
+const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 	return (
 		<nav className='bg-gray-800 text-white p-4'>
 			<div className='flex justify-between items-center'>
