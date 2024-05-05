@@ -2,11 +2,14 @@
 import React from 'react';
 
 type NavBarProps = {
-	activeMode: 'setup' | 'vendor';
-	setActiveMode: (mode: 'setup' | 'vendor') => void;
+	activeMode: 'setup' | 'vendor' | '';
+	setActiveMode: (mode: 'setup' | 'vendor' | '') => void;
 };
 
 const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
+	const toggleMode = (mode: 'setup' | 'vendor' | '') => {
+		setActiveMode(activeMode === mode ? '' : mode); // Toggle mode or set to empty
+	};
 	return (
 		<nav className='bg-gray-800 text-white p-4'>
 			<div className='flex justify-between items-center'>
@@ -18,7 +21,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 								? 'bg-blue-500'
 								: 'bg-gray-700 hover:bg-gray-600'
 						}`}
-						onClick={() => setActiveMode('setup')}
+						onClick={() => toggleMode('setup')}
 					>
 						Setup Mode
 					</button>
@@ -28,7 +31,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 								? 'bg-blue-500'
 								: 'bg-gray-700 hover:bg-gray-600'
 						}`}
-						onClick={() => setActiveMode('vendor')}
+						onClick={() => toggleMode('vendor')}
 					>
 						Vendor Mode
 					</button>

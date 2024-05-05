@@ -3,7 +3,7 @@ import NavBar from './components/NavBar/NavBar';
 import SideBar from './components/SideBar/SideBar';
 
 const App: React.FC = () => {
-	const [activeMode, setActiveMode] = useState<'setup' | 'vendor'>('setup');
+	const [activeMode, setActiveMode] = useState<'setup' | 'vendor' | ''>('');
 
 	return (
 		<div>

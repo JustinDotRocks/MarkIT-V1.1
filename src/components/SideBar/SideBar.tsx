@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 type SideBarProps = {
-	activeMode: 'setup' | 'vendor';
+	activeMode: 'setup' | 'vendor' | '';
 };
 
 const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
@@ -72,7 +72,18 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 	};
 
 	return (
-		<aside className='w-64 bg-gray-800 text-white p-4'>
+		// <aside
+		// 	className={`w-64 bg-gray-800 text-white p-4 transition-all duration-300 ${
+		// 		activeMode ? 'max-h-screen' : 'max-h-0'
+		// 	}`}
+		// >
+		<aside
+			className={`w-64 bg-gray-800 text-white p-4 transition-all duration-300 ${
+				activeMode
+					? 'max-h-screen opacity-100 visible'
+					: 'max-h-0 opacity-0 invisible'
+			} overflow-hidden`}
+		>
 			{activeMode === 'setup' && (
 				<div className='space-y-4'>
 					{/* Room Setup */}
