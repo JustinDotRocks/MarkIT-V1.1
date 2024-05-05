@@ -34,6 +34,20 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 		}
 	};
 
+	const logRoomDetails = () => {
+		console.log(
+			`Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`
+		);
+	};
+
+	const handleAddDoorClick = () => {
+		console.log('Add Door button clicked.');
+	};
+
+	const handleAddObstacleClick = () => {
+		console.log('Add Obstacle button clicked.');
+	};
+
 	const handleVendorDetailsChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -59,9 +73,17 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 				<div className='space-y-4'>
 					{/* Room Setup */}
 					<div>
-						<h2 className='text-lg font-bold'>
-							Room Setup
-						</h2>
+						<div className='flex justify-between'>
+							<h2 className='text-lg font-bold'>
+								Room Setup
+							</h2>
+							<button
+								onClick={logRoomDetails}
+								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
+							>
+								+
+							</button>
+						</div>
 						<div className='mt-2'>
 							<input
 								type='text'
@@ -105,10 +127,16 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 						<h2 className='text-lg font-bold'>
 							Add Features
 						</h2>
-						<button className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'>
+						<button
+							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+							onClick={handleAddDoorClick}
+						>
 							Add Door
 						</button>
-						<button className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'>
+						<button
+							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+							onClick={handleAddObstacleClick}
+						>
 							Add Obstacle
 						</button>
 						{/* More buttons can be added similarly */}
