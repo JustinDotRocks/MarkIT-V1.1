@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 
 type SideBarProps = {
 	activeMode: 'setup' | 'vendor' | '';
+	addObject: (type: string, details?: string) => void;
 };
 
-const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
+const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 	//Setup State
 	const [roomName, setRoomName] = useState('');
 	const [roomWidth, setRoomWidth] = useState('');
 	const [roomDepth, setRoomDepth] = useState('');
-
 	// Vendor State
 	const [vendorName, setVendorName] = useState('');
 	const [products, setProducts] = useState('');
@@ -19,37 +19,32 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 	const handleRoomDetailsChange = (
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
-		switch (e.target.name) {
+		const { name, value } = e.target;
+		switch (name) {
 			case 'room-name':
-				setRoomName(e.target.value);
+				setRoomName(value);
 				break;
 			case 'room-width':
-				setRoomWidth(e.target.value);
+				setRoomWidth(value);
 				break;
 			case 'room-depth':
-				setRoomDepth(e.target.value);
+				setRoomDepth(value);
 				break;
 			default:
 				break;
 		}
 	};
 
-	const logRoomDetails = () => {
-		console.log(
-			`Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`
-		);
-	};
-
-	const handleAddDoorClick = () => {
-		console.log('Add Door button clicked.');
-	};
-
-	const handleAddObstacleClick = () => {
-		console.log('Add Obstacle button clicked.');
-	};
-
-	const logAddTable = (tableType: string) => {
-		console.log(`Add ${tableType} Table button clicked.`);
+	// Simplified addObject calls for clarity
+	const addFeature = (type: string) => {
+		// Check if we're adding room details and construct the details string accordingly
+		if (type === 'room-detail') {
+			const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
+			addObject(type, details);
+		} else {
+			// For other features like doors, obstacles, or tables
+			addObject(type);
+		}
 	};
 
 	const handleVendorDetailsChange = (
@@ -72,13 +67,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 	};
 
 	return (
-		// <aside
-		// 	className={`w-64 bg-gray-800 text-white p-4 transition-all duration-300 ${
-		// 		activeMode ? 'max-h-screen' : 'max-h-0'
-		// 	}`}
-		// >
 		<aside
-			className={`w-64 bg-gray-800 text-white p-4 transition-all duration-300 ${
+			className={`w-full flex-none h-1/2 overflow-y-auto bg-gray-800 text-white p-4 transition-all duration-300 ${
 				activeMode
 					? 'max-h-screen opacity-100 visible'
 					: 'max-h-0 opacity-0 invisible'
@@ -86,14 +76,15 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 		>
 			{activeMode === 'setup' && (
 				<div className='space-y-4'>
-					{/* Room Setup */}
 					<div>
 						<div className='flex justify-between'>
 							<h2 className='text-lg font-bold'>
 								Room Setup
 							</h2>
 							<button
-								onClick={logRoomDetails}
+								onClick={() =>
+									addFeature('room-detail')
+								}
 								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
 							>
 								+
@@ -110,8 +101,6 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 								placeholder='Room name'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
-						</div>
-						<div className='mt-2'>
 							<input
 								type='text'
 								name='room-width'
@@ -122,8 +111,6 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 								placeholder='Enter Room Width'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
-						</div>
-						<div className='mt-2'>
 							<input
 								type='text'
 								name='room-depth'
@@ -135,59 +122,42 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
 						</div>
-					</div>
-
-					{/* Add Door and Other Actions */}
-					<div>
 						<h2 className='text-lg font-bold'>
 							Add Features
 						</h2>
 						<button
+							onClick={() => addFeature('door')}
 							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-							onClick={handleAddDoorClick}
 						>
 							Add Door
 						</button>
 						<button
+							onClick={() => addFeature('obstacle')}
 							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-							onClick={handleAddObstacleClick}
 						>
 							Add Obstacle
 						</button>
-						{/* Add Tables Section */}
-						<div>
-							<h2 className='text-lg font-bold'>
-								Add Tables
-							</h2>
-							<button
-								onClick={() =>
-									logAddTable(
-										"8' Rectangle"
-									)
-								}
-								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-							>
-								Add 8' Rectangle
-							</button>
-							<button
-								onClick={() =>
-									logAddTable(
-										"6' Rectangle"
-									)
-								}
-								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-							>
-								Add 6' Rectangle
-							</button>
-							<button
-								onClick={() =>
-									logAddTable("5' Round")
-								}
-								className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-							>
-								Add 5' Round
-							</button>
-						</div>
+						<h2 className='text-lg font-bold'>
+							Add Tables
+						</h2>
+						<button
+							onClick={() => addFeature("table-6'")}
+							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+						>
+							Add 6' Table
+						</button>
+						<button
+							onClick={() => addFeature("table-8'")}
+							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+						>
+							Add 8' Table
+						</button>
+						<button
+							onClick={() => addFeature("table-5'")}
+							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+						>
+							Add 5' Round Table
+						</button>
 					</div>
 				</div>
 			)}
@@ -196,36 +166,30 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode }) => {
 					<h2 className='text-lg font-bold'>
 						Vendor Setup
 					</h2>
-					<div className='mt-2'>
-						<input
-							type='text'
-							name='vendor-name'
-							value={vendorName}
-							onChange={handleVendorDetailsChange}
-							placeholder='Vendor name'
-							className='w-full p-2 rounded bg-gray-700 text-white'
-						/>
-					</div>
-					<div className='mt-2'>
-						<input
-							type='text'
-							name='products'
-							value={products}
-							onChange={handleVendorDetailsChange}
-							placeholder='Products'
-							className='w-full p-2 rounded bg-gray-700 text-white'
-						/>
-					</div>
-					<div className='mt-2'>
-						<textarea
-							name='details'
-							value={details}
-							onChange={handleVendorDetailsChange}
-							placeholder='Details'
-							className='w-full p-2 rounded bg-gray-700 text-white'
-							rows={3}
-						/>
-					</div>
+					<input
+						type='text'
+						name='vendor-name'
+						value={vendorName}
+						onChange={handleVendorDetailsChange}
+						placeholder='Vendor name'
+						className='w-full p-2 rounded bg-gray-700 text-white'
+					/>
+					<input
+						type='text'
+						name='products'
+						value={products}
+						onChange={handleVendorDetailsChange}
+						placeholder='Products'
+						className='w-full p-2 rounded bg-gray-700 text-white'
+					/>
+					<textarea
+						name='details'
+						value={details}
+						onChange={handleVendorDetailsChange}
+						placeholder='Details'
+						className='w-full p-2 rounded bg-gray-700 text-white'
+						rows={3}
+					/>
 				</div>
 			)}
 		</aside>
