@@ -30,7 +30,7 @@ const App: React.FC = () => {
 					activeMode={activeMode}
 					addObject={addObjectToCanvas}
 				/>
-				<div className='absolute top-1/2 bottom-0 w-full h-screen'>
+				<div className='absolute top-2/3 bottom-0 w-full h-screen'>
 					<CanvasArea objects={canvasObjects} />
 				</div>
 			</div>

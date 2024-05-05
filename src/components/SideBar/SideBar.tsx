@@ -68,7 +68,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 
 	return (
 		<aside
-			className={`w-full flex-none h-1/2 overflow-y-auto bg-gray-800 text-white p-4 transition-all duration-300 ${
+			className={`w-full h-3/5 overflow-y-auto bg-gray-800 text-white p-4 transition-all duration-300 ${
 				activeMode
 					? 'max-h-screen opacity-100 visible'
 					: 'max-h-0 opacity-0 invisible'

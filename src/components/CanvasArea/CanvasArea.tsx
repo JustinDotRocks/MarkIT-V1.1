@@ -52,7 +52,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ objects }) => {
 	const padding = 10; // Padding inside each object box
 
 	return (
-		<div className='w-full h-screen overflow-y-auto bg-gray-200'>
+		// <div className='w-full h-screen overflow-y-auto bg-gray-200'>
+		<div className='flex-grow bg-gray-200 overflow-y-auto'>
 			{Object.keys(objectGroups).map((type, rowIndex) => (
 				<div
 					key={type}
