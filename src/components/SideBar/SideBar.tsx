@@ -35,7 +35,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 		}
 	};
 
-	// Simplified addObject calls for clarity
+	//  addObject calls for clarity
 	const addFeature = (type: string) => {
 		// Check if we're adding room details and construct the details string accordingly
 		if (type === 'room-detail') {
