@@ -1,5 +1,6 @@
 // src/components/NavBar.tsx
 import React from 'react';
+import Button from '../Button/Button';
 
 type NavBarProps = {
 	activeMode: 'setup' | 'vendor' | '';
@@ -15,7 +16,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 			<div className='flex justify-between items-center'>
 				<div className='text-lg font-bold'>MarkIT</div>
 				<div>
-					<button
+					<Button
 						className={`px-4 py-2 rounded ${
 							activeMode === 'setup'
 								? 'bg-blue-500'
@@ -24,8 +25,8 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 						onClick={() => toggleMode('setup')}
 					>
 						Setup Mode
-					</button>
-					<button
+					</Button>
+					<Button
 						className={`ml-2 px-4 py-2 rounded ${
 							activeMode === 'vendor'
 								? 'bg-blue-500'
@@ -34,7 +35,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 						onClick={() => toggleMode('vendor')}
 					>
 						Vendor Mode
-					</button>
+					</Button>
 				</div>
 				<a
 					href='/about'
