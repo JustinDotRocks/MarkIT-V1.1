@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Button from '../Button/Button';
+import { v4 as uuidv4 } from 'uuid'; // Importing the UUID function
 
 type SideBarProps = {
 	activeMode: 'setup' | 'vendor' | '';
-	addObject: (type: string, details?: string) => void;
+	addObject: (type: string, id: string, details?: string) => void;
 };
 
 const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
@@ -74,12 +75,14 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 
 	//  addObject calls for clarity
 	const addFeature = (type: string, quantity: number) => {
+		const id = uuidv4(); // Generate a new UUID for each object
+
 		for (let i = 0; i < quantity; i++) {
 			if (type === 'room-detail') {
 				const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
-				addObject(type, details);
+				addObject(type, details, id);
 			} else {
-				addObject(type);
+				addObject(type, id, undefined);
 			}
 		}
 	};
