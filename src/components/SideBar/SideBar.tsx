@@ -1,5 +1,5 @@
-// src/components/SideBar.tsx
 import React, { useState } from 'react';
+import Button from '../Button/Button';
 
 type SideBarProps = {
 	activeMode: 'setup' | 'vendor' | '';
@@ -11,39 +11,43 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 	const [roomName, setRoomName] = useState('');
 	const [roomWidth, setRoomWidth] = useState('');
 	const [roomDepth, setRoomDepth] = useState('');
+	const [quantity, setQuantity] = useState(0); // State to handle quantity input
 	// Vendor State
 	const [vendorName, setVendorName] = useState('');
 	const [products, setProducts] = useState('');
 	const [details, setDetails] = useState('');
 
-	const handleRoomDetailsChange = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		switch (name) {
-			case 'room-name':
-				setRoomName(value);
-				break;
-			case 'room-width':
-				setRoomWidth(value);
-				break;
-			case 'room-depth':
-				setRoomDepth(value);
-				break;
-			default:
-				break;
+		if (name === 'quantity') {
+			const num = Math.min(Math.max(1, parseInt(value)), 30);
+			setQuantity(isNaN(num) ? 0 : num);
+		} else {
+			switch (name) {
+				case 'room-name':
+					setRoomName(value);
+					break;
+				case 'room-width':
+					setRoomWidth(value);
+					break;
+				case 'room-depth':
+					setRoomDepth(value);
+					break;
+				default:
+					break;
+			}
 		}
 	};
 
 	//  addObject calls for clarity
 	const addFeature = (type: string) => {
-		// Check if we're adding room details and construct the details string accordingly
-		if (type === 'room-detail') {
-			const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
-			addObject(type, details);
-		} else {
-			// For other features like doors, obstacles, or tables
-			addObject(type);
+		for (let i = 0; i < quantity; i++) {
+			if (type === 'room-detail') {
+				const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
+				addObject(type, details);
+			} else {
+				addObject(type);
+			}
 		}
 	};
 
@@ -81,23 +85,22 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							<h2 className='text-lg font-bold'>
 								Room Setup
 							</h2>
-							<button
+
+							<Button
 								onClick={() =>
 									addFeature('room-detail')
 								}
 								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
 							>
 								+
-							</button>
+							</Button>
 						</div>
 						<div className='mt-2'>
 							<input
 								type='text'
 								name='room-name'
 								value={roomName}
-								onChange={
-									handleRoomDetailsChange
-								}
+								onChange={handleInputChange}
 								placeholder='Room name'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
@@ -105,9 +108,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								type='text'
 								name='room-width'
 								value={roomWidth}
-								onChange={
-									handleRoomDetailsChange
-								}
+								onChange={handleInputChange}
 								placeholder='Enter Room Width'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
@@ -115,9 +116,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								type='text'
 								name='room-depth'
 								value={roomDepth}
-								onChange={
-									handleRoomDetailsChange
-								}
+								onChange={handleInputChange}
 								placeholder='Enter Room Depth'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
@@ -125,39 +124,131 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 						<h2 className='text-lg font-bold'>
 							Add Features
 						</h2>
-						<button
-							onClick={() => addFeature('door')}
-							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-						>
-							Add Door
-						</button>
-						<button
-							onClick={() => addFeature('obstacle')}
-							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-						>
-							Add Obstacle
-						</button>
+						<div className='flex flex-col justify-center items-center'>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='quantity'
+									min='0'
+									max='30'
+									value={quantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature('door')
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add Door
+								</Button>
+							</div>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='quantity'
+									min='0'
+									max='30'
+									value={quantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature(
+											'obstacle'
+										)
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add Obstacle
+								</Button>
+							</div>
+						</div>
 						<h2 className='text-lg font-bold'>
 							Add Tables
 						</h2>
-						<button
-							onClick={() => addFeature("table-6'")}
-							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-						>
-							Add 6' Table
-						</button>
-						<button
-							onClick={() => addFeature("table-8'")}
-							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-						>
-							Add 8' Table
-						</button>
-						<button
-							onClick={() => addFeature("table-5'")}
-							className='w-full p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-						>
-							Add 5' Round Table
-						</button>
+						<div className='flex flex-col justify-center items-center'>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='quantity'
+									min='0'
+									max='30'
+									value={quantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature(
+											"table-6'"
+										)
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add 6' Table
+								</Button>
+							</div>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='quantity'
+									min='0'
+									max='30'
+									value={quantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature(
+											"table-8'"
+										)
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add 8' Table
+								</Button>
+							</div>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='quantity'
+									min='0'
+									max='30'
+									value={quantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature(
+											"table-5'"
+										)
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add 5' Round Table
+								</Button>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
