@@ -11,36 +11,69 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 	const [roomName, setRoomName] = useState('');
 	const [roomWidth, setRoomWidth] = useState('');
 	const [roomDepth, setRoomDepth] = useState('');
-	const [quantity, setQuantity] = useState(0); // State to handle quantity input
+	// const [quantity, setQuantity] = useState(0); // State to handle quantity input
+	const [doorQuantity, setDoorQuantity] = useState(0);
+	const [obstacleQuantity, setObstacleQuantity] = useState(0);
+	const [table6Quantity, setTable6Quantity] = useState(0);
+	const [table8Quantity, setTable8Quantity] = useState(0);
+	const [table5Quantity, setTable5Quantity] = useState(0);
+
 	// Vendor State
 	const [vendorName, setVendorName] = useState('');
 	const [products, setProducts] = useState('');
 	const [details, setDetails] = useState('');
 
+	// const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const { name, value } = e.target;
+	// 	if (name === 'quantity') {
+	// 		const num = Math.min(Math.max(1, parseInt(value)), 30);
+	// 		setQuantity(isNaN(num) ? 0 : num);
+	// 	} else {
+	// 		switch (name) {
+	// 			case 'room-name':
+	// 				setRoomName(value);
+	// 				break;
+	// 			case 'room-width':
+	// 				setRoomWidth(value);
+	// 				break;
+	// 			case 'room-depth':
+	// 				setRoomDepth(value);
+	// 				break;
+	// 			default:
+	// 				break;
+	// 		}
+	// 	}
+	// };
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		if (name === 'quantity') {
-			const num = Math.min(Math.max(1, parseInt(value)), 30);
-			setQuantity(isNaN(num) ? 0 : num);
-		} else {
-			switch (name) {
-				case 'room-name':
-					setRoomName(value);
-					break;
-				case 'room-width':
-					setRoomWidth(value);
-					break;
-				case 'room-depth':
-					setRoomDepth(value);
-					break;
-				default:
-					break;
-			}
+		const num = Math.min(Math.max(0, parseInt(value)), 30);
+		switch (name) {
+			case 'door-quantity':
+				setDoorQuantity(isNaN(num) ? 0 : num);
+				break;
+			case 'obstacle-quantity':
+				setObstacleQuantity(isNaN(num) ? 0 : num);
+				break;
+			case 'table-6-quantity':
+				setTable6Quantity(isNaN(num) ? 0 : num);
+				break;
+			case 'table-8-quantity':
+				setTable8Quantity(isNaN(num) ? 0 : num);
+				break;
+			case 'table-5-quantity':
+				setTable5Quantity(isNaN(num) ? 0 : num);
+				break;
+			default:
+				// Handle other inputs like room name, width, depth
+				if (name === 'room-name') setRoomName(value);
+				else if (name === 'room-width') setRoomWidth(value);
+				else if (name === 'room-depth') setRoomDepth(value);
+				break;
 		}
 	};
 
 	//  addObject calls for clarity
-	const addFeature = (type: string) => {
+	const addFeature = (type: string, quantity: number) => {
 		for (let i = 0; i < quantity; i++) {
 			if (type === 'room-detail') {
 				const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
@@ -88,7 +121,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 
 							<Button
 								onClick={() =>
-									addFeature('room-detail')
+									addFeature(
+										'room-detail',
+										1
+									)
 								}
 								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
 							>
@@ -128,32 +164,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							<div className='flex items-center w-full'>
 								<input
 									type='number'
-									name='quantity'
+									name='door-quantity'
 									min='0'
 									max='30'
-									value={quantity}
-									onChange={
-										handleInputChange
-									}
-									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
-									placeholder='Qty'
-								/>
-								<Button
-									onClick={() =>
-										addFeature('door')
-									}
-									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
-								>
-									Add Door
-								</Button>
-							</div>
-							<div className='flex items-center w-full'>
-								<input
-									type='number'
-									name='quantity'
-									min='0'
-									max='30'
-									value={quantity}
+									value={doorQuantity}
 									onChange={
 										handleInputChange
 									}
@@ -163,7 +177,33 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								<Button
 									onClick={() =>
 										addFeature(
-											'obstacle'
+											'door',
+											1
+										)
+									}
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
+								>
+									Add Door
+								</Button>
+							</div>
+							<div className='flex items-center w-full'>
+								<input
+									type='number'
+									name='obstacle-quantity'
+									min='0'
+									max='30'
+									value={obstacleQuantity}
+									onChange={
+										handleInputChange
+									}
+									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
+									placeholder='Qty'
+								/>
+								<Button
+									onClick={() =>
+										addFeature(
+											'obstacle-quantity',
+											1
 										)
 									}
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
@@ -179,10 +219,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							<div className='flex items-center w-full'>
 								<input
 									type='number'
-									name='quantity'
+									name='table-6-quantity'
 									min='0'
 									max='30'
-									value={quantity}
+									value={table6Quantity}
 									onChange={
 										handleInputChange
 									}
@@ -192,7 +232,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								<Button
 									onClick={() =>
 										addFeature(
-											"table-6'"
+											"table-6'",
+											1
 										)
 									}
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
@@ -203,10 +244,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							<div className='flex items-center w-full'>
 								<input
 									type='number'
-									name='quantity'
+									name='table-8-quantity'
 									min='0'
 									max='30'
-									value={quantity}
+									value={table8Quantity}
 									onChange={
 										handleInputChange
 									}
@@ -216,7 +257,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								<Button
 									onClick={() =>
 										addFeature(
-											"table-8'"
+											"table-8'",
+											1
 										)
 									}
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
@@ -227,10 +269,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							<div className='flex items-center w-full'>
 								<input
 									type='number'
-									name='quantity'
+									name='table-5-quantity'
 									min='0'
 									max='30'
-									value={quantity}
+									value={table5Quantity}
 									onChange={
 										handleInputChange
 									}
@@ -240,7 +282,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								<Button
 									onClick={() =>
 										addFeature(
-											"table-5'"
+											"table-5'",
+											1
 										)
 									}
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
