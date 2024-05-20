@@ -1,11 +1,7 @@
 // src/components/NavBar.tsx
 import React from 'react';
 import Button from '../Button/Button';
-
-type NavBarProps = {
-	activeMode: 'setup' | 'vendor' | '';
-	setActiveMode: (mode: 'setup' | 'vendor' | '') => void;
-};
+import { NavBarProps } from '../../Types';
 
 const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 	const toggleMode = (mode: 'setup' | 'vendor' | '') => {

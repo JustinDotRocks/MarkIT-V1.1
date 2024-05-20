@@ -1,9 +1,5 @@
 import React from 'react';
-import { CanvasObject } from '../../Types'; // Importing type
-
-interface CanvasAreaProps {
-	objects: CanvasObject[];
-}
+import { CanvasObject, CanvasAreaProps } from '../../Types'; // Importing type
 
 const CanvasArea: React.FC<CanvasAreaProps> = ({ objects }) => {
 	// Dictionary to map internal type names to display labels

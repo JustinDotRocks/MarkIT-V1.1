@@ -1,13 +1,5 @@
 import React from 'react';
-
-// Define the props type
-type ButtonProps = {
-	onClick: () => void;
-	className?: string;
-	children: React.ReactNode;
-	type?: 'button' | 'submit' | 'reset';
-	disabled?: boolean;
-};
+import { ButtonProps } from '../../Types';
 
 // Button component definition
 const Button: React.FC<ButtonProps> = ({
