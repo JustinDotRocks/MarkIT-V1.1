@@ -41,3 +41,14 @@ export interface VendorDetails {
 	signedIn: boolean;
 	electricityRequired: boolean;
 }
+
+export interface InputProps {
+	type?: string;
+	name: string;
+	value: string | number;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	placeholder?: string;
+	className?: string;
+	min?: number;
+	max?: number;
+}

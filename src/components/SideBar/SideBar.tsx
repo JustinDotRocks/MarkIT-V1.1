@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { VendorDetails, SideBarProps } from '../../Types';
+import { VendorDetails, SideBarProps, InputProps } from '../../Types';
 import Button from '../Button/Button';
 import FeatureButton from '../FeatureButton/FeatureButton';
 import VendorCard from '../VendorCard/VendorCard';
+import Input from '../Input/Input';
 import { v4 as uuidv4 } from 'uuid'; // Importing the UUID function
 
 const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
@@ -131,7 +132,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 							</Button>
 						</div>
 						<div className='mt-2'>
-							<input
+							<Input
 								type='text'
 								name='room-name'
 								value={roomName}
@@ -139,7 +140,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								placeholder='Room name'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
-							<input
+							<Input
 								type='text'
 								name='room-width'
 								value={roomWidth}
@@ -147,7 +148,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								placeholder='Enter Room Width'
 								className='w-full p-2 rounded bg-gray-700 text-white'
 							/>
-							<input
+							<Input
 								type='text'
 								name='room-depth'
 								value={roomDepth}
@@ -161,11 +162,11 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 						</h2>
 						<div className='flex flex-col justify-center items-center'>
 							<div className='flex items-center w-full'>
-								<input
+								<Input
 									type='number'
 									name='door-quantity'
-									min='0'
-									max='30'
+									min={0}
+									max={30}
 									value={doorQuantity}
 									onChange={
 										handleInputChange
@@ -187,11 +188,11 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
-								<input
+								<Input
 									type='number'
 									name='obstacle-quantity'
-									min='0'
-									max='30'
+									min={0}
+									max={30}
 									value={obstacleQuantity}
 									onChange={
 										handleInputChange
@@ -218,11 +219,11 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 						</h2>
 						<div className='flex flex-col justify-center items-center'>
 							<div className='flex items-center w-full'>
-								<input
+								<Input
 									type='number'
 									name='table-6-quantity'
-									min='0'
-									max='30'
+									min={0}
+									max={30}
 									value={table6Quantity}
 									onChange={
 										handleInputChange
@@ -244,11 +245,11 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
-								<input
+								<Input
 									type='number'
 									name='table-8-quantity'
-									min='0'
-									max='30'
+									min={0}
+									max={30}
 									value={table8Quantity}
 									onChange={
 										handleInputChange
@@ -270,11 +271,11 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
-								<input
+								<Input
 									type='number'
 									name='table-5-quantity'
-									min='0'
-									max='30'
+									min={0}
+									max={30}
 									value={table5Quantity}
 									onChange={
 										handleInputChange
@@ -306,7 +307,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 					</h2>
 					<Button onClick={addVendor}>Add Vendor</Button>
 
-					<input
+					<Input
 						type='text'
 						name='vendorName'
 						value={vendorDetails.vendorName}
@@ -314,7 +315,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 						placeholder='Vendor name'
 						className='w-full p-2 rounded bg-gray-700 text-white'
 					/>
-					<input
+					<Input
 						type='text'
 						name='vendorProducts'
 						value={vendorDetails.vendorProducts}
