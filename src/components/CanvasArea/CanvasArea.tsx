@@ -49,9 +49,9 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ objects }) => {
 					key={type}
 					className='flex flex-wrap items-start m-2' // Use margin for spacing between groups
 				>
-					{objectGroups[type].map((obj, index) => (
+					{objectGroups[type].map((obj) => (
 						<div
-							key={index}
+							key={obj.id}
 							className='inline-block p-2 m-1 border border-gray-500 rounded bg-white'
 						>
 							{getDisplayLabel(

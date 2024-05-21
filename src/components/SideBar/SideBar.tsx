@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { VendorDetails, SideBarProps } from '../../Types';
 import Button from '../Button/Button';
+import FeatureButton from '../FeatureButton/FeatureButton';
 import VendorCard from '../VendorCard/VendorCard';
 import { v4 as uuidv4 } from 'uuid'; // Importing the UUID function
 
@@ -172,17 +173,18 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
 									placeholder='Qty'
 								/>
-								<Button
+								<FeatureButton
+									featureType='door'
+									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 									onClick={() =>
 										addFeature(
 											'door',
 											doorQuantity
 										)
 									}
-									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 								>
 									Add Door
-								</Button>
+								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
 								<input
@@ -197,17 +199,18 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
 									placeholder='Qty'
 								/>
-								<Button
+								<FeatureButton
+									featureType='obstacle'
 									onClick={() =>
 										addFeature(
-											'obstacle-quantity',
+											'obstacle',
 											obstacleQuantity
 										)
 									}
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 								>
 									Add Obstacle
-								</Button>
+								</FeatureButton>
 							</div>
 						</div>
 						<h2 className='text-lg font-bold'>
@@ -227,7 +230,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
 									placeholder='Qty'
 								/>
-								<Button
+								<FeatureButton
+									featureType='table-6'
 									onClick={() =>
 										addFeature(
 											"table-6'",
@@ -237,7 +241,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 								>
 									Add 6' Table
-								</Button>
+								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
 								<input
@@ -252,7 +256,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
 									placeholder='Qty'
 								/>
-								<Button
+								<FeatureButton
+									featureType='table-8'
 									onClick={() =>
 										addFeature(
 											"table-8'",
@@ -262,7 +267,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 								>
 									Add 8' Table
-								</Button>
+								</FeatureButton>
 							</div>
 							<div className='flex items-center w-full'>
 								<input
@@ -277,7 +282,8 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/3 p-2 rounded bg-gray-700 text-white mr-2'
 									placeholder='Qty'
 								/>
-								<Button
+								<FeatureButton
+									featureType='table-5'
 									onClick={() =>
 										addFeature(
 											"table-5'",
@@ -287,7 +293,7 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 									className='w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600'
 								>
 									Add 5' Round Table
-								</Button>
+								</FeatureButton>
 							</div>
 						</div>
 					</div>

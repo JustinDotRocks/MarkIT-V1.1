@@ -6,10 +6,15 @@ export type NavBarProps = {
 export type ButtonProps = {
 	onClick: () => void;
 	className?: string;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	type?: 'button' | 'submit' | 'reset';
 	disabled?: boolean;
 };
+
+export interface FeatureButtonProps extends ButtonProps {
+	featureType: 'door' | 'obstacle' | 'table-6' | 'table-8' | 'table-5';
+	children?: React.ReactNode; // Make children optional
+}
 
 export type SideBarProps = {
 	activeMode: 'setup' | 'vendor' | '';
