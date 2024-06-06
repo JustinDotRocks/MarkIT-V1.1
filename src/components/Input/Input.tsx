@@ -1,9 +1,9 @@
 // src/components/Input/Input.tsx
-import React from 'react';
-import { InputProps } from '../../Types';
+import React from "react";
+import { InputProps } from "../../Types";
 
 const Input: React.FC<InputProps> = ({
-	type = 'text',
+	type = "text",
 	name,
 	value,
 	onChange,
@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({
 			value={value}
 			onChange={onChange}
 			placeholder={placeholder}
-			className={`w-full p-2 rounded bg-gray-700 text-white ${className}`}
+			className={`w-1/2 p-2 rounded bg-gray-700 text-white ${className}`}
 			min={min}
 			max={max}
 		/>
