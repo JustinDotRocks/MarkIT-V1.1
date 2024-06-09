@@ -18,6 +18,10 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 	const [table8Quantity, setTable8Quantity] = useState(0);
 	const [table5Quantity, setTable5Quantity] = useState(0);
 
+	const [features, setFeatures] = useState<
+		{ id: string; type: string; details?: string }[]
+	>([]);
+
 	// Vendor State
 	const [vendors, setVendors] = useState<VendorDetails[]>([]);
 	const [vendorDetails, setVendorDetails] = useState<VendorDetails>({
@@ -93,15 +97,26 @@ const SideBar: React.FC<SideBarProps> = ({ activeMode, addObject }) => {
 		});
 	};
 
+	// const addFeature = (type: string, quantity: number) => {
+	// 	for (let i = 0; i < quantity; i++) {
+	// 		const id = uuidv4(); // Generate a new UUID for each object
+	// 		if (type === "room-detail") {
+	// 			const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
+	// 			addObject(type, id, details);
+	// 		} else {
+	// 			addObject(type, id);
+	// 		}
+	// 	}
+	// };
+
 	const addFeature = (type: string, quantity: number) => {
 		for (let i = 0; i < quantity; i++) {
-			const id = uuidv4(); // Generate a new UUID for each object
+			const id = uuidv4();
+			let details: string | undefined;
 			if (type === "room-detail") {
-				const details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
-				addObject(type, id, details);
-			} else {
-				addObject(type, id);
+				details = `Room Name: ${roomName}, Width: ${roomWidth}, Depth: ${roomDepth}`;
 			}
+			addObject(type, id, details);
 		}
 	};
 

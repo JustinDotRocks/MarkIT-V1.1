@@ -36,7 +36,7 @@ export type SideBarProps = {
 };
 
 export type CanvasObject = {
-	id: number;
+	id: string;
 	type: string;
 	details?: string;
 };
