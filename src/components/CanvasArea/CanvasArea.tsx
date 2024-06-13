@@ -1,152 +1,67 @@
-// import React from 'react';
-// import { CanvasObject, CanvasAreaProps } from '../../Types'; // Importing type
-
-// const CanvasArea: React.FC<CanvasAreaProps> = ({ objects }) => {
-// 	// Dictionary to map internal type names to display labels
-// 	const displayNames: { [key: string]: string } = {
-// 		table6: "6' Table",
-// 		table8: "8' Table",
-// 		table5: "5' Round Table",
-// 		door: 'Door',
-// 		obstacle: 'Obstacle',
-// 	};
-
-// 	// Define a type for the groups object
-// 	interface Groups {
-// 		[key: string]: CanvasObject[];
-// 	}
-
-// 	// Function to group objects by type and return them along with their row index
-// 	const groupObjectsByType = (objects: CanvasObject[]): Groups => {
-// 		const groups: Groups = {};
-// 		objects.forEach((obj) => {
-// 			if (!groups[obj.type]) {
-// 				groups[obj.type] = [];
-// 			}
-// 			groups[obj.type].push(obj);
-// 		});
-// 		return groups;
-// 	};
-
-// 	const objectGroups = groupObjectsByType(objects);
-
-// 	// Function to provide a display label for an object type, handling optional details
-// 	const getDisplayLabel = (type: string, details?: string): string => {
-// 		const normalizedType = type.replace(/[^a-zA-Z0-9]/g, '');
-// 		const label = displayNames[normalizedType] || type; // Get user-friendly name or default to type
-
-// 		// Append details only if they are meaningful and add information
-// 		if (details && details !== type && !details.includes(type)) {
-// 			return `${label}: ${details}`;
-// 		}
-// 		return label;
-// 	};
-
-// 	return (
-// 		<div className='flex-grow overflow-y-auto'>
-// 			{Object.keys(objectGroups).map((type) => (
-// 				<div
-// 					key={type}
-// 					className='flex flex-wrap items-start m-2' // Use margin for spacing between groups
-// 				>
-// 					{objectGroups[type].map((obj) => (
-// 						<div
-// 							key={obj.id}
-// 							className='inline-block p-2 m-1 border border-gray-500 rounded bg-white'
-// 						>
-// 							{getDisplayLabel(
-// 								obj.type,
-// 								obj.details
-// 							)}
-// 						</div>
-// 					))}
-// 				</div>
-// 			))}
-// 		</div>
-// 	);
-// };
-
-// export default CanvasArea;
 import React from "react";
-import { CanvasObject, CanvasAreaProps } from "../../Types"; // Importing type
-import Button from "../Button/Button"; // Ensure you have this button component
+import { CanvasObject, Feature, Room } from "../../Types";
 
-interface CanvasAreaWithDeleteProps extends CanvasAreaProps {
+interface CanvasAreaProps {
+	objects: Feature[];
+	rooms: Room[];
 	removeObject: (id: string) => void;
 }
 
-const CanvasArea: React.FC<CanvasAreaWithDeleteProps> = ({
+const CanvasArea: React.FC<CanvasAreaProps> = ({
 	objects,
 	removeObject,
+	rooms,
 }) => {
 	// Dictionary to map internal type names to display labels
 	const displayNames: { [key: string]: string } = {
-		table6: "6' Table",
-		table8: "8' Table",
-		table5: "5' Round Table",
 		door: "Door",
 		obstacle: "Obstacle",
+		"table-6": "6' Table",
+		"table-8": "8' Table",
+		"table-5": "5' Round Table",
 	};
-
-	// Define a type for the groups object
-	interface Groups {
-		[key: string]: CanvasObject[];
-	}
-
-	// Function to group objects by type and return them along with their row index
-	const groupObjectsByType = (objects: CanvasObject[]): Groups => {
-		const groups: Groups = {};
-		objects.forEach((obj) => {
-			if (!groups[obj.type]) {
-				groups[obj.type] = [];
-			}
-			groups[obj.type].push(obj);
-		});
-		return groups;
-	};
-
-	const objectGroups = groupObjectsByType(objects);
 
 	// Function to provide a display label for an object type, handling optional details
 	const getDisplayLabel = (type: string, details?: string): string => {
-		const normalizedType = type.replace(/[^a-zA-Z0-9]/g, "");
-		const label = displayNames[normalizedType] || type; // Get user-friendly name or default to type
-
-		// Append details only if they are meaningful and add information
-		if (details && details !== type && !details.includes(type)) {
-			return `${label}: ${details}`;
-		}
-		return label;
+		const label = displayNames[type] || type; // Get user-friendly name or default to type
+		// if (details && details !== type && !details.includes(type)) {
+		// 	return `${label}: ${details}`;
+		// }
+		// return label;
+		return details ? `${label}: ${details}` : label;
 	};
 
 	return (
-		<div className="flex-grow overflow-y-auto">
-			{Object.keys(objectGroups).map((type) => (
+		<div className="flex-grow overflow-y-auto p-2">
+			<div className="canvas-area">
+				{rooms.map((room) => (
+					<div key={room.id} className="room">
+						<h3>{room.name}</h3>
+						<p>Width: {room.width}</p>
+						<p>Depth: {room.depth}</p>
+						{/* Render tables or other details here */}
+					</div>
+				))}
+			</div>
+			{objects.map((obj) => (
 				<div
-					key={type}
-					className="flex flex-wrap items-start m-2" // Use margin for spacing between groups
+					key={obj.id}
+					className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
 				>
-					{objectGroups[type].map((obj) => (
-						<div
-							key={obj.id}
-							className="inline-block p-2 m-1 border border-gray-500 rounded bg-white flex items-center justify-between"
+					<div className="flex justify-between items-center">
+						<span>
+							{getDisplayLabel(
+								obj.type,
+								obj.details
+							)}
+						</span>
+						<button
+							onClick={() => removeObject(obj.id)}
+							className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 						>
-							<span>
-								{getDisplayLabel(
-									obj.type,
-									obj.details
-								)}
-							</span>
-							<Button
-								onClick={() =>
-									removeObject(obj.id)
-								}
-								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2"
-							>
-								Delete
-							</Button>
-						</div>
-					))}
+							Delete
+						</button>
+					</div>
 				</div>
 			))}
 		</div>

@@ -30,10 +30,26 @@ export interface FeatureInputButtonPairProps {
 	containerClassName?: string;
 }
 
-export type SideBarProps = {
+// export type SideBarProps = {
+// 	activeMode: "setup" | "vendor" | "";
+// 	addObject: (type: string, id: string, details?: string) => void;
+// };
+export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
-	addObject: (type: string, id: string, details?: string) => void;
-};
+	addObject: (
+		type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
+		id: string,
+		details?: string
+	) => void;
+	rooms: Room[];
+	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
+	vendors: Vendor[];
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
+	features: Feature[];
+	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	tables: Table[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+}
 
 export type CanvasObject = {
 	id: string;
@@ -66,3 +82,36 @@ export interface InputProps {
 	min?: number;
 	max?: number;
 }
+
+export interface Room {
+	id: string;
+	name: string;
+	width: string;
+	depth: string;
+	tables: string[]; // Array of table IDs
+}
+
+export interface Vendor {
+	id: string;
+	name: string;
+	products: string;
+	details: string;
+	tableId: string;
+	roomName: string;
+	signedIn: boolean;
+	electricityRequired: boolean;
+}
+
+export type Feature = {
+	id: string;
+	type: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
+	details?: string;
+	roomId?: string; // Stationary features can be associated with a room
+};
+
+export type Table = {
+	id: string;
+	type: "table-6" | "table-8" | "table-5";
+	roomId: string;
+	vendorId?: string; // If a vendor is assigned to the table
+};
