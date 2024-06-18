@@ -59,6 +59,8 @@ export interface SideBarProps {
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
 	tables: Table[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	selectedRoomId: string | null; // Update to include selectedRoomId
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export type CanvasObject = {
@@ -68,7 +70,12 @@ export type CanvasObject = {
 };
 
 export interface CanvasAreaProps {
-	objects: CanvasObject[];
+	// objects: CanvasObject[];
+	objects: Feature[];
+	tables: Table[];
+	rooms: Room[];
+	removeObject: (id: string) => void;
+	selectedRoomId: string | null;
 }
 
 export interface VendorDetails {

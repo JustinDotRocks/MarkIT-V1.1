@@ -23,12 +23,14 @@ const SideBar: React.FC<SideBarProps> = ({
 	setFeatures,
 	tables,
 	setTables,
+	selectedRoomId,
+	setSelectedRoomId,
 }) => {
 	const [roomName, setRoomName] = useState("");
 	const [roomWidth, setRoomWidth] = useState("");
 	const [roomDepth, setRoomDepth] = useState("");
 
-	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+	// const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
 
 	const [doorQuantity, setDoorQuantity] = useState(0);
 	const [obstacleQuantity, setObstacleQuantity] = useState(0);

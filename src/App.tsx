@@ -32,6 +32,8 @@ const App: React.FC = () => {
 		() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
 	);
 
+	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
+
 	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().FEATURES, features);
 	}, [features]);
@@ -53,7 +55,12 @@ const App: React.FC = () => {
 		id: string,
 		details?: string
 	) => {
-		const newFeature: Feature = { id, type, details };
+		const newFeature: Feature = {
+			id,
+			type,
+			details,
+			roomId: selectedRoomId || "",
+		};
 		setFeatures((prevFeatures: Feature[]) => [
 			...prevFeatures,
 			newFeature,
@@ -67,7 +74,12 @@ const App: React.FC = () => {
 		// roomId: string,
 		details?: string
 	) => {
-		const newTable: Table = { id, type, details, roomId: "" };
+		const newTable: Table = {
+			id,
+			type,
+			details,
+			roomId: selectedRoomId || "",
+		};
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
 	};
 
@@ -99,12 +111,15 @@ const App: React.FC = () => {
 					setFeatures={setFeatures}
 					tables={tables}
 					setTables={setTables}
+					selectedRoomId={selectedRoomId}
+					setSelectedRoomId={setSelectedRoomId}
 				/>
 				<CanvasArea
 					objects={features}
 					removeObject={removeObjectFromCanvas}
 					rooms={rooms}
 					tables={tables}
+					selectedRoomId={selectedRoomId}
 				/>
 			</div>
 		</div>
