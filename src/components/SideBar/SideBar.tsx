@@ -183,10 +183,7 @@ const SideBar: React.FC<SideBarProps> = ({
 		});
 	};
 
-	// const addFeature = (
-	// 	type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
-	// 	quantity: number
-	// ) => {
+	// const addFeature = (type: "door" | "obstacle", quantity: number) => {
 	// 	for (let i = 0; i < quantity; i++) {
 	// 		const id = uuidv4();
 	// 		const newFeature: Feature = { id, type };
@@ -197,9 +194,18 @@ const SideBar: React.FC<SideBarProps> = ({
 	// 	}
 	// };
 	const addFeature = (type: "door" | "obstacle", quantity: number) => {
+		if (!selectedRoomId) {
+			alert("Please select a room first.");
+			return;
+		}
+
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
-			const newFeature: Feature = { id, type };
+			const newFeature: Feature = {
+				id,
+				type,
+				roomId: selectedRoomId, // Associate with the selected room
+			};
 			setFeatures((prevFeatures: Feature[]) => [
 				...prevFeatures,
 				newFeature,
