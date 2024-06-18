@@ -49,7 +49,7 @@ const App: React.FC = () => {
 	}, [tables]);
 
 	const addObjectToCanvas = (
-		type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
+		type: "door" | "obstacle",
 		id: string,
 		details?: string
 	) => {
@@ -60,9 +60,23 @@ const App: React.FC = () => {
 		]);
 	};
 
+	// Add tables to the canvas
+	const addTableToCanvas = (
+		type: "table-6" | "table-8" | "table-5",
+		id: string,
+		// roomId: string,
+		details?: string
+	) => {
+		const newTable: Table = { id, type, details, roomId: "" };
+		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	};
+
 	const removeObjectFromCanvas = (id: string) => {
 		setFeatures((prevFeatures: Feature[]) =>
 			prevFeatures.filter((feature) => feature.id !== id)
+		);
+		setTables((prevTables: Table[]) =>
+			prevTables.filter((table) => table.id !== id)
 		);
 	};
 
@@ -76,6 +90,7 @@ const App: React.FC = () => {
 				<SideBar
 					activeMode={activeMode}
 					addObject={addObjectToCanvas}
+					addTable={addTableToCanvas} // Pass addTable to SideBar for adding tables
 					rooms={rooms}
 					setRooms={setRooms}
 					vendors={vendors}
@@ -89,6 +104,7 @@ const App: React.FC = () => {
 					objects={features}
 					removeObject={removeObjectFromCanvas}
 					rooms={rooms}
+					tables={tables}
 				/>
 			</div>
 		</div>

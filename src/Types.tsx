@@ -36,11 +36,21 @@ export interface FeatureInputButtonPairProps {
 // };
 export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
+	// addObject: (
+	// 	type: "door" | "obstacle",
+	// 	id: string,
+	// 	details?: string
+	// ) => void;
 	addObject: (
-		type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
+		type: "door" | "obstacle",
 		id: string,
 		details?: string
 	) => void;
+	addTable: (
+		type: "table-6" | "table-8" | "table-5",
+		id: string,
+		details?: string
+	) => void; // Add this line
 	rooms: Room[];
 	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
 	vendors: Vendor[];
@@ -104,14 +114,21 @@ export interface Vendor {
 
 export type Feature = {
 	id: string;
-	type: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
+	type: "door" | "obstacle";
 	details?: string;
 	roomId?: string; // Stationary features can be associated with a room
 };
 
-export type Table = {
+// export type Table = {
+// 	id: string;
+// 	type: "table-6" | "table-8" | "table-5";
+// 	roomId: string;
+// 	vendorId?: string; // If a vendor is assigned to the table
+// };
+export interface Table {
 	id: string;
 	type: "table-6" | "table-8" | "table-5";
+	details?: string;
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
-};
+}

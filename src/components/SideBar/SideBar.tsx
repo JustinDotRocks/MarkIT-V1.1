@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SideBarProps, Feature, Room, Vendor } from "../../Types";
+import { SideBarProps, Feature, Room, Vendor, Table } from "../../Types";
 import FeatureInputButtonPair from "../FeatureInputButtonPair";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
@@ -14,6 +14,7 @@ import {
 const SideBar: React.FC<SideBarProps> = ({
 	activeMode,
 	addObject,
+	addTable,
 	rooms,
 	setRooms,
 	vendors,
@@ -27,15 +28,17 @@ const SideBar: React.FC<SideBarProps> = ({
 	const [roomWidth, setRoomWidth] = useState("");
 	const [roomDepth, setRoomDepth] = useState("");
 
+	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+
 	const [doorQuantity, setDoorQuantity] = useState(0);
 	const [obstacleQuantity, setObstacleQuantity] = useState(0);
+
 	const [table6Quantity, setTable6Quantity] = useState(0);
 	const [table8Quantity, setTable8Quantity] = useState(0);
 	const [table5Quantity, setTable5Quantity] = useState(0);
 
 	const [vendorName, setVendorName] = useState("");
 	const [vendorProducts, setVendorProducts] = useState("");
-	// const [vendorDetails, setVendorDetails] = useState("");
 	const [vendorDetails, setVendorDetails] = useState<Vendor>({
 		id: "",
 		name: "",
@@ -116,23 +119,6 @@ const SideBar: React.FC<SideBarProps> = ({
 		}
 	};
 
-	// const handleVendorDetailsChange = (
-	// 	e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	// ) => {
-	// 	const { name, value, type } = e.target;
-	// 	if (type === "checkbox") {
-	// 		const checked = (e.target as HTMLInputElement).checked;
-	// 		setVendorDetails((prev: Vendor) => ({
-	// 			...prev,
-	// 			[name]: checked,
-	// 		}));
-	// 	} else {
-	// 		setVendorDetails((prev: Vendor) => ({
-	// 			...prev,
-	// 			[name]: value,
-	// 		}));
-	// 	}
-	// };
 	const handleVendorDetailsChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -195,10 +181,20 @@ const SideBar: React.FC<SideBarProps> = ({
 		});
 	};
 
-	const addFeature = (
-		type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
-		quantity: number
-	) => {
+	// const addFeature = (
+	// 	type: "door" | "obstacle" | "table-6" | "table-8" | "table-5",
+	// 	quantity: number
+	// ) => {
+	// 	for (let i = 0; i < quantity; i++) {
+	// 		const id = uuidv4();
+	// 		const newFeature: Feature = { id, type };
+	// 		setFeatures((prevFeatures: Feature[]) => [
+	// 			...prevFeatures,
+	// 			newFeature,
+	// 		]);
+	// 	}
+	// };
+	const addFeature = (type: "door" | "obstacle", quantity: number) => {
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
 			const newFeature: Feature = { id, type };
@@ -206,6 +202,22 @@ const SideBar: React.FC<SideBarProps> = ({
 				...prevFeatures,
 				newFeature,
 			]);
+		}
+	};
+
+	const addTableWithRoom = (
+		type: "table-6" | "table-8" | "table-5",
+		quantity: number
+	) => {
+		if (!selectedRoomId) {
+			alert("Please select a room first.");
+			return;
+		}
+
+		for (let i = 0; i < quantity; i++) {
+			const id = uuidv4();
+			const newTable: Table = { id, type, roomId: selectedRoomId };
+			setTables((prevTables: Table[]) => [...prevTables, newTable]);
 		}
 	};
 
@@ -253,6 +265,25 @@ const SideBar: React.FC<SideBarProps> = ({
 						/>
 					</div>
 
+					<h2 className="text-lg font-bold">Select Room</h2>
+					{/* Room Selection Dropdown */}
+					<select
+						value={selectedRoomId || ""}
+						onChange={(e) =>
+							setSelectedRoomId(e.target.value)
+						}
+						className="w-full p-2 rounded bg-gray-700 text-white"
+					>
+						<option value="" disabled>
+							Select a room
+						</option>
+						{rooms.map((room) => (
+							<option key={room.id} value={room.id}>
+								{room.name}
+							</option>
+						))}
+					</select>
+
 					<h2 className="text-lg font-bold">
 						Add Features
 					</h2>
@@ -299,7 +330,7 @@ const SideBar: React.FC<SideBarProps> = ({
 							inputPlaceholder="Qty"
 							featureType="table-6"
 							buttonOnClick={() =>
-								addFeature(
+								addTableWithRoom(
 									"table-6",
 									table6Quantity
 								)
@@ -315,7 +346,7 @@ const SideBar: React.FC<SideBarProps> = ({
 							inputPlaceholder="Qty"
 							featureType="table-8"
 							buttonOnClick={() =>
-								addFeature(
+								addTableWithRoom(
 									"table-8",
 									table8Quantity
 								)
@@ -331,7 +362,7 @@ const SideBar: React.FC<SideBarProps> = ({
 							inputPlaceholder="Qty"
 							featureType="table-5"
 							buttonOnClick={() =>
-								addFeature(
+								addTableWithRoom(
 									"table-5",
 									table5Quantity
 								)
