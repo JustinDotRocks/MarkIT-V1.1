@@ -46,7 +46,7 @@ const SideBar: React.FC<SideBarProps> = ({
 		name: "",
 		products: "",
 		details: "",
-		tableId: "",
+		// tableId: "",
 		roomName: "",
 		signedIn: false,
 		electricityRequired: false,
@@ -163,7 +163,7 @@ const SideBar: React.FC<SideBarProps> = ({
 			name: vendorName,
 			products: vendorProducts,
 			details: vendorDetails.details,
-			tableId: "",
+			// tableId: "",
 			roomName: "",
 			signedIn: false,
 			electricityRequired: false,
@@ -176,7 +176,7 @@ const SideBar: React.FC<SideBarProps> = ({
 			name: "",
 			products: "",
 			details: "",
-			tableId: "",
+			// tableId: "",
 			roomName: "",
 			signedIn: false,
 			electricityRequired: false,
@@ -213,6 +213,21 @@ const SideBar: React.FC<SideBarProps> = ({
 		}
 	};
 
+	// const addTableWithRoom = (
+	// 	type: "table-6" | "table-8" | "table-5",
+	// 	quantity: number
+	// ) => {
+	// 	if (!selectedRoomId) {
+	// 		alert("Please select a room first.");
+	// 		return;
+	// 	}
+
+	// 	for (let i = 0; i < quantity; i++) {
+	// 		const id = uuidv4();
+	// 		const newTable: Table = { id, type, roomId: selectedRoomId };
+	// 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	// 	}
+	// };
 	const addTableWithRoom = (
 		type: "table-6" | "table-8" | "table-5",
 		quantity: number
@@ -222,11 +237,38 @@ const SideBar: React.FC<SideBarProps> = ({
 			return;
 		}
 
+		// Find the name of the selected room
+		const roomName =
+			rooms.find((room) => room.id === selectedRoomId)?.name ||
+			"Unknown Room";
+
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
-			const newTable: Table = { id, type, roomId: selectedRoomId };
+			const tableNumber = `Table-${id.substring(0, 6)}`; // Generate a unique table number, e.g., Table-123abc
+
+			const newTable: Table = {
+				id,
+				type,
+				roomId: selectedRoomId,
+				tableNumber,
+				roomName,
+			};
+
 			setTables((prevTables: Table[]) => [...prevTables, newTable]);
 		}
+	};
+
+	const updateTableAssignment = (tableId: string, vendorId: string) => {
+		// Update the selected table to have the new vendorId
+		setTables((prevTables) =>
+			prevTables.map((table) =>
+				table.id === tableId
+					? { ...table, vendorId }
+					: table.vendorId === vendorId
+					? { ...table, vendorId: undefined }
+					: table
+			)
+		);
 	};
 
 	return (
@@ -416,7 +458,8 @@ const SideBar: React.FC<SideBarProps> = ({
 					/>
 					{/* Render Vendor Cards */}
 					<div className="mt-4 space-y-4">
-						{vendors.map((vendor) => (
+						{/* {vendors.map((vendor) => (
+							
 							<VendorCard
 								key={vendor.id}
 								id={vendor.id}
@@ -428,7 +471,47 @@ const SideBar: React.FC<SideBarProps> = ({
 								signedIn={false}
 								electricityRequired={false}
 							/>
-						))}
+						))} */}
+						{vendors.map((vendor) => {
+							const associatedTable = tables.find(
+								(table) =>
+									table.vendorId ===
+									vendor.id
+							);
+
+							return (
+								<VendorCard
+									key={vendor.id}
+									id={vendor.id}
+									vendorName={vendor.name}
+									vendorProducts={
+										vendor.products
+									}
+									vendorDetails={
+										vendor.details
+									}
+									tableNumber={
+										associatedTable
+											? associatedTable.id
+											: ""
+									}
+									roomName="" // Optional: Could be set if needed
+									signedIn={vendor.signedIn}
+									electricityRequired={
+										vendor.electricityRequired
+									}
+									tables={tables.filter(
+										(table) =>
+											!table.vendorId ||
+											table.vendorId ===
+												vendor.id
+									)}
+									updateTableAssignment={
+										updateTableAssignment
+									}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			)}

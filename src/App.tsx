@@ -68,18 +68,46 @@ const App: React.FC = () => {
 	};
 
 	// Add tables to the canvas
+	// const addTableToCanvas = (
+	// 	type: "table-6" | "table-8" | "table-5",
+	// 	id: string,
+	// 	// roomId: string,
+	// 	details?: string
+	// ) => {
+	// 	const newTable: Table = {
+	// 		id,
+	// 		type,
+	// 		details,
+	// 		roomId: selectedRoomId || "",
+	// 	};
+	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	// };
 	const addTableToCanvas = (
 		type: "table-6" | "table-8" | "table-5",
 		id: string,
-		// roomId: string,
 		details?: string
 	) => {
+		if (!selectedRoomId) {
+			alert("Please select a room first.");
+			return;
+		}
+
+		// Find the name of the selected room
+		const roomName =
+			rooms.find((room) => room.id === selectedRoomId)?.name ||
+			"Unknown Room";
+		// Generate a table number, using a portion of the UUID or any other method you prefer
+		const tableNumber = `Table-${id.substring(0, 6)}`;
+
 		const newTable: Table = {
 			id,
 			type,
 			details,
-			roomId: selectedRoomId || "",
+			roomId: selectedRoomId,
+			tableNumber,
+			roomName,
 		};
+
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
 	};
 

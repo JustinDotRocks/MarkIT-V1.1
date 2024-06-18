@@ -113,7 +113,7 @@ export interface Vendor {
 	name: string;
 	products: string;
 	details: string;
-	tableId: string;
+	// tableId: string;
 	roomName: string;
 	signedIn: boolean;
 	electricityRequired: boolean;
@@ -138,4 +138,11 @@ export interface Table {
 	details?: string;
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
+	tableNumber: string;
+	roomName: string;
+}
+
+export interface VendorCardProps extends VendorDetails {
+	tables: Table[];
+	updateTableAssignment: (tableId: string, vendorId: string) => void;
 }

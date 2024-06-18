@@ -31,6 +31,11 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 		return details ? `${label}: ${details}` : label;
 	};
 
+	const getRoomName = (roomId: string) => {
+		const room = rooms.find((room) => room.id === roomId);
+		return room ? room.name : "Unknown Room";
+	};
+
 	const filteredObjects = objects.filter(
 		(obj) => obj.roomId === selectedRoomId
 	);
@@ -71,7 +76,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 					</div>
 				</div>
 			))}
-			{filteredTables.map((table) => (
+			{/* {filteredTables.map((table) => (
 				<div
 					key={table.id}
 					className="inline-block p-2 m-1 border border-gray-500 rounded bg-lightgreen"
@@ -86,7 +91,31 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 						</button>
 					</div>
 				</div>
-			))}
+			))} */}
+			{tables
+				.filter((table) => table.roomId === selectedRoomId)
+				.map((table) => (
+					<div
+						key={table.id}
+						className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
+					>
+						<div className="flex justify-between items-center">
+							<span>
+								Table Number:{" "}
+								{table.tableNumber} - Room:{" "}
+								{getRoomName(table.roomId)}
+							</span>
+							<button
+								onClick={() =>
+									removeObject(table.id)
+								}
+								className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				))}
 		</div>
 	);
 };
