@@ -213,21 +213,6 @@ const SideBar: React.FC<SideBarProps> = ({
 		}
 	};
 
-	// const addTableWithRoom = (
-	// 	type: "table-6" | "table-8" | "table-5",
-	// 	quantity: number
-	// ) => {
-	// 	if (!selectedRoomId) {
-	// 		alert("Please select a room first.");
-	// 		return;
-	// 	}
-
-	// 	for (let i = 0; i < quantity; i++) {
-	// 		const id = uuidv4();
-	// 		const newTable: Table = { id, type, roomId: selectedRoomId };
-	// 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
-	// 	}
-	// };
 	const addTableWithRoom = (
 		type: "table-6" | "table-8" | "table-5",
 		quantity: number
@@ -237,6 +222,12 @@ const SideBar: React.FC<SideBarProps> = ({
 			return;
 		}
 
+		// Get the next table number for the selected room
+		const existingTables = tables.filter(
+			(table) => table.roomId === selectedRoomId
+		);
+		let nextTableNumber = existingTables.length + 1;
+
 		// Find the name of the selected room
 		const roomName =
 			rooms.find((room) => room.id === selectedRoomId)?.name ||
@@ -244,17 +235,18 @@ const SideBar: React.FC<SideBarProps> = ({
 
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
-			const tableNumber = `Table-${id.substring(0, 6)}`; // Generate a unique table number, e.g., Table-123abc
+			// const tableNumber = `Table-${id.substring(0, 6)}`; // Generate a unique table number, e.g., Table-123abc
 
 			const newTable: Table = {
 				id,
 				type,
 				roomId: selectedRoomId,
-				tableNumber,
+				tableNumber: nextTableNumber + 1,
 				roomName,
 			};
 
 			setTables((prevTables: Table[]) => [...prevTables, newTable]);
+			nextTableNumber++; // Increment for the next table
 		}
 	};
 

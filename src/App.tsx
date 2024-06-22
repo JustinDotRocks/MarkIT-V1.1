@@ -82,29 +82,56 @@ const App: React.FC = () => {
 	// 	};
 	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
 	// };
+	// const addTableToCanvas = (
+	// 	type: "table-6" | "table-8" | "table-5",
+	// 	id: string,
+	// 	details?: string
+	// ) => {
+	// 	if (!selectedRoomId) {
+	// 		alert("Please select a room first.");
+	// 		return;
+	// 	}
+
+	// 	// Find the name of the selected room
+	// 	const roomName =
+	// 		rooms.find((room) => room.id === selectedRoomId)?.name ||
+	// 		"Unknown Room";
+	// 	// Generate a table number, using a portion of the UUID or any other method you prefer
+	// 	const tableNumber = `Table-${id.substring(0, 6)}`;
+
+	// 	const newTable: Table = {
+	// 		id,
+	// 		type,
+	// 		details,
+	// 		roomId: selectedRoomId,
+	// 		tableNumber,
+	// 		roomName,
+	// 	};
+
+	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	// };
 	const addTableToCanvas = (
 		type: "table-6" | "table-8" | "table-5",
 		id: string,
 		details?: string
 	) => {
-		if (!selectedRoomId) {
-			alert("Please select a room first.");
-			return;
-		}
+		// Get the next table number for the selected room
+		const existingTables = tables.filter(
+			(table) => table.roomId === selectedRoomId
+		);
+		const nextTableNumber = existingTables.length + 1;
 
 		// Find the name of the selected room
 		const roomName =
 			rooms.find((room) => room.id === selectedRoomId)?.name ||
 			"Unknown Room";
-		// Generate a table number, using a portion of the UUID or any other method you prefer
-		const tableNumber = `Table-${id.substring(0, 6)}`;
 
 		const newTable: Table = {
 			id,
 			type,
 			details,
-			roomId: selectedRoomId,
-			tableNumber,
+			roomId: selectedRoomId || "",
+			tableNumber: nextTableNumber, // Ensure this is a number
 			roomName,
 		};
 

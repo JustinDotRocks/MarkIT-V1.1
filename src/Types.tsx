@@ -138,7 +138,7 @@ export interface Table {
 	details?: string;
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
-	tableNumber: string;
+	tableNumber: number;
 	roomName: string;
 }
 

@@ -26,18 +26,21 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 	};
 
 	// Function to provide a display label for an object type, handling optional details
-	const getDisplayLabel = (type: string, details?: string): string => {
+	const getDisplayLabel = (type: string, tableNumber?: number): string => {
 		const label = displayNames[type] || type; // Get user-friendly name or default to type
-		return details ? `${label}: ${details}` : label;
+		// return details ? `${label}: ${details}` : label;
+		return tableNumber
+			? `Table Number - ${tableNumber} - ${label}`
+			: label;
 	};
 
-	const getRoomName = (roomId: string) => {
-		const room = rooms.find((room) => room.id === roomId);
-		return room ? room.name : "Unknown Room";
-	};
+	// const getRoomName = (roomId: string) => {
+	// 	const room = rooms.find((room) => room.id === roomId);
+	// 	return room ? room.name : "Unknown Room";
+	// };
 
-	const filteredObjects = objects.filter(
-		(obj) => obj.roomId === selectedRoomId
+	const filteredFeatures = objects.filter(
+		(feature) => feature.roomId === selectedRoomId
 	);
 	const filteredTables = tables.filter(
 		(table) => table.roomId === selectedRoomId
@@ -55,7 +58,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 					</div>
 				))}
 			</div>
-			{filteredObjects.map((obj) => (
+			{filteredFeatures.map((obj) => (
 				<div
 					key={obj.id}
 					className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
@@ -63,8 +66,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 					<div className="flex justify-between items-center">
 						<span>
 							{getDisplayLabel(
-								obj.type,
-								obj.details
+								obj.type
+								// obj.details
 							)}
 						</span>
 						<button
@@ -76,34 +79,26 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 					</div>
 				</div>
 			))}
-			{/* {filteredTables.map((table) => (
-				<div
-					key={table.id}
-					className="inline-block p-2 m-1 border border-gray-500 rounded bg-lightgreen"
-				>
-					<div className="flex justify-between items-center">
-						<span>{getDisplayLabel(table.type)}</span>
-						<button
-							onClick={() => removeObject(table.id)}
-							className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-						>
-							Delete
-						</button>
-					</div>
-				</div>
-			))} */}
-			{tables
-				.filter((table) => table.roomId === selectedRoomId)
+
+			{filteredTables
+				// .filter((table) => table.roomId === selectedRoomId)
 				.map((table) => (
 					<div
 						key={table.id}
 						className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
 					>
 						<div className="flex justify-between items-center">
-							<span>
+							{/* <span>
 								Table Number:{" "}
 								{table.tableNumber} - Room:{" "}
 								{getRoomName(table.roomId)}
+							</span> */}
+							<span>
+								{/* {`Table Number: ${table.tableNumber}`} */}
+								{getDisplayLabel(
+									table.type,
+									table.tableNumber
+								)}
 							</span>
 							<button
 								onClick={() =>
