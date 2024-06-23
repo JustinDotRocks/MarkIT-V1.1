@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
 import CanvasArea from "./components/CanvasArea/CanvasArea";
-import { Feature, Room, Vendor, Table } from "./Types";
+import { Feature, Room, Vendor, Table, RoomFeature, RoomTable } from "./Types";
 import {
 	saveToLocalStorage,
 	loadFromLocalStorage,
 	getStorageKeys,
 } from "./Storage";
+import { v4 as uuidv4 } from "uuid";
 
 const App: React.FC = () => {
 	const [activeMode, setActiveMode] = useState<"setup" | "vendor" | "">(
@@ -30,6 +31,21 @@ const App: React.FC = () => {
 
 	const [tables, setTables] = useState<Table[]>(
 		() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
+	);
+
+	// ADDED: State for intersection objects
+	const [roomFeatures, setRoomFeatures] = useState<RoomFeature[]>(
+		() =>
+			loadFromLocalStorage<RoomFeature[]>(
+				getStorageKeys().ROOM_FEATURES
+			) || []
+	);
+
+	const [roomTables, setRoomTables] = useState<RoomTable[]>(
+		() =>
+			loadFromLocalStorage<RoomTable[]>(
+				getStorageKeys().ROOM_TABLES
+			) || []
 	);
 
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
@@ -61,6 +77,15 @@ const App: React.FC = () => {
 		saveToLocalStorage(getStorageKeys().TABLES, tables);
 	}, [tables]);
 
+	// ADDED: Save roomFeatures and roomTables to local storage
+	useEffect(() => {
+		saveToLocalStorage(getStorageKeys().ROOM_FEATURES, roomFeatures);
+	}, [roomFeatures]);
+
+	useEffect(() => {
+		saveToLocalStorage(getStorageKeys().ROOM_TABLES, roomTables);
+	}, [roomTables]);
+
 	const addObjectToCanvas = (
 		type: "door" | "obstacle",
 		id: string,
@@ -76,6 +101,19 @@ const App: React.FC = () => {
 			...prevFeatures,
 			newFeature,
 		]);
+
+		// ADDED: Add the feature to the roomFeatures intersection object
+		if (selectedRoomId) {
+			const newRoomFeature: RoomFeature = {
+				id: uuidv4(),
+				roomId: selectedRoomId,
+				featureId: newFeature.id,
+			};
+			setRoomFeatures((prevRoomFeatures: RoomFeature[]) => [
+				...prevRoomFeatures,
+				newRoomFeature,
+			]);
+		}
 	};
 
 	const addTableToCanvas = (
@@ -104,6 +142,19 @@ const App: React.FC = () => {
 		};
 
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+
+		// ADDED: Add the table to the roomTables intersection object
+		if (selectedRoomId) {
+			const newRoomTable: RoomTable = {
+				id: uuidv4(),
+				roomId: selectedRoomId,
+				tableId: newTable.id,
+			};
+			setRoomTables((prevRoomTables: RoomTable[]) => [
+				...prevRoomTables,
+				newRoomTable,
+			]);
+		}
 	};
 
 	const removeObjectFromCanvas = (id: string) => {
@@ -136,6 +187,10 @@ const App: React.FC = () => {
 					setTables={setTables}
 					selectedRoomId={selectedRoomId}
 					setSelectedRoomId={setSelectedRoomId}
+					roomFeatures={roomFeatures} // ADDED
+					setRoomFeatures={setRoomFeatures} // ADDED
+					roomTables={roomTables} // ADDED
+					setRoomTables={setRoomTables} // ADDED
 				/>
 				<CanvasArea
 					objects={features}

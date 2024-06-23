@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { SideBarProps, Feature, Room, Vendor, Table } from "../../Types";
+import {
+	SideBarProps,
+	Feature,
+	Room,
+	Vendor,
+	Table,
+	RoomFeature,
+	RoomTable,
+} from "../../Types";
 import FeatureInputButtonPair from "../FeatureInputButtonPair";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
@@ -25,6 +33,10 @@ const SideBar: React.FC<SideBarProps> = ({
 	setTables,
 	selectedRoomId,
 	setSelectedRoomId,
+	roomFeatures,
+	setRoomFeatures,
+	roomTables,
+	setRoomTables,
 }) => {
 	const [roomName, setRoomName] = useState("");
 	const [roomWidth, setRoomWidth] = useState("");
@@ -183,16 +195,6 @@ const SideBar: React.FC<SideBarProps> = ({
 		});
 	};
 
-	// const addFeature = (type: "door" | "obstacle", quantity: number) => {
-	// 	for (let i = 0; i < quantity; i++) {
-	// 		const id = uuidv4();
-	// 		const newFeature: Feature = { id, type };
-	// 		setFeatures((prevFeatures: Feature[]) => [
-	// 			...prevFeatures,
-	// 			newFeature,
-	// 		]);
-	// 	}
-	// };
 	const addFeature = (type: "door" | "obstacle", quantity: number) => {
 		if (!selectedRoomId) {
 			alert("Please select a room first.");
@@ -209,6 +211,17 @@ const SideBar: React.FC<SideBarProps> = ({
 			setFeatures((prevFeatures: Feature[]) => [
 				...prevFeatures,
 				newFeature,
+			]);
+
+			// ADDED: Add the feature to the roomFeatures intersection object
+			const newRoomFeature: RoomFeature = {
+				id: uuidv4(),
+				roomId: selectedRoomId,
+				featureId: newFeature.id,
+			};
+			setRoomFeatures((prevRoomFeatures: RoomFeature[]) => [
+				...prevRoomFeatures,
+				newRoomFeature,
 			]);
 		}
 	};
@@ -247,6 +260,17 @@ const SideBar: React.FC<SideBarProps> = ({
 
 			setTables((prevTables: Table[]) => [...prevTables, newTable]);
 			nextTableNumber++; // Increment for the next table
+
+			// ADDED: Add the table to the roomTables intersection object
+			const newRoomTable: RoomTable = {
+				id: uuidv4(),
+				roomId: selectedRoomId,
+				tableId: newTable.id,
+			};
+			setRoomTables((prevRoomTables: RoomTable[]) => [
+				...prevRoomTables,
+				newRoomTable,
+			]);
 		}
 	};
 
@@ -450,20 +474,6 @@ const SideBar: React.FC<SideBarProps> = ({
 					/>
 					{/* Render Vendor Cards */}
 					<div className="mt-4 space-y-4">
-						{/* {vendors.map((vendor) => (
-							
-							<VendorCard
-								key={vendor.id}
-								id={vendor.id}
-								vendorName={vendor.name}
-								vendorProducts={vendor.products}
-								vendorDetails={vendor.details}
-								tableNumber={vendor.tableId}
-								roomName=""
-								signedIn={false}
-								electricityRequired={false}
-							/>
-						))} */}
 						{vendors.map((vendor) => {
 							const associatedTable = tables.find(
 								(table) =>

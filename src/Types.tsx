@@ -30,17 +30,8 @@ export interface FeatureInputButtonPairProps {
 	containerClassName?: string;
 }
 
-// export type SideBarProps = {
-// 	activeMode: "setup" | "vendor" | "";
-// 	addObject: (type: string, id: string, details?: string) => void;
-// };
 export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
-	// addObject: (
-	// 	type: "door" | "obstacle",
-	// 	id: string,
-	// 	details?: string
-	// ) => void;
 	addObject: (
 		type: "door" | "obstacle",
 		id: string,
@@ -59,8 +50,12 @@ export interface SideBarProps {
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
 	tables: Table[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
-	selectedRoomId: string | null; // Update to include selectedRoomId
+	selectedRoomId: string | null;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	roomFeatures: RoomFeature[];
+	setRoomFeatures: React.Dispatch<React.SetStateAction<RoomFeature[]>>;
+	roomTables: RoomTable[];
+	setRoomTables: React.Dispatch<React.SetStateAction<RoomTable[]>>;
 }
 
 export type CanvasObject = {
@@ -70,7 +65,6 @@ export type CanvasObject = {
 };
 
 export interface CanvasAreaProps {
-	// objects: CanvasObject[];
 	objects: Feature[];
 	tables: Table[];
 	rooms: Room[];
@@ -126,12 +120,6 @@ export type Feature = {
 	roomId?: string; // Stationary features can be associated with a room
 };
 
-// export type Table = {
-// 	id: string;
-// 	type: "table-6" | "table-8" | "table-5";
-// 	roomId: string;
-// 	vendorId?: string; // If a vendor is assigned to the table
-// };
 export interface Table {
 	id: string;
 	type: "table-6" | "table-8" | "table-5";
@@ -145,4 +133,17 @@ export interface Table {
 export interface VendorCardProps extends VendorDetails {
 	tables: Table[];
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
+}
+
+// Intersection objects for rooms and features, and rooms and tables
+export interface RoomFeature {
+	id: string;
+	roomId: string;
+	featureId: string;
+}
+
+export interface RoomTable {
+	id: string;
+	roomId: string;
+	tableId: string;
 }

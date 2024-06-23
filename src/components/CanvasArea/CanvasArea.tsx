@@ -14,6 +14,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 	removeObject,
 	rooms,
 	tables,
+
 	selectedRoomId,
 }) => {
 	// Dictionary to map internal type names to display labels
