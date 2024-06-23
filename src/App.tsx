@@ -34,6 +34,17 @@ const App: React.FC = () => {
 
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
 
+	// Cleanup tables state to remove incomplete entries
+	useEffect(() => {
+		const cleanedTables = tables.filter(
+			(table) =>
+				table.tableNumber !== undefined &&
+				table.roomName !== undefined
+		);
+		setTables(cleanedTables);
+		saveToLocalStorage(getStorageKeys().TABLES, cleanedTables);
+	}, [tables]);
+
 	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().FEATURES, features);
 	}, [features]);
@@ -67,49 +78,6 @@ const App: React.FC = () => {
 		]);
 	};
 
-	// Add tables to the canvas
-	// const addTableToCanvas = (
-	// 	type: "table-6" | "table-8" | "table-5",
-	// 	id: string,
-	// 	// roomId: string,
-	// 	details?: string
-	// ) => {
-	// 	const newTable: Table = {
-	// 		id,
-	// 		type,
-	// 		details,
-	// 		roomId: selectedRoomId || "",
-	// 	};
-	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
-	// };
-	// const addTableToCanvas = (
-	// 	type: "table-6" | "table-8" | "table-5",
-	// 	id: string,
-	// 	details?: string
-	// ) => {
-	// 	if (!selectedRoomId) {
-	// 		alert("Please select a room first.");
-	// 		return;
-	// 	}
-
-	// 	// Find the name of the selected room
-	// 	const roomName =
-	// 		rooms.find((room) => room.id === selectedRoomId)?.name ||
-	// 		"Unknown Room";
-	// 	// Generate a table number, using a portion of the UUID or any other method you prefer
-	// 	const tableNumber = `Table-${id.substring(0, 6)}`;
-
-	// 	const newTable: Table = {
-	// 		id,
-	// 		type,
-	// 		details,
-	// 		roomId: selectedRoomId,
-	// 		tableNumber,
-	// 		roomName,
-	// 	};
-
-	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
-	// };
 	const addTableToCanvas = (
 		type: "table-6" | "table-8" | "table-5",
 		id: string,

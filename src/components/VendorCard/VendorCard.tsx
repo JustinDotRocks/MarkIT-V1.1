@@ -24,6 +24,13 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		return `Table Number - ${table.tableNumber} - ${tableTypeLabel} - Room: ${table.roomName}`;
 	};
 
+	//  Filter out incomplete tables
+	const validTables = tables.filter(
+		(table) =>
+			table.tableNumber !== undefined &&
+			table.roomName !== undefined
+	);
+
 	return (
 		<div className="card-container bg-gray-700 rounded-lg shadow-md p-4 m-4">
 			<div>Vendor Name: {vendorName}</div>
@@ -49,7 +56,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					className="bg-gray-600 text-white p-2 rounded w-full max-w-full box-border overflow-hidden"
 				>
 					<option value="">Select a table</option>
-					{tables.map((table) => (
+					{validTables.map((table) => (
 						<option key={table.id} value={table.id}>
 							{/* {`Table Number: ${table.tableNumber}`}
 							- Room: {table.roomName} */}
