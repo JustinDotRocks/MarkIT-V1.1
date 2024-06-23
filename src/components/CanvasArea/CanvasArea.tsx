@@ -48,8 +48,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 	);
 
 	return (
-		<div className="flex-grow overflow-y-auto p-2">
-			<div className="canvas-area">
+		<div className="flex-grow overflow-y-auto p-2 h-96">
+			<div className="canvas-area ">
 				{rooms.map((room) => (
 					<div key={room.id} className="room">
 						<h3>{room.name}</h3>
