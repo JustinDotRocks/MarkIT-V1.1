@@ -12,6 +12,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	electricityRequired,
 	tables,
 	updateTableAssignment,
+	deleteVendor,
 }) => {
 	// Function to provide a display label for a table
 	const getTableLabel = (table: Table): string => {
@@ -40,7 +41,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			<div>Room Name: {roomName}</div> */}
 			<div>Signed In: {signedIn ? "Yes" : "No"}</div>
 			<div>
-				Electricity Required:{" "}
+				Electricity Required:
 				{electricityRequired ? "Yes" : "No"}
 			</div>
 
@@ -65,6 +66,13 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					))}
 				</select>
 			</div>
+			{/* ADDED: Delete Vendor Button */}
+			<button
+				onClick={() => deleteVendor(id)}
+				className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+			>
+				Delete Vendor
+			</button>
 		</div>
 	);
 };

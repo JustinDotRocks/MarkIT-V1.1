@@ -178,7 +178,8 @@ const SideBar: React.FC<SideBarProps> = ({
 			// tableId: "",
 			roomName: "",
 			signedIn: false,
-			electricityRequired: false,
+			// electricityRequired: false,
+			electricityRequired: vendorDetails.electricityRequired,
 		};
 		setVendors((prevVendors: Vendor[]) => [...prevVendors, newVendor]);
 		setVendorName("");
@@ -239,6 +240,7 @@ const SideBar: React.FC<SideBarProps> = ({
 		const existingTables = tables.filter(
 			(table) => table.roomId === selectedRoomId
 		);
+
 		let nextTableNumber = existingTables.length + 1;
 
 		// Find the name of the selected room
@@ -254,7 +256,7 @@ const SideBar: React.FC<SideBarProps> = ({
 				id,
 				type,
 				roomId: selectedRoomId,
-				tableNumber: nextTableNumber + 1,
+				tableNumber: nextTableNumber,
 				roomName,
 			};
 
@@ -281,6 +283,23 @@ const SideBar: React.FC<SideBarProps> = ({
 				table.id === tableId
 					? { ...table, vendorId }
 					: table.vendorId === vendorId
+					? { ...table, vendorId: undefined }
+					: table
+			)
+		);
+	};
+
+	// ADDED: Function to handle vendor deletion
+	const deleteVendor = (vendorId: string) => {
+		// Remove vendor from the list
+		setVendors((prevVendors) =>
+			prevVendors.filter((vendor) => vendor.id !== vendorId)
+		);
+
+		// Unassign any tables associated with this vendor
+		setTables((prevTables) =>
+			prevTables.map((table) =>
+				table.vendorId === vendorId
 					? { ...table, vendorId: undefined }
 					: table
 			)
@@ -472,6 +491,33 @@ const SideBar: React.FC<SideBarProps> = ({
 						className="w-full p-2 rounded bg-gray-700 text-white"
 						rows={3}
 					/>
+
+					{/* ADDED: Checkbox for electricity requirement */}
+					<div className="flex items-center mt-2">
+						<label
+							className="mr-2 ml-2 text-gray-200"
+							htmlFor="vendor-electricity-required"
+						>
+							Electricity Required
+						</label>
+						<input
+							type="checkbox"
+							id="vendor-electricity-required"
+							name="vendor-electricity-required"
+							checked={
+								vendorDetails.electricityRequired
+							}
+							onChange={(e) =>
+								setVendorDetails((prev) => ({
+									...prev,
+									electricityRequired:
+										e.target.checked,
+								}))
+							}
+							className="form-checkbox h-5 w-5 text-blue-600"
+						/>
+					</div>
+
 					{/* Render Vendor Cards */}
 					<div className="mt-4 space-y-4">
 						{vendors.map((vendor) => {
@@ -511,6 +557,9 @@ const SideBar: React.FC<SideBarProps> = ({
 									updateTableAssignment={
 										updateTableAssignment
 									}
+									deleteVendor={
+										deleteVendor
+									} // ADDED: Pass deleteVendor to VendorCard
 								/>
 							);
 						})}

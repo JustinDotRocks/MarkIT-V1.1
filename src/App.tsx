@@ -50,41 +50,27 @@ const App: React.FC = () => {
 
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
 
-	// Cleanup tables state to remove incomplete entries
-	useEffect(() => {
-		const cleanedTables = tables.filter(
-			(table) =>
-				table.tableNumber !== undefined &&
-				table.roomName !== undefined
-		);
-		setTables(cleanedTables);
-		saveToLocalStorage(getStorageKeys().TABLES, cleanedTables);
-	}, [tables]);
+	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries
+	// useEffect(() => {
+	// 	const cleanedTables = tables.filter(
+	// 		(table) =>
+	// 			table.tableNumber !== undefined &&
+	// 			table.roomName !== undefined
+	// 	);
+	// 	setTables(cleanedTables);
+	// 	saveToLocalStorage(getStorageKeys().TABLES, cleanedTables);
+	// }, [tables]);
 
+	// COMBINED: Single useEffect for saving state to localStorage
 	useEffect(() => {
+		// Save all state to localStorage in one effect
 		saveToLocalStorage(getStorageKeys().FEATURES, features);
-	}, [features]);
-
-	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().ROOMS, rooms);
-	}, [rooms]);
-
-	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().VENDORS, vendors);
-	}, [vendors]);
-
-	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().TABLES, tables);
-	}, [tables]);
-
-	// ADDED: Save roomFeatures and roomTables to local storage
-	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().ROOM_FEATURES, roomFeatures);
-	}, [roomFeatures]);
-
-	useEffect(() => {
 		saveToLocalStorage(getStorageKeys().ROOM_TABLES, roomTables);
-	}, [roomTables]);
+	}, [features, rooms, vendors, tables, roomFeatures, roomTables]);
 
 	const addObjectToCanvas = (
 		type: "door" | "obstacle",

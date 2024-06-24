@@ -133,6 +133,7 @@ export interface Table {
 export interface VendorCardProps extends VendorDetails {
 	tables: Table[];
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
+	deleteVendor: (vendorId: string) => void; // ADDED: Add deleteVendor function to the props
 }
 
 // Intersection objects for rooms and features, and rooms and tables
