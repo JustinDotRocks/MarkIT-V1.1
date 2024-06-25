@@ -11,17 +11,14 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	signedIn,
 	electricityRequired,
 	tables,
+	rooms,
 	updateTableAssignment,
 	deleteVendor,
 	updateVendorDetails,
 }) => {
 	// ADD: State to toggle edit mode
 	const [isEditing, setIsEditing] = useState(false);
-	// const [editedVendorName, setEditedVendorName] = useState(vendorName);
-	// const [editedVendorProducts, setEditedVendorProducts] = useState(vendorProducts);
-	// const [editedVendorDetails, setEditedVendorDetails] = useState(vendorDetails);
-	// const [editedSignedIn, setEditedSignedIn] = useState(signedIn);
-	// const [editedElectricityRequired, setEditedElectricityRequired] = useState(electricityRequired);
+
 	const [editableVendor, setEditableVendor] = useState({
 		id,
 		name: vendorName,
@@ -29,8 +26,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		details: vendorDetails,
 		signedIn,
 		electricityRequired,
-		roomName: roomName,
+		roomName,
 	});
+	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(
+		roomName
+	);
 
 	// Function to provide a display label for a table
 	const getTableLabel = (table: Table): string => {
@@ -40,33 +40,17 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			"table-5": "5' Round Table",
 		};
 		const tableTypeLabel = tableTypeLabels[table.type] || table.type;
-		return `Table Number - ${table.tableNumber} - ${tableTypeLabel} - Room: ${table.roomName}`;
+		return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
 	};
 
 	//  Filter out incomplete tables
 	const validTables = tables.filter(
 		(table) =>
 			table.tableNumber !== undefined &&
-			table.roomName !== undefined
+			table.roomName !== undefined &&
+			(!selectedRoomId || table.roomId === selectedRoomId)
 	);
 
-	// const handleSave = () => {
-	// 	// Update the vendor details in the state
-	// 	const updatedVendor: VendorDetails = {
-	// 	  id,
-	// 	  vendorName: editedVendorName,
-	// 	  vendorProducts: editedVendorProducts,
-	// 	  vendorDetails: editedVendorDetails,
-	// 	  tableNumber,
-	// 	  roomName,
-	// 	  signedIn: editedSignedIn,
-	// 	  electricityRequired: editedElectricityRequired,
-	// 	};
-
-	// 	// Implement a function to update the vendor in state and local storage
-	// 	updateVendorDetails(updatedVendor);
-	// 	setIsEditing(false);
-	//   };
 	const handleSave = () => {
 		// **ADDED: Call updateVendorDetails with the updated vendor details**
 		updateVendorDetails(editableVendor);
@@ -74,59 +58,28 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	};
 
 	const handleInputChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+		e: React.ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
 	) => {
 		const { name, value, type } = e.target;
 		const isChecked = (e.target as HTMLInputElement).checked;
-		setEditableVendor((prev) => ({
-			...prev,
-			[name]: type === "checkbox" ? isChecked : value,
-		}));
+
+		if (name === "selectedRoomId") {
+			setSelectedRoomId(value);
+			const selectedRoom = rooms.find((room) => room.id === value);
+			setEditableVendor((prev) => ({
+				...prev,
+				roomName: selectedRoom ? selectedRoom.name : "",
+			}));
+			updateTableAssignment("", id); // Reset table selection when room changes
+		} else {
+			setEditableVendor((prev) => ({
+				...prev,
+				[name]: type === "checkbox" ? isChecked : value,
+			}));
+		}
 	};
-
-	// return (
-	// 	<div className="card-container bg-gray-700 rounded-lg shadow-md p-4 m-4">
-	// 		<div>Vendor Name: {vendorName}</div>
-	// 		<div>Products: {vendorProducts}</div>
-	// 		<div>Vendor Details: {vendorDetails}</div>
-	// 		{/* <div>Table Number: {tableNumber}</div>
-	// 		<div>Room Name: {roomName}</div> */}
-	// 		<div>Signed In: {signedIn ? "Yes" : "No"}</div>
-	// 		<div>
-	// 			Electricity Required:
-	// 			{electricityRequired ? "Yes" : "No"}
-	// 		</div>
-
-	// 		{/* Dropdown for assigning tables */}
-	// 		<div>
-	// 			<label htmlFor={`table-${id}`}>Assign Table:</label>
-	// 			<select
-	// 				id={`table-${id}`}
-	// 				value={tableNumber}
-	// 				onChange={(e) =>
-	// 					updateTableAssignment(e.target.value, id)
-	// 				}
-	// 				className="bg-gray-600 text-white p-2 rounded w-full max-w-full box-border overflow-hidden"
-	// 			>
-	// 				<option value="">Select a table</option>
-	// 				{validTables.map((table) => (
-	// 					<option key={table.id} value={table.id}>
-	// 						{/* {`Table Number: ${table.tableNumber}`}
-	// 						- Room: {table.roomName} */}
-	// 						{getTableLabel(table)}
-	// 					</option>
-	// 				))}
-	// 			</select>
-	// 		</div>
-	// 		{/* ADDED: Delete Vendor Button */}
-	// 		<button
-	// 			onClick={() => deleteVendor(id)}
-	// 			className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-	// 		>
-	// 			Delete Vendor
-	// 		</button>
-	// 	</div>
-	// );
 
 	return (
 		<div className="card-container bg-gray-700 rounded-lg shadow-md p-4 m-4">
@@ -190,6 +143,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							Electricity Required
 						</label>
 					</div>
+
 					<button
 						onClick={handleSave}
 						className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
@@ -213,6 +167,30 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
 					</div>
+					{/* <div>Room: {roomName}</div> */}
+					<div className="mb-2">
+						<label className="block text-white">
+							Select Room:
+						</label>
+						<select
+							name="selectedRoomId"
+							value={selectedRoomId || ""}
+							onChange={handleInputChange}
+							className="w-full p-2 rounded bg-gray-700 text-white"
+						>
+							<option value="">
+								Select a room
+							</option>
+							{rooms.map((room) => (
+								<option
+									key={room.id}
+									value={room.id}
+								>
+									{room.name}
+								</option>
+							))}
+						</select>
+					</div>
 					<div>
 						<label htmlFor={`table-${id}`}>
 							Assign Table:
@@ -227,6 +205,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 								)
 							}
 							className="bg-gray-600 text-white p-2 rounded w-full max-w-full box-border overflow-hidden"
+							disabled={!selectedRoomId}
 						>
 							<option value="">
 								Select a table

@@ -170,7 +170,7 @@ const App: React.FC = () => {
 				<SideBar
 					activeMode={activeMode}
 					addObject={addObjectToCanvas}
-					addTable={addTableToCanvas} // Pass addTable to SideBar for adding tables
+					addTable={addTableToCanvas}
 					rooms={rooms}
 					setRooms={setRooms}
 					vendors={vendors}
@@ -185,7 +185,7 @@ const App: React.FC = () => {
 					setRoomFeatures={setRoomFeatures}
 					roomTables={roomTables}
 					setRoomTables={setRoomTables}
-					updateVendorDetails={updateVendorDetails} // Pass updateVendorDetails
+					updateVendorDetails={updateVendorDetails}
 				/>
 				<CanvasArea
 					objects={features}

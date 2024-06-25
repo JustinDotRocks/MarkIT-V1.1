@@ -133,6 +133,7 @@ export interface Table {
 
 export interface VendorCardProps extends VendorDetails {
 	tables: Table[];
+	rooms: Room[];
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;

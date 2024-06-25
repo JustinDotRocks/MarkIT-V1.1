@@ -555,6 +555,7 @@ const SideBar: React.FC<SideBarProps> = ({
 											table.vendorId ===
 												vendor.id
 									)}
+									rooms={rooms}
 									updateTableAssignment={
 										updateTableAssignment
 									}
