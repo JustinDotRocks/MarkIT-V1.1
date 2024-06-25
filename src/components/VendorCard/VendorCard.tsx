@@ -78,6 +78,13 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				...prev,
 				[name]: type === "checkbox" ? isChecked : value,
 			}));
+			if (name === "signedIn") {
+				// **Directly update signedIn state**
+				updateVendorDetails({
+					...editableVendor,
+					[name]: isChecked,
+				});
+			}
 		}
 	};
 
@@ -115,7 +122,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							className="bg-gray-600 text-white p-2 rounded w-full"
 						/>
 					</div>
-					<div>
+					{/* <div>
 						<label>
 							<input
 								type="checkbox"
@@ -128,7 +135,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							/>
 							Signed In
 						</label>
-					</div>
+					</div> */}
 					<div>
 						<label>
 							<input
@@ -162,7 +169,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					<div>Vendor Name: {vendorName}</div>
 					<div>Products: {vendorProducts}</div>
 					<div>Vendor Details: {vendorDetails}</div>
-					<div>Signed In: {signedIn ? "Yes" : "No"}</div>
+					{/* <div>Signed In: {signedIn ? "Yes" : "No"}</div> */}
 					<div>
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
@@ -219,6 +226,30 @@ const VendorCard: React.FC<VendorCardProps> = ({
 								</option>
 							))}
 						</select>
+					</div>
+					{/* <div>
+						Signed In:{signedIn ? "Yes" : "No"}
+						<input
+							type="checkbox"
+							name="signedIn"
+							checked={editableVendor.signedIn}
+							onChange={handleInputChange}
+							className="form-checkbox h-5 w-5 text-blue-600 ml-2"
+						/>
+					</div> */}
+					<div>
+						<label>
+							Signed In: {signedIn ? "Yes" : "No"}
+							<input
+								type="checkbox"
+								name="signedIn"
+								checked={
+									editableVendor.signedIn
+								}
+								onChange={handleInputChange}
+								className="form-checkbox h-5 w-5 text-blue-600"
+							/>
+						</label>
 					</div>
 					<button
 						onClick={() => deleteVendor(id)}
