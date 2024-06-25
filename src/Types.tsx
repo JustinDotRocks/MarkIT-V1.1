@@ -56,6 +56,7 @@ export interface SideBarProps {
 	setRoomFeatures: React.Dispatch<React.SetStateAction<RoomFeature[]>>;
 	roomTables: RoomTable[];
 	setRoomTables: React.Dispatch<React.SetStateAction<RoomTable[]>>;
+	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
 export type CanvasObject = {
@@ -133,7 +134,8 @@ export interface Table {
 export interface VendorCardProps extends VendorDetails {
 	tables: Table[];
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
-	deleteVendor: (vendorId: string) => void; // ADDED: Add deleteVendor function to the props
+	deleteVendor: (vendorId: string) => void;
+	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
 // Intersection objects for rooms and features, and rooms and tables

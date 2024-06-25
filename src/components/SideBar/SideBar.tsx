@@ -37,6 +37,7 @@ const SideBar: React.FC<SideBarProps> = ({
 	setRoomFeatures,
 	roomTables,
 	setRoomTables,
+	updateVendorDetails,
 }) => {
 	const [roomName, setRoomName] = useState("");
 	const [roomWidth, setRoomWidth] = useState("");
@@ -559,7 +560,10 @@ const SideBar: React.FC<SideBarProps> = ({
 									}
 									deleteVendor={
 										deleteVendor
-									} // ADDED: Pass deleteVendor to VendorCard
+									}
+									updateVendorDetails={
+										updateVendorDetails
+									}
 								/>
 							);
 						})}

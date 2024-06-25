@@ -152,6 +152,14 @@ const App: React.FC = () => {
 		);
 	};
 
+	const updateVendorDetails = (updatedVendor: Vendor) => {
+		setVendors((prevVendors) =>
+			prevVendors.map((vendor) =>
+				vendor.id === updatedVendor.id ? updatedVendor : vendor
+			)
+		);
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<NavBar
@@ -173,10 +181,11 @@ const App: React.FC = () => {
 					setTables={setTables}
 					selectedRoomId={selectedRoomId}
 					setSelectedRoomId={setSelectedRoomId}
-					roomFeatures={roomFeatures} // ADDED
-					setRoomFeatures={setRoomFeatures} // ADDED
-					roomTables={roomTables} // ADDED
-					setRoomTables={setRoomTables} // ADDED
+					roomFeatures={roomFeatures}
+					setRoomFeatures={setRoomFeatures}
+					roomTables={roomTables}
+					setRoomTables={setRoomTables}
+					updateVendorDetails={updateVendorDetails} // Pass updateVendorDetails
 				/>
 				<CanvasArea
 					objects={features}
