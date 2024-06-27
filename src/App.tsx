@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
 import CanvasArea from "./components/CanvasArea/CanvasArea";
+import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import { Feature, Room, Vendor, Table, RoomFeature, RoomTable } from "./Types";
 import {
 	saveToLocalStorage,
@@ -213,6 +214,7 @@ const App: React.FC = () => {
 					removeRoom={removeRoom}
 					selectedRoomId={selectedRoomId}
 				/>
+				<CanvasAreaKonva />
 			</div>
 		</div>
 	);
