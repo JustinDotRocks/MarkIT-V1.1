@@ -160,6 +160,24 @@ const App: React.FC = () => {
 		);
 	};
 
+	const removeRoom = (roomId: string) => {
+		setRooms((prevRooms) =>
+			prevRooms.filter((room) => room.id !== roomId)
+		);
+		setFeatures((prevFeatures) =>
+			prevFeatures.filter((feature) => feature.roomId !== roomId)
+		);
+		setTables((prevTables) =>
+			prevTables.filter((table) => table.roomId !== roomId)
+		);
+		setRoomFeatures((prevRoomFeatures) =>
+			prevRoomFeatures.filter((rf) => rf.roomId !== roomId)
+		);
+		setRoomTables((prevRoomTables) =>
+			prevRoomTables.filter((rt) => rt.roomId !== roomId)
+		);
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<NavBar
@@ -192,6 +210,7 @@ const App: React.FC = () => {
 					removeObject={removeObjectFromCanvas}
 					rooms={rooms}
 					tables={tables}
+					removeRoom={removeRoom}
 					selectedRoomId={selectedRoomId}
 				/>
 			</div>

@@ -70,6 +70,7 @@ export interface CanvasAreaProps {
 	tables: Table[];
 	rooms: Room[];
 	removeObject: (id: string) => void;
+	removeRoom: (id: string) => void;
 	selectedRoomId: string | null;
 }
 

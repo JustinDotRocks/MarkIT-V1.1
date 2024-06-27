@@ -1,20 +1,20 @@
 import React from "react";
-import { Feature, Room, Table } from "../../Types";
+import { Feature, Room, Table, CanvasAreaProps } from "../../Types";
 
-interface CanvasAreaProps {
-	objects: Feature[];
-	rooms: Room[];
-	tables: Table[]; // Add tables to the props
-	removeObject: (id: string) => void;
-	selectedRoomId: string | null;
-}
+// interface CanvasAreaProps {
+// 	objects: Feature[];
+// 	rooms: Room[];
+// 	tables: Table[]; // Add tables to the props
+// 	removeObject: (id: string) => void;
+// 	selectedRoomId: string | null;
+// }
 
 const CanvasArea: React.FC<CanvasAreaProps> = ({
 	objects,
 	removeObject,
 	rooms,
 	tables,
-
+	removeRoom,
 	selectedRoomId,
 }) => {
 	// Dictionary to map internal type names to display labels
@@ -52,7 +52,18 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 			<div className="canvas-area">
 				{rooms.map((room) => (
 					<div key={room.id} className="room">
-						<h3>{room.name}</h3>
+						{/* <h3>{room.name}</h3> */}
+						<h3 className="flex justify-between items-center">
+							<span>{room.name}</span>
+							<button
+								onClick={() =>
+									removeRoom(room.id)
+								} // ADD: Delete button for room
+								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+							>
+								Delete
+							</button>
+						</h3>
 						<p>Width: {room.width}</p>
 						<p>Depth: {room.depth}</p>
 						{/* Optionally, render tables related to this room */}
