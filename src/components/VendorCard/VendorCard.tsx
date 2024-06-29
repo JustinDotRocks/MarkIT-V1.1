@@ -7,7 +7,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	vendorProducts,
 	vendorDetails,
 	tableNumber,
-	roomName,
+	// roomName,
+	roomId,
 	signedIn,
 	electricityRequired,
 	tables,
@@ -26,11 +27,9 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		details: vendorDetails,
 		signedIn,
 		electricityRequired,
-		roomName,
+		roomId,
 	});
-	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(
-		roomName
-	);
+	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
 
 	// Function to provide a display label for a table
 	const getTableLabel = (table: Table): string => {
@@ -47,12 +46,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const validTables = tables.filter(
 		(table) =>
 			table.tableNumber !== undefined &&
-			table.roomName !== undefined &&
+			// table.roomName !== undefined &&
 			(!selectedRoomId || table.roomId === selectedRoomId)
 	);
 
 	const handleSave = () => {
-		// **ADDED: Call updateVendorDetails with the updated vendor details**
 		updateVendorDetails(editableVendor);
 		setIsEditing(false);
 	};
@@ -70,6 +68,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			const selectedRoom = rooms.find((room) => room.id === value);
 			setEditableVendor((prev) => ({
 				...prev,
+				roomId: value,
 				roomName: selectedRoom ? selectedRoom.name : "",
 			}));
 			updateTableAssignment("", id); // Reset table selection when room changes

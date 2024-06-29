@@ -52,10 +52,10 @@ export interface SideBarProps {
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedRoomId: string | null;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
-	roomFeatures: RoomFeature[];
-	setRoomFeatures: React.Dispatch<React.SetStateAction<RoomFeature[]>>;
-	roomTables: RoomTable[];
-	setRoomTables: React.Dispatch<React.SetStateAction<RoomTable[]>>;
+	// roomFeatures: RoomFeature[];
+	// setRoomFeatures: React.Dispatch<React.SetStateAction<RoomFeature[]>>;
+	// roomTables: RoomTable[];
+	// setRoomTables: React.Dispatch<React.SetStateAction<RoomTable[]>>;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
@@ -110,7 +110,8 @@ export interface Vendor {
 	products: string;
 	details: string;
 	// tableId: string;
-	roomName: string;
+	// roomName: string;
+	roomId: string;
 	signedIn: boolean;
 	electricityRequired: boolean;
 }
@@ -129,26 +130,27 @@ export interface Table {
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
 	tableNumber: number;
-	roomName: string;
+	// roomName: string;
 }
 
 export interface VendorCardProps extends VendorDetails {
 	tables: Table[];
 	rooms: Room[];
+	roomId: string;
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
 // Intersection objects for rooms and features, and rooms and tables
-export interface RoomFeature {
-	id: string;
-	roomId: string;
-	featureId: string;
-}
+// export interface RoomFeature {
+// 	id: string;
+// 	roomId: string;
+// 	featureId: string;
+// }
 
-export interface RoomTable {
-	id: string;
-	roomId: string;
-	tableId: string;
-}
+// export interface RoomTable {
+// 	id: string;
+// 	roomId: string;
+// 	tableId: string;
+// }
