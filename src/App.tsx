@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
-import CanvasArea from "./components/CanvasArea/CanvasArea";
+// import CanvasArea from "./components/CanvasArea/CanvasArea";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 // import { Feature, Room, Vendor, Table, RoomFeature, RoomTable } from "./Types";
 import { Feature, Room, Vendor, Table } from "./Types";
@@ -214,7 +214,15 @@ const App: React.FC = () => {
 					// setRoomTables={setRoomTables}
 					updateVendorDetails={updateVendorDetails}
 				/>
-				<CanvasArea
+				{/* <CanvasArea
+					objects={features}
+					removeObject={removeObjectFromCanvas}
+					rooms={rooms}
+					tables={tables}
+					removeRoom={removeRoom}
+					selectedRoomId={selectedRoomId}
+				/> */}
+				<CanvasAreaKonva
 					objects={features}
 					removeObject={removeObjectFromCanvas}
 					rooms={rooms}
@@ -222,7 +230,6 @@ const App: React.FC = () => {
 					removeRoom={removeRoom}
 					selectedRoomId={selectedRoomId}
 				/>
-				<CanvasAreaKonva />
 			</div>
 		</div>
 	);

@@ -239,9 +239,9 @@ const SideBar: React.FC<SideBarProps> = ({
 		let nextTableNumber = existingTables.length + 1;
 
 		// Find the name of the selected room
-		const roomName =
-			rooms.find((room) => room.id === selectedRoomId)?.name ||
-			"Unknown Room";
+		// const roomName =
+		// 	rooms.find((room) => room.id === selectedRoomId)?.name ||
+		// 	"Unknown Room";
 
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
@@ -252,7 +252,6 @@ const SideBar: React.FC<SideBarProps> = ({
 				type,
 				roomId: selectedRoomId,
 				tableNumber: nextTableNumber,
-				// roomName,
 			};
 
 			setTables((prevTables: Table[]) => [...prevTables, newTable]);
