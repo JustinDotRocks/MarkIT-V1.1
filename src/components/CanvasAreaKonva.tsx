@@ -14,26 +14,25 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const canvasWidth = window.innerWidth * 0.9; // Use 70% of the window width
 	const canvasHeight = window.innerHeight * 0.9; // Use 70% of the window height
 
-	let roomWidth = 0;
-	let roomHeight = 0;
+	const feetToPixels = 10; // 1 foot equals 10 pixels
+	let roomWidthFeet = 0;
+	let roomHeightFeet = 0;
+	let roomWidthPixels = 0;
+	let roomHeightPixels = 0;
 	let scale = 1;
 
 	if (room) {
-		roomWidth = parseFloat(room.width);
-		roomHeight = parseFloat(room.depth);
+		roomWidthFeet = parseFloat(room.width);
+		roomHeightFeet = parseFloat(room.depth);
+
+		// Convert room dimensions from feet to pixels
+		roomWidthPixels = roomWidthFeet * feetToPixels;
+		roomHeightPixels = roomHeightFeet * feetToPixels;
 
 		// Calculate scale factor to fit the room within the canvas
-		const scaleX = canvasWidth / roomWidth;
-		const scaleY = canvasHeight / roomHeight;
-		scale = Math.min(scaleX, scaleY); // Use the smaller scale factor
-
-		// If the scale is still too large, further adjust to ensure the room fits within the canvas
-		// if (scale * roomWidth > canvasWidth) {
-		// 	scale = canvasWidth / roomWidth;
-		// }
-		// if (scale * roomHeight > canvasHeight) {
-		// 	scale = canvasHeight / roomHeight;
-		// }
+		const scaleX = canvasWidth / roomWidthPixels;
+		const scaleY = canvasHeight / roomHeightPixels;
+		scale = Math.min(scaleX, scaleY); // Use the smaller scale factor to ensure the room fits
 	}
 
 	return (
@@ -59,12 +58,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			</div>
 			{room && (
 				<Stage width={canvasWidth} height={canvasHeight}>
-					<Layer scaleX={scale} scaleY={scale}>
+					<Layer>
 						<Rect
 							x={0}
 							y={0}
-							width={roomWidth}
-							height={roomHeight}
+							width={roomWidthPixels}
+							height={roomHeightPixels}
 							stroke="black"
 							strokeWidth={2}
 						/>
@@ -79,11 +78,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									key={table.id}
 									x={
 										Math.random() *
-										(roomWidth - 100)
+										(roomWidthPixels -
+											100)
 									}
 									y={
 										Math.random() *
-										(roomHeight - 50)
+										(roomHeightPixels -
+											50)
 									}
 									width={100}
 									height={50}
@@ -102,11 +103,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									key={feature.id}
 									x={
 										Math.random() *
-										(roomWidth - 30)
+										(roomWidthPixels -
+											30)
 									}
 									y={
 										Math.random() *
-										(roomHeight - 30)
+										(roomHeightPixels -
+											30)
 									}
 									width={30}
 									height={30}
