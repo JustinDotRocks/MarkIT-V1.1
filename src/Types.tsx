@@ -41,7 +41,7 @@ export interface SideBarProps {
 		type: "table-6" | "table-8" | "table-5",
 		id: string,
 		details?: string
-	) => void; // Add this line
+	) => void;
 	rooms: Room[];
 	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
 	vendors: Vendor[];
@@ -72,6 +72,9 @@ export interface CanvasAreaProps {
 	removeObject: (id: string) => void;
 	removeRoom: (id: string) => void;
 	selectedRoomId: string | null;
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	features: Feature[];
 }
 
 export interface VendorDetails {
@@ -121,6 +124,8 @@ export type Feature = {
 	type: "door" | "obstacle";
 	details?: string;
 	roomId?: string; // Stationary features can be associated with a room
+	x: number;
+	y: number;
 };
 
 export interface Table {
@@ -131,6 +136,8 @@ export interface Table {
 	vendorId?: string; // If a vendor is assigned to the table
 	tableNumber: number;
 	// roomName: string;
+	x: number;
+	y: number;
 }
 
 export interface VendorCardProps extends VendorDetails {

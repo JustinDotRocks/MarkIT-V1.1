@@ -7,6 +7,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	removeObject,
 	rooms,
 	tables,
+	setTables,
+	features,
+	setFeatures,
 	removeRoom,
 	selectedRoomId,
 }) => {
@@ -16,26 +19,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
 
-	// useEffect(() => {
-	// 	if (containerRef.current) {
-	// 		setContainerSize({
-	// 			width: containerRef.current.offsetWidth,
-	// 			height: containerRef.current.offsetHeight,
-	// 		});
-	// 	}
-
-	// 	const handleResize = () => {
-	// 		if (containerRef.current) {
-	// 			setContainerSize({
-	// 				width: containerRef.current.offsetWidth,
-	// 				height: containerRef.current.offsetHeight,
-	// 			});
-	// 		}
-	// 	};
-
-	// 	window.addEventListener("resize", handleResize);
-	// 	return () => window.removeEventListener("resize", handleResize);
-	// }, []);
 	useEffect(() => {
 		const updateContainerSize = () => {
 			if (containerRef.current) {
@@ -56,8 +39,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	}, []);
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
-	const canvasWidth = window.innerWidth * 0.9; // Use 70% of the window width
-	const canvasHeight = window.innerHeight * 0.9; // Use 70% of the window height
+	// const canvasWidth = window.innerWidth * 0.9; // Use 70% of the window width
+	// const canvasHeight = window.innerHeight * 0.9; // Use 70% of the window height
 
 	const feetToPixels = 25; // 1 foot equals 10 pixels
 	let roomWidthFeet = 0;
@@ -75,9 +58,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		roomHeightPixels = roomHeightFeet * feetToPixels;
 
 		// Calculate scale factor to fit the room within the canvas
-		// const scaleX = canvasWidth / roomWidthPixels;
-		// const scaleY = canvasHeight / roomHeightPixels;
-		// Calculate scale factor to fit the room within the canvas
 		const scaleX = containerSize.width / roomWidthPixels;
 		const scaleY = containerSize.height / roomHeightPixels;
 		scale = Math.min(scaleX, scaleY); // Use the smaller scale factor to ensure the room fits
@@ -88,6 +68,24 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		"table-6": { width: 6, height: 2.5 },
 		"table-8": { width: 8, height: 2.5 },
 		"table-5": { width: 5, height: 5 },
+	};
+
+	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
+		const x = e.target.x() / scale;
+		const y = e.target.y() / scale;
+		if (type === "table") {
+			setTables((prevTables) =>
+				prevTables.map((table) =>
+					table.id === id ? { ...table, x, y } : table
+				)
+			);
+		} else {
+			setFeatures((prevFeatures) =>
+				prevFeatures.map((feature) =>
+					feature.id === id ? { ...feature, x, y } : feature
+				)
+			);
+		}
 	};
 
 	return (
@@ -148,14 +146,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										<Rect
 											key={table.id}
 											x={
-												Math.random() *
-												(roomWidthPixels -
-													tableWidthPixels)
+												table.x *
+												scale
 											}
 											y={
-												Math.random() *
-												(roomHeightPixels -
-													tableHeightPixels)
+												table.y *
+												scale
 											}
 											width={
 												tableWidthPixels
@@ -165,6 +161,15 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											}
 											fill="blue"
 											draggable
+											onDragEnd={(
+												e
+											) =>
+												handleDragEnd(
+													table.id,
+													"table",
+													e
+												)
+											}
 										/>
 									);
 								})}
@@ -178,19 +183,24 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									<Rect
 										key={feature.id}
 										x={
-											Math.random() *
-											(roomWidthPixels -
-												30)
+											feature.x *
+											scale
 										}
 										y={
-											Math.random() *
-											(roomHeightPixels -
-												30)
+											feature.y *
+											scale
 										}
-										width={30}
-										height={30}
+										width={30 * scale}
+										height={30 * scale}
 										fill="red"
 										draggable
+										onDragEnd={(e) =>
+											handleDragEnd(
+												feature.id,
+												"feature",
+												e
+											)
+										}
 									/>
 								))}
 						</Layer>

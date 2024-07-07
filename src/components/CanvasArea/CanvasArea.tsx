@@ -1,14 +1,6 @@
 import React from "react";
 import { Feature, Room, Table, CanvasAreaProps } from "../../Types";
 
-// interface CanvasAreaProps {
-// 	objects: Feature[];
-// 	rooms: Room[];
-// 	tables: Table[]; // Add tables to the props
-// 	removeObject: (id: string) => void;
-// 	selectedRoomId: string | null;
-// }
-
 const CanvasArea: React.FC<CanvasAreaProps> = ({
 	objects,
 	removeObject,
@@ -29,16 +21,10 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 	// Function to provide a display label for an object type, handling optional details
 	const getDisplayLabel = (type: string, tableNumber?: number): string => {
 		const label = displayNames[type] || type; // Get user-friendly name or default to type
-		// return details ? `${label}: ${details}` : label;
 		return tableNumber
 			? `Table Number - ${tableNumber} - ${label}`
 			: label;
 	};
-
-	// const getRoomName = (roomId: string) => {
-	// 	const room = rooms.find((room) => room.id === roomId);
-	// 	return room ? room.name : "Unknown Room";
-	// };
 
 	const filteredFeatures = objects.filter(
 		(feature) => feature.roomId === selectedRoomId
@@ -66,7 +52,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 						</h3>
 						<p>Width: {room.width}</p>
 						<p>Depth: {room.depth}</p>
-						{/* Optionally, render tables related to this room */}
 					</div>
 				))}
 			</div>
@@ -76,12 +61,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 					className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
 				>
 					<div className="flex justify-between items-center">
-						<span>
-							{getDisplayLabel(
-								obj.type
-								// obj.details
-							)}
-						</span>
+						<span>{getDisplayLabel(obj.type)}</span>
 						<button
 							onClick={() => removeObject(obj.id)}
 							className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
@@ -92,37 +72,27 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
 				</div>
 			))}
 
-			{filteredTables
-				// .filter((table) => table.roomId === selectedRoomId)
-				.map((table) => (
-					<div
-						key={table.id}
-						className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
-					>
-						<div className="flex justify-between items-center">
-							{/* <span>
-								Table Number:{" "}
-								{table.tableNumber} - Room:{" "}
-								{getRoomName(table.roomId)}
-							</span> */}
-							<span>
-								{/* {`Table Number: ${table.tableNumber}`} */}
-								{getDisplayLabel(
-									table.type,
-									table.tableNumber
-								)}
-							</span>
-							<button
-								onClick={() =>
-									removeObject(table.id)
-								}
-								className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-							>
-								Delete
-							</button>
-						</div>
+			{filteredTables.map((table) => (
+				<div
+					key={table.id}
+					className="inline-block p-2 m-1 border border-gray-500 rounded bg-white"
+				>
+					<div className="flex justify-between items-center">
+						<span>
+							{getDisplayLabel(
+								table.type,
+								table.tableNumber
+							)}
+						</span>
+						<button
+							onClick={() => removeObject(table.id)}
+							className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+						>
+							Delete
+						</button>
 					</div>
-				))}
+				</div>
+			))}
 		</div>
 	);
 };

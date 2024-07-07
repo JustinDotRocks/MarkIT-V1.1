@@ -142,7 +142,6 @@ const SideBar: React.FC<SideBarProps> = ({
 			// For text and other input types
 			setVendorDetails((prev) => ({
 				...prev,
-				// [name]: value,
 				details: value,
 			}));
 		}
@@ -168,11 +167,8 @@ const SideBar: React.FC<SideBarProps> = ({
 			name: vendorName,
 			products: vendorProducts,
 			details: vendorDetails.details,
-			// tableId: "",
-			// roomName: "",
 			roomId: selectedRoomId || "",
 			signedIn: false,
-			// electricityRequired: false,
 			electricityRequired: vendorDetails.electricityRequired,
 		};
 		setVendors((prevVendors: Vendor[]) => [...prevVendors, newVendor]);
@@ -183,8 +179,6 @@ const SideBar: React.FC<SideBarProps> = ({
 			name: "",
 			products: "",
 			details: "",
-			// tableId: "",
-			// roomName: "",
 			roomId: selectedRoomId || "",
 			signedIn: false,
 			electricityRequired: false,
@@ -203,22 +197,13 @@ const SideBar: React.FC<SideBarProps> = ({
 				id,
 				type,
 				roomId: selectedRoomId, // Associate with the selected room
+				x: 0,
+				y: 0,
 			};
 			setFeatures((prevFeatures: Feature[]) => [
 				...prevFeatures,
 				newFeature,
 			]);
-
-			// Add the feature to the roomFeatures intersection object
-			// const newRoomFeature: RoomFeature = {
-			// 	id: uuidv4(),
-			// 	roomId: selectedRoomId,
-			// 	featureId: newFeature.id,
-			// };
-			// setRoomFeatures((prevRoomFeatures: RoomFeature[]) => [
-			// 	...prevRoomFeatures,
-			// 	newRoomFeature,
-			// ]);
 		}
 	};
 
@@ -238,35 +223,19 @@ const SideBar: React.FC<SideBarProps> = ({
 
 		let nextTableNumber = existingTables.length + 1;
 
-		// Find the name of the selected room
-		// const roomName =
-		// 	rooms.find((room) => room.id === selectedRoomId)?.name ||
-		// 	"Unknown Room";
-
 		for (let i = 0; i < quantity; i++) {
 			const id = uuidv4();
-			// const tableNumber = `Table-${id.substring(0, 6)}`; // Generate a unique table number, e.g., Table-123abc
-
 			const newTable: Table = {
 				id,
 				type,
 				roomId: selectedRoomId,
 				tableNumber: nextTableNumber,
+				x: 0,
+				y: 0,
 			};
 
 			setTables((prevTables: Table[]) => [...prevTables, newTable]);
 			nextTableNumber++; // Increment for the next table
-
-			// ADDED: Add the table to the roomTables intersection object
-			// const newRoomTable: RoomTable = {
-			// 	id: uuidv4(),
-			// 	roomId: selectedRoomId,
-			// 	tableId: newTable.id,
-			// };
-			// setRoomTables((prevRoomTables: RoomTable[]) => [
-			// 	...prevRoomTables,
-			// 	newRoomTable,
-			// ]);
 		}
 	};
 
@@ -283,7 +252,6 @@ const SideBar: React.FC<SideBarProps> = ({
 		);
 	};
 
-	// ADDED: Function to handle vendor deletion
 	const deleteVendor = (vendorId: string) => {
 		// Remove vendor from the list
 		setVendors((prevVendors) =>
@@ -486,7 +454,6 @@ const SideBar: React.FC<SideBarProps> = ({
 						rows={3}
 					/>
 
-					{/* ADDED: Checkbox for electricity requirement */}
 					<div className="flex items-center mt-2">
 						<label
 							className="mr-2 ml-2 text-gray-200"
@@ -537,7 +504,7 @@ const SideBar: React.FC<SideBarProps> = ({
 											? associatedTable.id
 											: ""
 									}
-									roomName="" // Optional: Could be set if needed
+									roomName=""
 									roomId=""
 									signedIn={vendor.signedIn}
 									electricityRequired={

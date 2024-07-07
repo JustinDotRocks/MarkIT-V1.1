@@ -121,20 +121,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							className="bg-gray-600 text-white p-2 rounded w-full"
 						/>
 					</div>
-					{/* <div>
-						<label>
-							<input
-								type="checkbox"
-								name="signedIn"
-								checked={
-									editableVendor.signedIn
-								}
-								onChange={handleInputChange}
-								className="form-checkbox h-5 w-5 text-blue-600"
-							/>
-							Signed In
-						</label>
-					</div> */}
 					<div>
 						<label>
 							<input
@@ -226,16 +212,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							))}
 						</select>
 					</div>
-					{/* <div>
-						Signed In:{signedIn ? "Yes" : "No"}
-						<input
-							type="checkbox"
-							name="signedIn"
-							checked={editableVendor.signedIn}
-							onChange={handleInputChange}
-							className="form-checkbox h-5 w-5 text-blue-600 ml-2"
-						/>
-					</div> */}
 					<div>
 						<label>
 							Signed In: {signedIn ? "Yes" : "No"}
@@ -256,7 +232,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					>
 						Delete Vendor
 					</button>
-					{/* **ADDED: Edit Vendor Button** */}
 					<button
 						onClick={() => setIsEditing(true)}
 						className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
