@@ -30,6 +30,10 @@ export interface FeatureInputButtonPairProps {
 	containerClassName?: string;
 }
 
+export interface RoomDetailsComponentProps {
+	addRoom: (name: string, width: string, depth: string) => void;
+}
+
 export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
 	addObject: (

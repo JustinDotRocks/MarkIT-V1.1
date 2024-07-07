@@ -4,6 +4,7 @@ import FeatureInputButtonPair from "../FeatureInputButtonPair";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import VendorCard from "../VendorCard/VendorCard";
+import RoomDetailsComponent from "../RoomDetailsComponent"; // Import the new component
 import { v4 as uuidv4 } from "uuid"; // Importing the UUID function
 import {
 	saveToLocalStorage,
@@ -31,9 +32,9 @@ const SideBar: React.FC<SideBarProps> = ({
 	// setRoomTables,
 	updateVendorDetails,
 }) => {
-	const [roomName, setRoomName] = useState("");
-	const [roomWidth, setRoomWidth] = useState("");
-	const [roomDepth, setRoomDepth] = useState("");
+	// const [roomName, setRoomName] = useState("");
+	// const [roomWidth, setRoomWidth] = useState("");
+	// const [roomDepth, setRoomDepth] = useState("");
 
 	// const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
 
@@ -85,15 +86,15 @@ const SideBar: React.FC<SideBarProps> = ({
 					Math.min(Math.max(0, parseInt(value)), 30)
 				);
 				break;
-			case "room-name":
-				setRoomName(value);
-				break;
-			case "room-width":
-				setRoomWidth(value);
-				break;
-			case "room-depth":
-				setRoomDepth(value);
-				break;
+			// case "room-name":
+			// 	setRoomName(value);
+			// 	break;
+			// case "room-width":
+			// 	setRoomWidth(value);
+			// 	break;
+			// case "room-depth":
+			// 	setRoomDepth(value);
+			// 	break;
 			case "table-6-quantity":
 				setTable6Quantity(
 					Math.min(Math.max(0, parseInt(value)), 30)
@@ -147,18 +148,28 @@ const SideBar: React.FC<SideBarProps> = ({
 		}
 	};
 
-	const addRoom = () => {
+	// const addRoom = () => {
+	// 	const newRoom: Room = {
+	// 		id: uuidv4(),
+	// 		name: roomName,
+	// 		width: roomWidth,
+	// 		depth: roomDepth,
+	// 		tables: [],
+	// 	};
+	// 	setRooms((prevRooms: Room[]) => [...prevRooms, newRoom]);
+	// 	setRoomName("");
+	// 	setRoomWidth("");
+	// 	setRoomDepth("");
+	// };
+	const addRoom = (name: string, width: string, depth: string) => {
 		const newRoom: Room = {
 			id: uuidv4(),
-			name: roomName,
-			width: roomWidth,
-			depth: roomDepth,
+			name,
+			width,
+			depth,
 			tables: [],
 		};
 		setRooms((prevRooms: Room[]) => [...prevRooms, newRoom]);
-		setRoomName("");
-		setRoomWidth("");
-		setRoomDepth("");
 	};
 
 	const addVendor = () => {
@@ -278,7 +289,9 @@ const SideBar: React.FC<SideBarProps> = ({
 		>
 			{activeMode === "setup" && (
 				<div className="space-y-4">
-					<h2 className="text-lg font-bold">Room Setup</h2>
+					<RoomDetailsComponent addRoom={addRoom} />
+
+					{/* <h2 className="text-lg font-bold">Room Setup</h2>
 					<Button
 						onClick={addRoom}
 						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -310,7 +323,7 @@ const SideBar: React.FC<SideBarProps> = ({
 							placeholder="Enter Room Depth"
 							className="w-full p-2 rounded bg-gray-700 text-white"
 						/>
-					</div>
+					</div> */}
 
 					<h2 className="text-lg font-bold">Select Room</h2>
 					{/* Room Selection Dropdown */}
