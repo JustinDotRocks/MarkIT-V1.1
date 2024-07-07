@@ -13,6 +13,8 @@ export type ButtonProps = {
 
 export interface FeatureButtonProps extends ButtonProps {
 	featureType: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
+	className?: string;
+	buttonClassName?: string;
 }
 
 export interface FeatureInputButtonPairProps {
@@ -24,7 +26,6 @@ export interface FeatureInputButtonPairProps {
 	inputOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	inputPlaceholder?: string;
 	featureType: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
-	buttonClassName?: string;
 	buttonOnClick: () => void;
 	inputClassName?: string;
 	containerClassName?: string;

@@ -12,7 +12,6 @@ const FeatureInputButtonPair: React.FC<FeatureInputButtonPairProps> = ({
 	inputOnChange,
 	inputPlaceholder,
 	featureType,
-	buttonClassName,
 	buttonOnClick,
 	inputClassName,
 	containerClassName,
@@ -31,7 +30,6 @@ const FeatureInputButtonPair: React.FC<FeatureInputButtonPairProps> = ({
 			/>
 			<FeatureButton
 				featureType={featureType}
-				className={`w-1/2 p-2 mt-2 rounded bg-blue-500 hover:bg-blue-600 ${buttonClassName}`}
 				onClick={buttonOnClick}
 			/>
 		</div>
