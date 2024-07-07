@@ -64,6 +64,27 @@ export interface SideBarProps {
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
+export interface SetupModeComponentProps {
+	rooms: Room[];
+	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	selectedRoomId: string | null;
+	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	tables: Table[];
+}
+
+export interface VendorModeComponentProps {
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
+	vendors: Vendor[];
+	tables: Table[];
+	rooms: Room[];
+	updateTableAssignment: (tableId: string, vendorId: string) => void;
+	deleteVendor: (vendorId: string) => void;
+	updateVendorDetails: (updatedVendor: Vendor) => void;
+	selectedRoomId: string | null;
+}
+
 export type CanvasObject = {
 	id: string;
 	type: string;
