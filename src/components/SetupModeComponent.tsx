@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { SetupModeComponentProps, Room, Feature, Table } from "../Types";
 import FeatureInputButtonPair from "./FeatureInputButtonPair";
-import Input from "./Input/Input";
 import RoomDetailsComponent from "./RoomDetailsComponent";
 import { v4 as uuidv4 } from "uuid";
 
@@ -116,6 +115,23 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 		}
 	};
 
+	// Wrapper function to handle both features and tables
+	const handleAddFeatureOrTable = (
+		featureType:
+			| "door"
+			| "obstacle"
+			| "table-6"
+			| "table-8"
+			| "table-5",
+		quantity: number
+	) => {
+		if (featureType === "door" || featureType === "obstacle") {
+			addFeature(featureType, quantity);
+		} else {
+			addTableWithRoom(featureType, quantity);
+		}
+	};
+
 	return (
 		<div className="space-y-4">
 			<RoomDetailsComponent addRoom={addRoom} />
@@ -137,72 +153,27 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 			<h2 className="text-lg font-bold">Add Features</h2>
 			<div className="flex flex-col justify-center items-center">
 				<FeatureInputButtonPair
-					inputType="number"
-					inputName="door-quantity"
-					inputMin={0}
-					inputMax={30}
-					inputValue={doorQuantity}
-					inputOnChange={handleInputChange}
-					inputPlaceholder="Qty"
 					featureType="door"
-					buttonOnClick={() =>
-						addFeature("door", doorQuantity)
-					}
+					buttonOnClick={handleAddFeatureOrTable}
 				/>
 				<FeatureInputButtonPair
-					inputType="number"
-					inputName="obstacle-quantity"
-					inputMin={0}
-					inputMax={30}
-					inputValue={obstacleQuantity}
-					inputOnChange={handleInputChange}
-					inputPlaceholder="Qty"
 					featureType="obstacle"
-					buttonOnClick={() =>
-						addFeature("obstacle", obstacleQuantity)
-					}
+					buttonOnClick={handleAddFeatureOrTable}
 				/>
 			</div>
 			<h2 className="text-lg font-bold">Add Tables</h2>
 			<div className="flex flex-col justify-center items-center">
 				<FeatureInputButtonPair
-					inputType="number"
-					inputName="table-6-quantity"
-					inputMin={0}
-					inputMax={30}
-					inputValue={table6Quantity}
-					inputOnChange={handleInputChange}
-					inputPlaceholder="Qty"
 					featureType="table-6"
-					buttonOnClick={() =>
-						addTableWithRoom("table-6", table6Quantity)
-					}
+					buttonOnClick={handleAddFeatureOrTable}
 				/>
 				<FeatureInputButtonPair
-					inputType="number"
-					inputName="table-8-quantity"
-					inputMin={0}
-					inputMax={30}
-					inputValue={table8Quantity}
-					inputOnChange={handleInputChange}
-					inputPlaceholder="Qty"
 					featureType="table-8"
-					buttonOnClick={() =>
-						addTableWithRoom("table-8", table8Quantity)
-					}
+					buttonOnClick={handleAddFeatureOrTable}
 				/>
 				<FeatureInputButtonPair
-					inputType="number"
-					inputName="table-5-quantity"
-					inputMin={0}
-					inputMax={30}
-					inputValue={table5Quantity}
-					inputOnChange={handleInputChange}
-					inputPlaceholder="Qty"
 					featureType="table-5"
-					buttonOnClick={() =>
-						addTableWithRoom("table-5", table5Quantity)
-					}
+					buttonOnClick={handleAddFeatureOrTable}
 				/>
 			</div>
 		</div>

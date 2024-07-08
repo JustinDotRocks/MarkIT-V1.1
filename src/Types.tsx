@@ -17,16 +17,26 @@ export interface FeatureButtonProps extends ButtonProps {
 	buttonClassName?: string;
 }
 
-export interface FeatureInputButtonPairProps {
-	inputType: string;
-	inputName: string;
-	inputMin?: number;
-	inputMax?: number;
-	inputValue: number | string;
-	inputOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	inputPlaceholder?: string;
-	featureType: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
-	buttonOnClick: () => void;
+// export interface FeatureInputButtonPairProps {
+// 	inputType: string;
+// 	inputName: string;
+// 	inputMin?: number;
+// 	inputMax?: number;
+// 	inputValue: number | string;
+// 	inputOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+// 	inputPlaceholder?: string;
+// 	featureType: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
+// 	buttonOnClick: () => void;
+// 	inputClassName?: string;
+// 	containerClassName?: string;
+// }
+
+// UPDATED: Generic type parameter T for featureType
+export interface FeatureInputButtonPairProps<
+	T extends "door" | "obstacle" | "table-6" | "table-8" | "table-5"
+> {
+	featureType: T;
+	buttonOnClick: (featureType: T, quantity: number) => void;
 	inputClassName?: string;
 	containerClassName?: string;
 }
