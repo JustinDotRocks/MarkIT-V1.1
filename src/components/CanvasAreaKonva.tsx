@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage, Layer, Rect, Text } from "react-konva";
 import { Feature, Room, Table, CanvasAreaProps } from "../Types";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -12,6 +12,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	setFeatures,
 	removeRoom,
 	selectedRoomId,
+	vendors,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -39,8 +40,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	}, []);
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
-	// const canvasWidth = window.innerWidth * 0.9; // Use 70% of the window width
-	// const canvasHeight = window.innerHeight * 0.9; // Use 70% of the window height
 
 	const feetToPixels = 25; // 1 foot equals 10 pixels
 	let roomWidthFeet = 0;
@@ -86,6 +85,42 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				)
 			);
 		}
+	};
+
+	const renderTableText = (
+		table: Table,
+		tableWidthPixels: number,
+		tableHeightPixels: number,
+		vendorName: string
+	) => {
+		const textX = table.x * scale + tableWidthPixels / 4;
+		const textY = table.y * scale + tableHeightPixels / 4;
+		return (
+			<React.Fragment key={`${table.id}-text`}>
+				<Text
+					x={textX - 30}
+					y={textY}
+					text={`${table.tableNumber}`}
+					fontSize={20}
+					fill="white"
+					draggable
+					onDragEnd={(e) =>
+						handleDragEnd(table.id, "table", e)
+					}
+				/>
+				<Text
+					x={textX} // Adjust position to the right of the table number
+					y={textY}
+					text={vendorName}
+					fontSize={18}
+					fill="white"
+					draggable
+					onDragEnd={(e) =>
+						handleDragEnd(table.id, "table", e)
+					}
+				/>
+			</React.Fragment>
+		);
 	};
 
 	return (
@@ -142,35 +177,50 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									const tableHeightPixels =
 										dimensions.height *
 										feetToPixels;
+									const vendorName =
+										vendors.find(
+											(vendor) =>
+												vendor.id ===
+												table.vendorId
+										)?.name || "";
 									return (
-										<Rect
+										<React.Fragment
 											key={table.id}
-											x={
-												table.x *
-												scale
-											}
-											y={
-												table.y *
-												scale
-											}
-											width={
-												tableWidthPixels
-											}
-											height={
-												tableHeightPixels
-											}
-											fill="blue"
-											draggable
-											onDragEnd={(
-												e
-											) =>
-												handleDragEnd(
-													table.id,
-													"table",
+										>
+											<Rect
+												x={
+													table.x *
+													scale
+												}
+												y={
+													table.y *
+													scale
+												}
+												width={
+													tableWidthPixels
+												}
+												height={
+													tableHeightPixels
+												}
+												fill="blue"
+												draggable
+												onDragEnd={(
 													e
-												)
-											}
-										/>
+												) =>
+													handleDragEnd(
+														table.id,
+														"table",
+														e
+													)
+												}
+											/>
+											{renderTableText(
+												table,
+												tableWidthPixels,
+												tableHeightPixels,
+												vendorName
+											)}
+										</React.Fragment>
 									);
 								})}
 							{objects

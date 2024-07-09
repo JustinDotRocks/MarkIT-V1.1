@@ -184,6 +184,7 @@ const App: React.FC = () => {
 					setTables={setTables}
 					setFeatures={setFeatures}
 					features={features}
+					vendors={vendors}
 				/>
 			</div>
 		</div>

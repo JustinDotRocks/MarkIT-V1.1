@@ -111,6 +111,7 @@ export interface CanvasAreaProps {
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
 	features: Feature[];
+	vendors: Vendor[];
 }
 
 export interface VendorDetails {
