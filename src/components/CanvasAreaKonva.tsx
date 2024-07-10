@@ -131,7 +131,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		<div
 			ref={containerRef}
 			// className="flex-grow overflow-y-auto p-2 m-6"
-			className="flex-grow flex-col justify-center items-center h-full m-8"
+			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full m-8"
 		>
 			<div className="canvas-area flex flex-row">
 				{rooms.map((room) => (
