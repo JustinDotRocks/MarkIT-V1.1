@@ -41,25 +41,29 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
-	const feetToPixels = 25; // 1 foot equals 10 pixels
+	// const feetToPixels = 25; // 1 foot equals 10 pixels
+	const feetToPixelsWidth = 25; // 1 foot equals 25 pixels for width
+	const feetToPixelsHeight = 25; // 1 foot equals 25 pixels for height
+
 	let roomWidthFeet = 0;
 	let roomHeightFeet = 0;
 	let roomWidthPixels = 0;
 	let roomHeightPixels = 0;
-	let scale = 1;
+	// let scale = 1;
+	let scaleWidth = 1;
+	let scaleHeight = 1;
 
 	if (room) {
 		roomWidthFeet = parseFloat(room.width);
 		roomHeightFeet = parseFloat(room.depth);
 
 		// Convert room dimensions from feet to pixels
-		roomWidthPixels = roomWidthFeet * feetToPixels;
-		roomHeightPixels = roomHeightFeet * feetToPixels;
+		roomWidthPixels = roomWidthFeet * feetToPixelsWidth;
+		roomHeightPixels = roomHeightFeet * feetToPixelsHeight;
 
-		// Calculate scale factor to fit the room within the canvas
-		const scaleX = containerSize.width / roomWidthPixels;
-		const scaleY = containerSize.height / roomHeightPixels;
-		scale = Math.min(scaleX, scaleY); // Use the smaller scale factor to ensure the room fits
+		// Calculate scale factors to fit the room within the canvas
+		scaleWidth = containerSize.width / roomWidthPixels;
+		scaleHeight = containerSize.height / roomHeightPixels;
 	}
 
 	// Define table dimensions in feet
@@ -70,8 +74,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	};
 
 	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
-		const x = e.target.x() / scale;
-		const y = e.target.y() / scale;
+		const x = e.target.x() / scaleWidth;
+		const y = e.target.y() / scaleHeight;
 		if (type === "table") {
 			setTables((prevTables) =>
 				prevTables.map((table) =>
@@ -93,8 +97,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		tableHeightPixels: number,
 		vendorName: string
 	) => {
-		const textX = table.x * scale + tableWidthPixels / 4;
-		const textY = table.y * scale + tableHeightPixels / 4;
+		const textX = table.x * scaleWidth + tableWidthPixels / 4;
+		const textY = table.y * scaleHeight + tableHeightPixels / 4;
 		return (
 			<React.Fragment key={`${table.id}-text`}>
 				<Text
@@ -109,10 +113,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					}
 				/>
 				<Text
-					x={textX} // Adjust position to the right of the table number
+					x={textX - 15} // Adjust position to the right of the table number
 					y={textY}
 					text={vendorName}
-					fontSize={18}
+					fontSize={16}
 					fill="white"
 					draggable
 					onDragEnd={(e) =>
@@ -124,8 +128,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	};
 
 	return (
-		<div className="flex-grow overflow-y-auto p-2 h-96">
-			<div className="canvas-area">
+		<div
+			ref={containerRef}
+			// className="flex-grow overflow-y-auto p-2 m-6"
+			className="flex-grow flex-col justify-center items-center h-full m-8"
+		>
+			<div className="canvas-area flex flex-row">
 				{rooms.map((room) => (
 					<div key={room.id} className="room">
 						<h3 className="flex justify-between items-center">
@@ -151,7 +159,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						width={containerSize.width}
 						height={containerSize.height}
 					>
-						<Layer scaleX={scale} scaleY={scale}>
+						<Layer
+							scaleX={scaleWidth}
+							scaleY={scaleHeight}
+						>
 							<Rect
 								x={0}
 								y={0}
@@ -173,10 +184,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										];
 									const tableWidthPixels =
 										dimensions.width *
-										feetToPixels;
+										feetToPixelsWidth;
 									const tableHeightPixels =
 										dimensions.height *
-										feetToPixels;
+										feetToPixelsHeight;
 									const vendorName =
 										vendors.find(
 											(vendor) =>
@@ -190,11 +201,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											<Rect
 												x={
 													table.x *
-													scale
+													scaleWidth
 												}
 												y={
 													table.y *
-													scale
+													scaleHeight
 												}
 												width={
 													tableWidthPixels
@@ -234,14 +245,20 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										key={feature.id}
 										x={
 											feature.x *
-											scale
+											scaleWidth
 										}
 										y={
 											feature.y *
-											scale
+											scaleHeight
 										}
-										width={30 * scale}
-										height={30 * scale}
+										width={
+											30 *
+											scaleWidth
+										}
+										height={
+											30 *
+											scaleHeight
+										}
 										fill="red"
 										draggable
 										onDragEnd={(e) =>
