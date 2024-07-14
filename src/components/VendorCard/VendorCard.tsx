@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { VendorDetails, VendorCardProps, Table } from "../../Types";
 
 const VendorCard: React.FC<VendorCardProps> = ({
@@ -30,6 +30,38 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		roomId,
 	});
 	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
+
+	useEffect(() => {
+		if (!editableVendor.roomId) return;
+
+		const selectedRoom = rooms.find(
+			(room) => room.id === editableVendor.roomId
+		);
+		setEditableVendor((prev) => ({
+			...prev,
+			roomName: selectedRoom ? selectedRoom.name : "",
+		}));
+	}, [editableVendor.roomId, rooms]);
+
+	useEffect(() => {
+		const savedRoomId = localStorage.getItem(`vendor-${id}-roomId`);
+		if (savedRoomId) {
+			setEditableVendor((prev) => ({
+				...prev,
+				roomId: savedRoomId,
+			}));
+			setSelectedRoomId(savedRoomId); // Ensure selectedRoomId state is also updated
+		}
+	}, [id]);
+
+	useEffect(() => {
+		if (editableVendor.roomId) {
+			localStorage.setItem(
+				`vendor-${id}-roomId`,
+				editableVendor.roomId
+			);
+		}
+	}, [editableVendor.roomId, id]);
 
 	// Function to provide a display label for a table
 	const getTableLabel = (table: Table): string => {
@@ -71,6 +103,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				roomId: value,
 				roomName: selectedRoom ? selectedRoom.name : "",
 			}));
+			localStorage.setItem(`vendor-${id}-roomId`, value); // Save to local storage
 			updateTableAssignment("", id); // Reset table selection when room changes
 		} else {
 			setEditableVendor((prev) => ({
@@ -159,7 +192,17 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
 					</div>
-					{/* <div>Room: {roomName}</div> */}
+					<div>
+						{/* Display the selected room */}
+						Selected Room:{" "}
+						{editableVendor.roomId
+							? rooms.find(
+									(room) =>
+										room.id ===
+										editableVendor.roomId
+							  )?.name || "No Room Selected"
+							: "No Room Selected"}
+					</div>{" "}
 					<div className="mb-2">
 						<label className="block text-white">
 							Select Room:

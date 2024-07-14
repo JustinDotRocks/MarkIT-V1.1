@@ -17,21 +17,7 @@ export interface FeatureButtonProps extends ButtonProps {
 	buttonClassName?: string;
 }
 
-// export interface FeatureInputButtonPairProps {
-// 	inputType: string;
-// 	inputName: string;
-// 	inputMin?: number;
-// 	inputMax?: number;
-// 	inputValue: number | string;
-// 	inputOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-// 	inputPlaceholder?: string;
-// 	featureType: "door" | "obstacle" | "table-6" | "table-8" | "table-5";
-// 	buttonOnClick: () => void;
-// 	inputClassName?: string;
-// 	containerClassName?: string;
-// }
-
-// UPDATED: Generic type parameter T for featureType
+// Generic type parameter T for featureType
 export interface FeatureInputButtonPairProps<
 	T extends "door" | "obstacle" | "table-6" | "table-8" | "table-5"
 > {
@@ -67,10 +53,6 @@ export interface SideBarProps {
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedRoomId: string | null;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
-	// roomFeatures: RoomFeature[];
-	// setRoomFeatures: React.Dispatch<React.SetStateAction<RoomFeature[]>>;
-	// roomTables: RoomTable[];
-	// setRoomTables: React.Dispatch<React.SetStateAction<RoomTable[]>>;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
 
@@ -185,16 +167,3 @@ export interface VendorCardProps extends VendorDetails {
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 }
-
-// Intersection objects for rooms and features, and rooms and tables
-// export interface RoomFeature {
-// 	id: string;
-// 	roomId: string;
-// 	featureId: string;
-// }
-
-// export interface RoomTable {
-// 	id: string;
-// 	roomId: string;
-// 	tableId: string;
-// }
