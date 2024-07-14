@@ -34,20 +34,6 @@ const App: React.FC = () => {
 		() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
 	);
 
-	// const [roomFeatures, setRoomFeatures] = useState<RoomFeature[]>(
-	// 	() =>
-	// 		loadFromLocalStorage<RoomFeature[]>(
-	// 			getStorageKeys().ROOM_FEATURES
-	// 		) || []
-	// );
-
-	// const [roomTables, setRoomTables] = useState<RoomTable[]>(
-	// 	() =>
-	// 		loadFromLocalStorage<RoomTable[]>(
-	// 			getStorageKeys().ROOM_TABLES
-	// 		) || []
-	// );
-
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
 
 	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries

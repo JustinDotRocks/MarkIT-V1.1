@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Stage, Layer, Rect, Text } from "react-konva";
+import { Stage, Layer, Rect, Circle, Text } from "react-konva";
 import { Feature, Room, Table, CanvasAreaProps } from "../Types";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -47,23 +47,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
-	// const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
-	// 	const x = e.target.x() / feetToPixels;
-	// 	const y = e.target.y() / (feetToPixels * adjustmentFactor);
-	// 	if (type === "table") {
-	// 		setTables((prevTables) =>
-	// 			prevTables.map((table) =>
-	// 				table.id === id ? { ...table, x, y } : table
-	// 			)
-	// 		);
-	// 	} else {
-	// 		setFeatures((prevFeatures) =>
-	// 			prevFeatures.map((feature) =>
-	// 				feature.id === id ? { ...feature, x, y } : feature
-	// 			)
-	// 		);
-	// 	}
-	// };
 	const handleDragMove = (e: any) => {
 		const node = e.target;
 		const id = node.attrs.id;
@@ -211,7 +194,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								stroke="black"
 								strokeWidth={2}
 							/>
-							{tables
+							{/* {tables
 								.filter(
 									(table) =>
 										table.roomId ===
@@ -278,8 +261,104 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											)}
 										</React.Fragment>
 									);
+								})} */}
+							{tables
+								.filter(
+									(table) =>
+										table.roomId ===
+										selectedRoomId
+								)
+								.map((table) => {
+									const dimensions =
+										tableDimensions[
+											table.type
+										];
+									const tableWidthPixels =
+										dimensions.width *
+										feetToPixels;
+									const tableHeightPixels =
+										dimensions.height *
+										feetToPixels *
+										adjustmentFactor;
+									const vendorName =
+										vendors.find(
+											(vendor) =>
+												vendor.id ===
+												table.vendorId
+										)?.name || "";
+									return (
+										<React.Fragment
+											key={table.id}
+										>
+											{table.type ===
+											"table-5" ? (
+												<Circle
+													x={
+														table.x *
+														feetToPixels
+													}
+													y={
+														table.y *
+														feetToPixels *
+														adjustmentFactor
+													}
+													radius={
+														(tableWidthPixels +
+															tableHeightPixels) /
+														4
+													}
+													fill="blue"
+													draggable
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															table.id,
+															"table",
+															e
+														)
+													}
+												/>
+											) : (
+												<Rect
+													x={
+														table.x *
+														feetToPixels
+													}
+													y={
+														table.y *
+														feetToPixels *
+														adjustmentFactor
+													}
+													width={
+														tableWidthPixels
+													}
+													height={
+														tableHeightPixels
+													}
+													fill="blue"
+													draggable
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															table.id,
+															"table",
+															e
+														)
+													}
+												/>
+											)}
+											{renderTableText(
+												table,
+												tableWidthPixels,
+												tableHeightPixels,
+												vendorName
+											)}
+										</React.Fragment>
+									);
 								})}
-							{objects
+							{/* {objects
 								.filter(
 									(feature) =>
 										feature.roomId ===
@@ -298,11 +377,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											adjustmentFactor
 										}
 										width={
-											30 *
+											3 *
 											feetToPixels
 										}
 										height={
-											30 *
+											3 *
 											feetToPixels *
 											adjustmentFactor
 										}
@@ -319,7 +398,82 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											)
 										}
 									/>
-								))}
+								))} */}
+							{objects
+								.filter(
+									(feature) =>
+										feature.roomId ===
+										selectedRoomId
+								)
+								.map((feature) => {
+									const isDoor =
+										feature.type ===
+										"door";
+									return (
+										<React.Fragment
+											key={
+												feature.id
+											}
+										>
+											{isDoor ? (
+												<Rect
+													x={
+														feature.x *
+														feetToPixels
+													}
+													y={
+														feature.y *
+														feetToPixels *
+														adjustmentFactor
+													}
+													width={
+														30
+													}
+													height={
+														30
+													}
+													fill="green"
+													draggable
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															feature.id,
+															"feature",
+															e
+														)
+													}
+												/>
+											) : (
+												<Circle
+													x={
+														feature.x *
+														feetToPixels
+													}
+													y={
+														feature.y *
+														feetToPixels *
+														adjustmentFactor
+													}
+													radius={
+														15
+													}
+													fill="red"
+													draggable
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															feature.id,
+															"feature",
+															e
+														)
+													}
+												/>
+											)}
+										</React.Fragment>
+									);
+								})}
 						</Layer>
 					</Stage>
 				)}
