@@ -47,9 +47,68 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
+	// const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
+	// 	const x = e.target.x() / feetToPixels;
+	// 	const y = e.target.y() / (feetToPixels * adjustmentFactor);
+	// 	if (type === "table") {
+	// 		setTables((prevTables) =>
+	// 			prevTables.map((table) =>
+	// 				table.id === id ? { ...table, x, y } : table
+	// 			)
+	// 		);
+	// 	} else {
+	// 		setFeatures((prevFeatures) =>
+	// 			prevFeatures.map((feature) =>
+	// 				feature.id === id ? { ...feature, x, y } : feature
+	// 			)
+	// 		);
+	// 	}
+	// };
+	const handleDragMove = (e: any) => {
+		const node = e.target;
+		const id = node.attrs.id;
+		const type = node.attrs.type;
+
+		// Get dimensions of the item being dragged
+		const itemWidthFeet =
+			type === "table"
+				? tables.find((table) => table.id === id)?.type ===
+				  "table-6"
+					? 6
+					: tables.find((table) => table.id === id)
+							?.type === "table-8"
+					? 8
+					: 5
+				: 1.5; // Assuming feature width is 1.5 feet for example
+		const itemHeightFeet =
+			type === "table"
+				? 2.5 // Assuming table height is 2.5 feet for all types
+				: 1.5; // Assuming feature height is 1.5 feet for example
+
+		const itemWidthPixels = itemWidthFeet * feetToPixels;
+		const itemHeightPixels =
+			itemHeightFeet * feetToPixels * adjustmentFactor;
+
+		// Ensure x and y are within the bounds
+		let x = node.x();
+		let y = node.y();
+
+		if (x < 0) x = 0;
+		if (y < 0) y = 0;
+		if (x + itemWidthPixels > containerSize.width)
+			x = containerSize.width - itemWidthPixels;
+		if (y + itemHeightPixels > containerSize.height)
+			y = containerSize.height - itemHeightPixels;
+
+		node.x(x);
+		node.y(y);
+	};
+
 	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
-		const x = e.target.x() / feetToPixels;
-		const y = e.target.y() / (feetToPixels * adjustmentFactor);
+		const node = e.target;
+		const x = node.x() / feetToPixels;
+		const y = node.y() / (feetToPixels * adjustmentFactor);
+
 		if (type === "table") {
 			setTables((prevTables) =>
 				prevTables.map((table) =>
@@ -91,6 +150,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					fontSize={20}
 					fill="white"
 					draggable
+					onDragMove={handleDragMove}
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
 					}
@@ -102,6 +162,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					fontSize={16}
 					fill="white"
 					draggable
+					onDragMove={handleDragMove}
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
 					}
@@ -196,6 +257,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												}
 												fill="blue"
 												draggable
+												onDragMove={
+													handleDragMove
+												}
 												onDragEnd={(
 													e
 												) =>
@@ -244,6 +308,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										}
 										fill="red"
 										draggable
+										onDragMove={
+											handleDragMove
+										}
 										onDragEnd={(e) =>
 											handleDragEnd(
 												feature.id,
