@@ -150,32 +150,50 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 					</option>
 				))}
 			</select>
-			<h2 className="text-lg font-bold">Add Features</h2>
-			<div className="flex flex-col justify-center items-center">
-				<FeatureInputButtonPair
-					featureType="door"
-					buttonOnClick={handleAddFeatureOrTable}
-				/>
-				<FeatureInputButtonPair
-					featureType="obstacle"
-					buttonOnClick={handleAddFeatureOrTable}
-				/>
-			</div>
-			<h2 className="text-lg font-bold">Add Tables</h2>
-			<div className="flex flex-col justify-center items-center">
-				<FeatureInputButtonPair
-					featureType="table-6"
-					buttonOnClick={handleAddFeatureOrTable}
-				/>
-				<FeatureInputButtonPair
-					featureType="table-8"
-					buttonOnClick={handleAddFeatureOrTable}
-				/>
-				<FeatureInputButtonPair
-					featureType="table-5"
-					buttonOnClick={handleAddFeatureOrTable}
-				/>
-			</div>
+
+			{/* Conditionally render the add features/tables section */}
+			{selectedRoomId && (
+				<>
+					<h2 className="text-lg font-bold">
+						Add Features
+					</h2>
+					<div className="flex flex-col justify-center items-center">
+						<FeatureInputButtonPair
+							featureType="door"
+							buttonOnClick={
+								handleAddFeatureOrTable
+							}
+						/>
+						<FeatureInputButtonPair
+							featureType="obstacle"
+							buttonOnClick={
+								handleAddFeatureOrTable
+							}
+						/>
+					</div>
+					<h2 className="text-lg font-bold">Add Tables</h2>
+					<div className="flex flex-col justify-center items-center">
+						<FeatureInputButtonPair
+							featureType="table-6"
+							buttonOnClick={
+								handleAddFeatureOrTable
+							}
+						/>
+						<FeatureInputButtonPair
+							featureType="table-8"
+							buttonOnClick={
+								handleAddFeatureOrTable
+							}
+						/>
+						<FeatureInputButtonPair
+							featureType="table-5"
+							buttonOnClick={
+								handleAddFeatureOrTable
+							}
+						/>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
