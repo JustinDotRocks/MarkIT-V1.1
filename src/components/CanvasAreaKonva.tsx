@@ -16,66 +16,33 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
-		width: window.innerWidth * 0.9, // Use 90% of the window width
-		height: window.innerHeight * 0.9, // Use 90% of the window height
+		width: 0,
+		height: 0,
 	});
-
-	useEffect(() => {
-		const updateContainerSize = () => {
-			if (containerRef.current) {
-				setContainerSize({
-					width: containerRef.current.offsetWidth,
-					height: containerRef.current.offsetHeight,
-				});
-			}
-		};
-
-		// Update size initially
-		updateContainerSize();
-
-		// Update size on window resize
-		window.addEventListener("resize", updateContainerSize);
-		return () =>
-			window.removeEventListener("resize", updateContainerSize);
-	}, []);
+	const feetToPixels = 20; // Scale factor
+	const adjustmentFactor = 1; // Adjustment factor for height
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
-	// const feetToPixels = 25; // 1 foot equals 10 pixels
-	const feetToPixelsWidth = 25; // 1 foot equals 25 pixels for width
-	const feetToPixelsHeight = 25; // 1 foot equals 25 pixels for height
+	useEffect(() => {
+		if (room) {
+			const roomWidthFeet = parseFloat(room.width);
+			const roomHeightFeet = parseFloat(room.depth);
 
-	let roomWidthFeet = 0;
-	let roomHeightFeet = 0;
-	let roomWidthPixels = 0;
-	let roomHeightPixels = 0;
-	// let scale = 1;
-	let scaleWidth = 1;
-	let scaleHeight = 1;
+			const roomWidthPixels = roomWidthFeet * feetToPixels;
+			const roomHeightPixels =
+				roomHeightFeet * feetToPixels * adjustmentFactor;
 
-	if (room) {
-		roomWidthFeet = parseFloat(room.width);
-		roomHeightFeet = parseFloat(room.depth);
-
-		// Convert room dimensions from feet to pixels
-		roomWidthPixels = roomWidthFeet * feetToPixelsWidth;
-		roomHeightPixels = roomHeightFeet * feetToPixelsHeight;
-
-		// Calculate scale factors to fit the room within the canvas
-		scaleWidth = containerSize.width / roomWidthPixels;
-		scaleHeight = containerSize.height / roomHeightPixels;
-	}
-
-	// Define table dimensions in feet
-	const tableDimensions = {
-		"table-6": { width: 6, height: 2.5 },
-		"table-8": { width: 8, height: 2.5 },
-		"table-5": { width: 5, height: 5 },
-	};
+			setContainerSize({
+				width: roomWidthPixels,
+				height: roomHeightPixels,
+			});
+		}
+	}, [room]);
 
 	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
-		const x = e.target.x() / scaleWidth;
-		const y = e.target.y() / scaleHeight;
+		const x = e.target.x() / feetToPixels;
+		const y = e.target.y() / (feetToPixels * adjustmentFactor);
 		if (type === "table") {
 			setTables((prevTables) =>
 				prevTables.map((table) =>
@@ -91,18 +58,27 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
+	// Define table dimensions in feet
+	const tableDimensions = {
+		"table-6": { width: 6, height: 2.5 },
+		"table-8": { width: 8, height: 2.5 },
+		"table-5": { width: 5, height: 5 },
+	};
+
 	const renderTableText = (
 		table: Table,
 		tableWidthPixels: number,
 		tableHeightPixels: number,
 		vendorName: string
 	) => {
-		const textX = table.x * scaleWidth + tableWidthPixels / 4;
-		const textY = table.y * scaleHeight + tableHeightPixels / 4;
+		const textX = table.x * feetToPixels + tableWidthPixels / 4;
+		const textY =
+			table.y * feetToPixels * adjustmentFactor +
+			tableHeightPixels / 4;
 		return (
 			<React.Fragment key={`${table.id}-text`}>
 				<Text
-					x={textX - 30}
+					x={textX - 25}
 					y={textY}
 					text={`${table.tableNumber}`}
 					fontSize={20}
@@ -113,7 +89,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					}
 				/>
 				<Text
-					x={textX - 15} // Adjust position to the right of the table number
+					x={textX - 5} // Adjust position to the right of the table number
 					y={textY}
 					text={vendorName}
 					fontSize={16}
@@ -130,7 +106,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			// className="flex-grow overflow-y-auto p-2 m-6"
 			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full m-8"
 		>
 			<div className="canvas-area flex flex-row">
@@ -141,7 +116,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							<button
 								onClick={() =>
 									removeRoom(room.id)
-								} // ADD: Delete button for room
+								}
 								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 							>
 								Delete
@@ -159,15 +134,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						width={containerSize.width}
 						height={containerSize.height}
 					>
-						<Layer
-							scaleX={scaleWidth}
-							scaleY={scaleHeight}
-						>
+						<Layer>
 							<Rect
 								x={0}
 								y={0}
-								width={roomWidthPixels}
-								height={roomHeightPixels}
+								width={containerSize.width}
+								height={containerSize.height}
 								stroke="black"
 								strokeWidth={2}
 							/>
@@ -184,10 +156,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										];
 									const tableWidthPixels =
 										dimensions.width *
-										feetToPixelsWidth;
+										feetToPixels;
 									const tableHeightPixels =
 										dimensions.height *
-										feetToPixelsHeight;
+										feetToPixels *
+										adjustmentFactor;
 									const vendorName =
 										vendors.find(
 											(vendor) =>
@@ -201,11 +174,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											<Rect
 												x={
 													table.x *
-													scaleWidth
+													feetToPixels
 												}
 												y={
 													table.y *
-													scaleHeight
+													feetToPixels *
+													adjustmentFactor
 												}
 												width={
 													tableWidthPixels
@@ -245,19 +219,21 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										key={feature.id}
 										x={
 											feature.x *
-											scaleWidth
+											feetToPixels
 										}
 										y={
 											feature.y *
-											scaleHeight
+											feetToPixels *
+											adjustmentFactor
 										}
 										width={
 											30 *
-											scaleWidth
+											feetToPixels
 										}
 										height={
 											30 *
-											scaleHeight
+											feetToPixels *
+											adjustmentFactor
 										}
 										fill="red"
 										draggable
