@@ -26,9 +26,15 @@ export interface FeatureInputButtonPairProps<
 	inputClassName?: string;
 	containerClassName?: string;
 }
+export interface RoomSetupModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	addRoom: (name: string, width: string, depth: string) => void;
+}
 
 export interface RoomDetailsComponentProps {
-	addRoom: (name: string, width: string, depth: string) => void;
+	// addRoom: (name: string, width: string, depth: string) => void;
+	openModal: () => void;
 }
 
 export interface SideBarProps {

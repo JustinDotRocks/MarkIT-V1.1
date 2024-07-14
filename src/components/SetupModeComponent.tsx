@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SetupModeComponentProps, Room, Feature, Table } from "../Types";
 import FeatureInputButtonPair from "./FeatureInputButtonPair";
 import RoomDetailsComponent from "./RoomDetailsComponent";
+import RoomSetupModal from "./RoomSetupModal";
 import { v4 as uuidv4 } from "uuid";
 
 const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
@@ -13,44 +14,46 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 	setTables,
 	tables,
 }) => {
-	const [doorQuantity, setDoorQuantity] = useState(0);
-	const [obstacleQuantity, setObstacleQuantity] = useState(0);
-	const [table6Quantity, setTable6Quantity] = useState(0);
-	const [table8Quantity, setTable8Quantity] = useState(0);
-	const [table5Quantity, setTable5Quantity] = useState(0);
+	// const [doorQuantity, setDoorQuantity] = useState(0);
+	// const [obstacleQuantity, setObstacleQuantity] = useState(0);
+	// const [table6Quantity, setTable6Quantity] = useState(0);
+	// const [table8Quantity, setTable8Quantity] = useState(0);
+	// const [table5Quantity, setTable5Quantity] = useState(0);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		switch (name) {
-			case "door-quantity":
-				setDoorQuantity(
-					Math.min(Math.max(0, parseInt(value)), 30)
-				);
-				break;
-			case "obstacle-quantity":
-				setObstacleQuantity(
-					Math.min(Math.max(0, parseInt(value)), 30)
-				);
-				break;
-			case "table-6-quantity":
-				setTable6Quantity(
-					Math.min(Math.max(0, parseInt(value)), 30)
-				);
-				break;
-			case "table-8-quantity":
-				setTable8Quantity(
-					Math.min(Math.max(0, parseInt(value)), 30)
-				);
-				break;
-			case "table-5-quantity":
-				setTable5Quantity(
-					Math.min(Math.max(0, parseInt(value)), 30)
-				);
-				break;
-			default:
-				break;
-		}
-	};
+	// const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const { name, value } = e.target;
+	// 	switch (name) {
+	// 		case "door-quantity":
+	// 			setDoorQuantity(
+	// 				Math.min(Math.max(0, parseInt(value)), 30)
+	// 			);
+	// 			break;
+	// 		case "obstacle-quantity":
+	// 			setObstacleQuantity(
+	// 				Math.min(Math.max(0, parseInt(value)), 30)
+	// 			);
+	// 			break;
+	// 		case "table-6-quantity":
+	// 			setTable6Quantity(
+	// 				Math.min(Math.max(0, parseInt(value)), 30)
+	// 			);
+	// 			break;
+	// 		case "table-8-quantity":
+	// 			setTable8Quantity(
+	// 				Math.min(Math.max(0, parseInt(value)), 30)
+	// 			);
+	// 			break;
+	// 		case "table-5-quantity":
+	// 			setTable5Quantity(
+	// 				Math.min(Math.max(0, parseInt(value)), 30)
+	// 			);
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// };
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const addRoom = (name: string, width: string, depth: string) => {
 		const newRoom: Room = {
@@ -134,7 +137,15 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 
 	return (
 		<div className="space-y-4">
-			<RoomDetailsComponent addRoom={addRoom} />
+			{/* <RoomDetailsComponent addRoom={addRoom} /> */}
+			<RoomDetailsComponent
+				openModal={() => setIsModalOpen(true)}
+			/>
+			<RoomSetupModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				addRoom={addRoom}
+			/>
 			<h2 className="text-lg font-bold">Select Room</h2>
 			<select
 				value={selectedRoomId || ""}
