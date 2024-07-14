@@ -40,6 +40,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	}, [room]);
 
+	// Handle room deletion with confirmation prompt
+	const handleRemoveRoom = (roomId: string) => {
+		if (window.confirm("Are you sure you want to delete the room?")) {
+			removeRoom(roomId);
+		}
+	};
+
 	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
 		const x = e.target.x() / feetToPixels;
 		const y = e.target.y() / (feetToPixels * adjustmentFactor);
@@ -115,7 +122,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							<span>{room.name}</span>
 							<button
 								onClick={() =>
-									removeRoom(room.id)
+									handleRemoveRoom(room.id)
 								}
 								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 							>
