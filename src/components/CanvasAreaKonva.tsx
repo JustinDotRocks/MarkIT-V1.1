@@ -309,6 +309,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													}
 													fill="blue"
 													draggable
+													onDragMove={
+														handleDragMove
+													}
 													onDragEnd={(
 														e
 													) =>
@@ -338,6 +341,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													}
 													fill="blue"
 													draggable
+													onDragMove={
+														handleDragMove
+													}
 													onDragEnd={(
 														e
 													) =>
@@ -434,6 +440,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													}
 													fill="green"
 													draggable
+													onDragMove={
+														handleDragMove
+													}
 													onDragEnd={(
 														e
 													) =>
@@ -460,6 +469,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													}
 													fill="red"
 													draggable
+													onDragMove={
+														handleDragMove
+													}
 													onDragEnd={(
 														e
 													) =>
