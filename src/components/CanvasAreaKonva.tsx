@@ -489,6 +489,88 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		"table-5": { width: 5, height: 5 },
 	};
 
+	// const getFontSizes = (roomWidthFeet: number) => {
+	// 	if (roomWidthFeet < 50) {
+	// 		return {
+	// 			tableNumberFontSize: 20,
+	// 			vendorNameFontSize: 16,
+	// 			xOffset: 100,
+	// 			xOffsetVendorName: 60,
+	// 		};
+	// 	} else if (roomWidthFeet < 100) {
+	// 		return {
+	// 			tableNumberFontSize: 12,
+	// 			vendorNameFontSize: 12,
+	// 			xOffset: 20,
+	// 			xOffsetVendorName: 10,
+	// 		};
+	// 	} else if (roomWidthFeet < 150) {
+	// 		return {
+	// 			tableNumberFontSize: 8,
+	// 			vendorNameFontSize: 8,
+	// 			xOffset: 15,
+	// 			xOffsetVendorName: 2,
+	// 		};
+	// 	} else if (roomWidthFeet < 200) {
+	// 		return {
+	// 			tableNumberFontSize: 5,
+	// 			vendorNameFontSize: 4,
+	// 			xOffset: 8,
+	// 			xOffsetVendorName: 3,
+	// 		};
+	// 	} else {
+	// 		return {
+	// 			tableNumberFontSize: 4,
+	// 			vendorNameFontSize: 3.5,
+	// 			xOffset: 5,
+	// 			xOffsetVendorName: 2,
+	// 		};
+	// 	}
+	// };
+	const getFontSizes = (roomWidthFeet: number, isCircle: boolean) => {
+		if (roomWidthFeet < 50) {
+			return {
+				tableNumberFontSize: 20,
+				vendorNameFontSize: 16,
+				xOffset: 100,
+				xOffsetVendorName: 60,
+				yOffset: isCircle ? 50 : 0,
+			};
+		} else if (roomWidthFeet < 100) {
+			return {
+				tableNumberFontSize: 12,
+				vendorNameFontSize: 12,
+				xOffset: 20,
+				xOffsetVendorName: 10,
+				yOffset: isCircle ? 25 : 0,
+			};
+		} else if (roomWidthFeet < 150) {
+			return {
+				tableNumberFontSize: 8,
+				vendorNameFontSize: 8,
+				xOffset: 15,
+				xOffsetVendorName: 2,
+				yOffset: isCircle ? 20 : 0,
+			};
+		} else if (roomWidthFeet < 200) {
+			return {
+				tableNumberFontSize: 5,
+				vendorNameFontSize: 4,
+				xOffset: 8,
+				xOffsetVendorName: 3,
+				yOffset: isCircle ? 10 : 0,
+			};
+		} else {
+			return {
+				tableNumberFontSize: 4,
+				vendorNameFontSize: 3.5,
+				xOffset: 5,
+				xOffsetVendorName: 2,
+				yOffset: isCircle ? 5 : 0,
+			};
+		}
+	};
+
 	const renderTableText = (
 		table: Table,
 		tableWidthPixels: number,
@@ -498,13 +580,34 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		const textX = table.x * containerSize.width + tableWidthPixels / 4;
 		const textY =
 			table.y * containerSize.height + tableHeightPixels / 4;
+
+		const isCircle = table.type === "table-5";
+
+		// Determine font sizes based on room width
+		const {
+			tableNumberFontSize,
+			vendorNameFontSize,
+			xOffset,
+			xOffsetVendorName,
+			yOffset,
+		} = room
+			? getFontSizes(parseFloat(room.width), isCircle)
+			: {
+					tableNumberFontSize: 12,
+					vendorNameFontSize: 8,
+					xOffset: 35,
+					xOffsetVendorName: 45,
+					yOffset: 0,
+			  }; // Default values if room is undefined
+
 		return (
 			<React.Fragment key={`${table.id}-text`}>
 				<Text
-					x={textX - 3}
+					x={textX - xOffset}
 					y={textY}
 					text={`${table.tableNumber}`}
-					fontSize={12}
+					// fontSize={12}
+					fontSize={tableNumberFontSize}
 					fill="white"
 					draggable
 					onDragMove={handleDragMove}
@@ -513,10 +616,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					}
 				/>
 				<Text
-					x={textX - 20}
-					y={textY}
+					x={textX - xOffsetVendorName}
+					y={textY - yOffset}
 					text={vendorName}
-					fontSize={8}
+					// fontSize={8}
+					fontSize={vendorNameFontSize}
 					fill="white"
 					draggable
 					onDragMove={handleDragMove}
