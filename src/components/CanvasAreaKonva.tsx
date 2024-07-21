@@ -385,6 +385,7 @@
 // };
 
 // export default CanvasAreaKonva;
+
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Text, Circle } from "react-konva";
 import { Feature, Room, Table, CanvasAreaProps } from "../Types";
@@ -400,6 +401,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	removeRoom,
 	selectedRoomId,
 	vendors,
+	openEditModal,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -619,6 +621,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 							>
 								Delete
+							</button>
+							<button
+								onClick={() =>
+									openEditModal(room)
+								}
+								className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
+							>
+								Edit
 							</button>
 						</h3>
 						<p>Width: {room.width}</p>

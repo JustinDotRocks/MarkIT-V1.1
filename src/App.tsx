@@ -4,6 +4,7 @@ import SideBar from "./components/SideBar/SideBar";
 // import CanvasArea from "./components/CanvasArea/CanvasArea";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import { Feature, Room, Vendor, Table } from "./Types";
+import RoomEditModal from "./components/RoomEditModal";
 
 import {
 	saveToLocalStorage,
@@ -15,26 +16,23 @@ const App: React.FC = () => {
 	const [activeMode, setActiveMode] = useState<"setup" | "vendor" | "">(
 		"setup"
 	);
-
 	const [features, setFeatures] = useState<Feature[]>(
 		() =>
 			loadFromLocalStorage<Feature[]>(getStorageKeys().FEATURES) ||
 			[]
 	);
-
 	const [rooms, setRooms] = useState<Room[]>(
 		() => loadFromLocalStorage<Room[]>(getStorageKeys().ROOMS) || []
 	);
-
 	const [vendors, setVendors] = useState<Vendor[]>(
 		() => loadFromLocalStorage<Vendor[]>(getStorageKeys().VENDORS) || []
 	);
-
 	const [tables, setTables] = useState<Table[]>(
 		() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
 	);
-
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
+	const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
 	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries
 	// useEffect(() => {
@@ -132,6 +130,33 @@ const App: React.FC = () => {
 		);
 	};
 
+	const openEditModal = (room: Room) => {
+		setRoomToEdit(room);
+		setIsModalOpen(true);
+	};
+
+	const closeEditModal = () => {
+		setIsModalOpen(false);
+		setRoomToEdit(null);
+	};
+
+	// const handleRoomUpdate = (updatedRoom: Room) => {
+	// 	setRooms((prevRooms) =>
+	// 		prevRooms.map((room) =>
+	// 			room.id === updatedRoom.id ? updatedRoom : room
+	// 		)
+	// 	);
+	// 	closeEditModal();
+	// };
+
+	const updateRoom = (updatedRoom: Room) => {
+		setRooms((prevRooms) =>
+			prevRooms.map((room) =>
+				room.id === updatedRoom.id ? updatedRoom : room
+			)
+		);
+	};
+
 	return (
 		<div className="flex flex-col h-screen">
 			<NavBar
@@ -153,10 +178,6 @@ const App: React.FC = () => {
 					setTables={setTables}
 					selectedRoomId={selectedRoomId}
 					setSelectedRoomId={setSelectedRoomId}
-					// roomFeatures={roomFeatures}
-					// setRoomFeatures={setRoomFeatures}
-					// roomTables={roomTables}
-					// setRoomTables={setRoomTables}
 					updateVendorDetails={updateVendorDetails}
 				/>
 
@@ -171,7 +192,29 @@ const App: React.FC = () => {
 					setFeatures={setFeatures}
 					features={features}
 					vendors={vendors}
+					openEditModal={openEditModal}
 				/>
+				{isModalOpen && roomToEdit && (
+					// <RoomEditModal
+					// 	room={roomToEdit}
+					// 	onClose={closeEditModal}
+					// 	onSave={handleRoomUpdate}
+					// />
+					<RoomEditModal
+						isOpen={isModalOpen}
+						onClose={closeEditModal}
+						roomToEdit={
+							roomToEdit || {
+								id: "",
+								name: "",
+								width: "",
+								depth: "",
+								tables: [],
+							}
+						} // Provide a default room if roomToEdit is null
+						onSave={updateRoom}
+					/>
+				)}
 			</div>
 		</div>
 	);

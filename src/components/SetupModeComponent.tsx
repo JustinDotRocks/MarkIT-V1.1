@@ -14,46 +14,8 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 	setTables,
 	tables,
 }) => {
-	// const [doorQuantity, setDoorQuantity] = useState(0);
-	// const [obstacleQuantity, setObstacleQuantity] = useState(0);
-	// const [table6Quantity, setTable6Quantity] = useState(0);
-	// const [table8Quantity, setTable8Quantity] = useState(0);
-	// const [table5Quantity, setTable5Quantity] = useState(0);
-
-	// const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const { name, value } = e.target;
-	// 	switch (name) {
-	// 		case "door-quantity":
-	// 			setDoorQuantity(
-	// 				Math.min(Math.max(0, parseInt(value)), 30)
-	// 			);
-	// 			break;
-	// 		case "obstacle-quantity":
-	// 			setObstacleQuantity(
-	// 				Math.min(Math.max(0, parseInt(value)), 30)
-	// 			);
-	// 			break;
-	// 		case "table-6-quantity":
-	// 			setTable6Quantity(
-	// 				Math.min(Math.max(0, parseInt(value)), 30)
-	// 			);
-	// 			break;
-	// 		case "table-8-quantity":
-	// 			setTable8Quantity(
-	// 				Math.min(Math.max(0, parseInt(value)), 30)
-	// 			);
-	// 			break;
-	// 		case "table-5-quantity":
-	// 			setTable5Quantity(
-	// 				Math.min(Math.max(0, parseInt(value)), 30)
-	// 			);
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// };
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
 
 	const addRoom = (name: string, width: string, depth: string) => {
 		const newRoom: Room = {
@@ -64,6 +26,25 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 			tables: [],
 		};
 		setRooms((prevRooms: Room[]) => [...prevRooms, newRoom]);
+	};
+
+	const editRoom = (
+		id: string,
+		name: string,
+		width: string,
+		depth: string
+	) => {
+		setRooms((prevRooms) =>
+			prevRooms.map((room) =>
+				room.id === id ? { ...room, name, width, depth } : room
+			)
+		);
+	};
+
+	// Function to open edit modal with room details
+	const openEditModal = (room: Room) => {
+		setRoomToEdit(room);
+		setIsModalOpen(true);
 	};
 
 	const addFeature = (type: "door" | "obstacle", quantity: number) => {
@@ -140,11 +121,19 @@ const SetupModeComponent: React.FC<SetupModeComponentProps> = ({
 			{/* <RoomDetailsComponent addRoom={addRoom} /> */}
 			<RoomDetailsComponent
 				openModal={() => setIsModalOpen(true)}
+				openEditModal={openEditModal}
+				rooms={rooms}
 			/>
 			<RoomSetupModal
 				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
+				// onClose={() => setIsModalOpen(false) }
+				onClose={() => {
+					setIsModalOpen(false);
+					setRoomToEdit(null); // Reset roomToEdit when modal closes
+				}}
 				addRoom={addRoom}
+				editRoom={editRoom}
+				roomToEdit={roomToEdit}
 			/>
 			<h2 className="text-lg font-bold">Select Room</h2>
 			<select

@@ -30,11 +30,20 @@ export interface RoomSetupModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	addRoom: (name: string, width: string, depth: string) => void;
+	editRoom: (
+		id: string,
+		name: string,
+		width: string,
+		depth: string
+	) => void;
+	roomToEdit: Room | null;
 }
 
 export interface RoomDetailsComponentProps {
 	// addRoom: (name: string, width: string, depth: string) => void;
 	openModal: () => void;
+	openEditModal?: (room: Room) => void;
+	rooms: Room[];
 }
 
 export interface SideBarProps {
@@ -100,6 +109,7 @@ export interface CanvasAreaProps {
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
 	features: Feature[];
 	vendors: Vendor[];
+	openEditModal: (room: Room) => void;
 }
 
 export interface VendorDetails {
@@ -172,4 +182,12 @@ export interface VendorCardProps extends VendorDetails {
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
+}
+
+export interface RoomEditModalProps {
+	// room: Room;
+	onClose: () => void;
+	onSave: (updatedRoom: Room) => void;
+	isOpen: boolean;
+	roomToEdit: Room;
 }
