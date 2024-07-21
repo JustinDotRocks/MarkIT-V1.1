@@ -489,85 +489,54 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		"table-5": { width: 5, height: 5 },
 	};
 
-	// const getFontSizes = (roomWidthFeet: number) => {
-	// 	if (roomWidthFeet < 50) {
-	// 		return {
-	// 			tableNumberFontSize: 20,
-	// 			vendorNameFontSize: 16,
-	// 			xOffset: 100,
-	// 			xOffsetVendorName: 60,
-	// 		};
-	// 	} else if (roomWidthFeet < 100) {
-	// 		return {
-	// 			tableNumberFontSize: 12,
-	// 			vendorNameFontSize: 12,
-	// 			xOffset: 20,
-	// 			xOffsetVendorName: 10,
-	// 		};
-	// 	} else if (roomWidthFeet < 150) {
-	// 		return {
-	// 			tableNumberFontSize: 8,
-	// 			vendorNameFontSize: 8,
-	// 			xOffset: 15,
-	// 			xOffsetVendorName: 2,
-	// 		};
-	// 	} else if (roomWidthFeet < 200) {
-	// 		return {
-	// 			tableNumberFontSize: 5,
-	// 			vendorNameFontSize: 4,
-	// 			xOffset: 8,
-	// 			xOffsetVendorName: 3,
-	// 		};
-	// 	} else {
-	// 		return {
-	// 			tableNumberFontSize: 4,
-	// 			vendorNameFontSize: 3.5,
-	// 			xOffset: 5,
-	// 			xOffsetVendorName: 2,
-	// 		};
-	// 	}
-	// };
 	const getFontSizes = (roomWidthFeet: number, isCircle: boolean) => {
 		if (roomWidthFeet < 50) {
 			return {
-				tableNumberFontSize: 20,
-				vendorNameFontSize: 16,
-				xOffset: 100,
-				xOffsetVendorName: 60,
+				tableNumberFontSize: 16,
+				vendorNameFontSize: 14,
+				xOffset: isCircle ? 40 : 38,
+				xOffsetVendorName: isCircle ? 60 : 25,
 				yOffset: isCircle ? 50 : 0,
 			};
 		} else if (roomWidthFeet < 100) {
 			return {
-				tableNumberFontSize: 12,
-				vendorNameFontSize: 12,
-				xOffset: 20,
-				xOffsetVendorName: 10,
+				tableNumberFontSize: 10,
+				vendorNameFontSize: 8,
+				xOffset: isCircle ? 20 : 18,
+				xOffsetVendorName: isCircle ? 30 : 10,
 				yOffset: isCircle ? 25 : 0,
 			};
 		} else if (roomWidthFeet < 150) {
 			return {
 				tableNumberFontSize: 8,
-				vendorNameFontSize: 8,
-				xOffset: 15,
-				xOffsetVendorName: 2,
-				yOffset: isCircle ? 20 : 0,
+				vendorNameFontSize: 6,
+				xOffset: isCircle ? 12 : 12,
+				xOffsetVendorName: isCircle ? 16 : 6,
+				yOffset: isCircle ? 15 : 0,
 			};
 		} else if (roomWidthFeet < 200) {
 			return {
 				tableNumberFontSize: 5,
 				vendorNameFontSize: 4,
-				xOffset: 8,
-				xOffsetVendorName: 3,
+				xOffset: isCircle ? 9 : 8,
+				xOffsetVendorName: isCircle ? 18 : 3,
 				yOffset: isCircle ? 10 : 0,
 			};
 		} else {
 			return {
 				tableNumberFontSize: 4,
 				vendorNameFontSize: 3.5,
-				xOffset: 5,
-				xOffsetVendorName: 2,
-				yOffset: isCircle ? 5 : 0,
+				xOffset: isCircle ? 6 : 5,
+				xOffsetVendorName: isCircle ? 12 : 2,
+				yOffset: isCircle ? 7 : 0,
 			};
+		}
+	};
+
+	// 	// Handle room deletion with confirmation prompt
+	const handleRemoveRoom = (roomId: string) => {
+		if (window.confirm("Are you sure you want to delete the room?")) {
+			removeRoom(roomId);
 		}
 	};
 
@@ -606,7 +575,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					x={textX - xOffset}
 					y={textY}
 					text={`${table.tableNumber}`}
-					// fontSize={12}
 					fontSize={tableNumberFontSize}
 					fill="white"
 					draggable
@@ -619,7 +587,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					x={textX - xOffsetVendorName}
 					y={textY - yOffset}
 					text={vendorName}
-					// fontSize={8}
 					fontSize={vendorNameFontSize}
 					fill="white"
 					draggable
@@ -643,8 +610,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						<h3 className="flex justify-between items-center">
 							<span>{room.name}</span>
 							<button
+								// onClick={() =>
+								// 	removeRoom(room.id)
+								// }
 								onClick={() =>
-									removeRoom(room.id)
+									handleRemoveRoom(room.id)
 								}
 								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 							>
@@ -792,64 +762,117 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										</React.Fragment>
 									);
 								})}
+
 							{objects
 								.filter(
 									(feature) =>
 										feature.roomId ===
 										selectedRoomId
 								)
-								.map((feature) => (
-									<Rect
-										key={feature.id}
-										x={
-											feature.x *
-											containerSize.width
-										}
-										y={
-											feature.y *
-											containerSize.height
-										}
-										width={
-											30 *
-											feetToPixels *
-											(containerSize.width /
-												(room?.width
-													? parseFloat(
-															room.width
-													  ) *
-													  feetToPixels
-													: 1))
-										}
-										height={
-											30 *
-											feetToPixels *
-											(containerSize.width /
-												(room?.width
-													? parseFloat(
-															room.width
-													  ) *
-													  feetToPixels
-													: 1))
-										}
-										fill={
-											feature.type ===
-											"door"
-												? "green"
-												: "red"
-										}
-										draggable
-										onDragMove={
-											handleDragMove
-										}
-										onDragEnd={(e) =>
-											handleDragEnd(
-												feature.id,
-												"feature",
-												e
-											)
-										}
-									/>
-								))}
+								.map((feature) => {
+									const isDoor =
+										feature.type ===
+										"door";
+									return (
+										<React.Fragment
+											key={
+												feature.id
+											}
+										>
+											{isDoor ? (
+												<Rect
+													x={
+														feature.x *
+														containerSize.width
+													}
+													y={
+														feature.y *
+														containerSize.height
+													}
+													width={
+														2 *
+														feetToPixels *
+														(containerSize.width /
+															(room?.width
+																? parseFloat(
+																		room.width
+																  ) *
+																  feetToPixels
+																: 1))
+													}
+													height={
+														2 *
+														feetToPixels *
+														(containerSize.width /
+															(room?.width
+																? parseFloat(
+																		room.width
+																  ) *
+																  feetToPixels
+																: 1))
+													}
+													// width={
+													// 	30
+													// }
+													// height={
+													// 	30
+													// }
+													fill="green"
+													draggable
+													onDragMove={
+														handleDragMove
+													}
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															feature.id,
+															"feature",
+															e
+														)
+													}
+												/>
+											) : (
+												<Circle
+													x={
+														feature.x *
+														containerSize.width
+													}
+													y={
+														feature.y *
+														containerSize.height
+													}
+													// x={
+													// 	feature.x *
+													// 	feetToPixels
+													// }
+													// y={
+													// 	feature.y *
+													// 	feetToPixels *
+													// 	adjustmentFactor
+													// }
+													radius={
+														15
+													}
+													fill="red"
+													draggable
+													onDragMove={
+														handleDragMove
+													}
+													onDragEnd={(
+														e
+													) =>
+														handleDragEnd(
+															feature.id,
+															"feature",
+															e
+														)
+													}
+												/>
+											)}
+										</React.Fragment>
+									);
+								})}
 						</Layer>
 					</Stage>
 				)}
