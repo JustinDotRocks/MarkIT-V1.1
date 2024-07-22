@@ -102,7 +102,7 @@ export interface CanvasAreaProps {
 	objects: Feature[];
 	tables: Table[];
 	rooms: Room[];
-	removeObject: (id: string) => void;
+	// removeObject: (id: string) => void;
 	removeRoom: (id: string) => void;
 	selectedRoomId: string | null;
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
@@ -110,6 +110,7 @@ export interface CanvasAreaProps {
 	features: Feature[];
 	vendors: Vendor[];
 	openEditModal: (room: Room) => void;
+	removeObjectFromCanvas: (id: string) => void; // ADDED
 }
 
 export interface VendorDetails {

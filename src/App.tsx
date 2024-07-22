@@ -34,6 +34,10 @@ const App: React.FC = () => {
 	const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+	const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+		useState<boolean>(false);
+	const [objectToDelete, setObjectToDelete] = useState<string | null>(null);
+
 	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries
 	// useEffect(() => {
 	// 	const cleanedTables = tables.filter(
@@ -183,7 +187,7 @@ const App: React.FC = () => {
 
 				<CanvasAreaKonva
 					objects={features}
-					removeObject={removeObjectFromCanvas}
+					// removeObject={removeObjectFromCanvas}
 					rooms={rooms}
 					tables={tables}
 					removeRoom={removeRoom}
@@ -193,6 +197,7 @@ const App: React.FC = () => {
 					features={features}
 					vendors={vendors}
 					openEditModal={openEditModal}
+					removeObjectFromCanvas={removeObjectFromCanvas}
 				/>
 				{isModalOpen && roomToEdit && (
 					// <RoomEditModal
