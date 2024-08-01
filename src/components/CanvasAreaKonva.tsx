@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Text, Circle } from "react-konva";
+import { KonvaEventObject } from "konva/lib/Node";
 import { Feature, Room, Table, CanvasAreaProps } from "../Types";
+import OptionsBar from "./OptionsBar";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -21,6 +23,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		width: window.innerWidth * 0.9, // Use 90% of the window width
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
+
+	// State for selectedObject and OptionsBar position
+	const [selectedObject, setSelectedObject] = useState<{
+		id: string;
+		type: "table" | "feature";
+		x: number;
+		y: number;
+	} | null>(null);
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
@@ -161,6 +171,88 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	// 	}
 	// };
 
+	const handleObjectClick = (
+		id: string,
+		type: "table" | "feature",
+		x: number,
+		y: number
+	) => {
+		setSelectedObject({ id, type, x, y });
+	};
+	// const handleObjectClick = (
+	// 	id: string,
+	// 	type: "table" | "feature",
+	// 	x: number,
+	// 	y: number,
+	// 	event: Konva.KonvaEventObject<MouseEvent>
+	// ) => {
+	// 	const node = event.target;
+	// 	const { x: nodeX, y: nodeY } = node.getClientRect({ relativeTo: node.getStage() });
+	// 	setSelectedObject({
+	// 		id,
+	// 		type,
+	// 		x: nodeX,
+	// 		y: nodeY - 40, // Adjust to position the OptionsBar above the object
+	// 	});
+	// };
+
+	const handleStageClick = () => {
+		setSelectedObject(null);
+	};
+
+	const handleDelete = () => {
+		if (selectedObject) {
+			removeObjectFromCanvas(selectedObject.id);
+			setSelectedObject(null);
+		}
+	};
+
+	const rotateObject = (
+		id: string,
+		type: "table" | "feature",
+		angle: number
+	) => {
+		if (type === "table") {
+			setTables((prevTables) =>
+				prevTables.map((table) =>
+					table.id === id
+						? {
+								...table,
+								rotation:
+									(table.rotation || 0) +
+									angle,
+						  }
+						: table
+				)
+			);
+		} else {
+			setFeatures((prevFeatures) =>
+				prevFeatures.map((feature) =>
+					feature.id === id
+						? {
+								...feature,
+								rotation:
+									(feature.rotation || 0) +
+									angle,
+						  }
+						: feature
+				)
+			);
+		}
+	};
+
+	const rotateCW = () => {
+		if (selectedObject) {
+			rotateObject(selectedObject.id, selectedObject.type, 45);
+		}
+	};
+
+	const rotateCCW = () => {
+		if (selectedObject) {
+			rotateObject(selectedObject.id, selectedObject.type, -45);
+		}
+	};
+
 	const renderTableText = (
 		table: Table,
 		tableWidthPixels: number,
@@ -203,6 +295,23 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
 					}
+					// onClick={(event) =>
+					// 	handleObjectClick(
+					// 		table.id,
+					// 		"table",
+					// 		event.evt.clientX,
+					// 		event.evt.clientY
+					// 	)
+					// }
+					onClick={(e) =>
+						handleObjectClick(
+							table.id,
+							"table",
+							e.evt.clientX,
+							e.evt.clientY
+						)
+					}
+					rotation={table.rotation || 0}
 				/>
 				<Text
 					x={textX - xOffsetVendorName}
@@ -215,8 +324,25 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
 					}
+					// onClick={(e) =>
+					// 	handleObjectClick(
+					// 		table.id,
+					// 		"table",
+					// 		e.evt.clientX,
+					// 		e.evt.clientY
+					// 	)
+					// }
+					onClick={(e) =>
+						handleObjectClick(
+							table.id,
+							"table",
+							e.evt.clientX,
+							e.evt.clientY
+						)
+					}
+					rotation={table.rotation || 0}
 				/>
-				<Text
+				{/* <Text
 					x={textX + tableWidthPixels / 2}
 					y={textY}
 					text="X"
@@ -232,7 +358,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						}
 					}}
 					cursor="pointer"
-				/>
+				/> */}
 			</React.Fragment>
 		);
 	};
@@ -278,6 +404,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					<Stage
 						width={containerSize.width}
 						height={containerSize.height}
+						onMouseDown={handleStageClick} // Deselect object on stage click
+						onTouchStart={handleStageClick} // Deselect object on touch
 					>
 						<Layer>
 							<Rect
@@ -366,6 +494,34 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															e
 														)
 													}
+													// onClick={(
+													// 	e
+													// ) =>
+													// 	handleObjectClick(
+													// 		table.id,
+													// 		"table",
+													// 		e
+													// 			.evt
+													// 			.clientX,
+													// 		e
+													// 			.evt
+													// 			.clientY
+													// 	)
+													// }
+													onClick={(
+														e
+													) =>
+														handleObjectClick(
+															table.id,
+															"table",
+															e
+																.evt
+																.clientX,
+															e
+																.evt
+																.clientY
+														)
+													}
 												/>
 											) : (
 												<Rect
@@ -397,6 +553,38 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															e
 														)
 													}
+													rotation={
+														table.rotation ||
+														0
+													}
+													// onClick={(
+													// 	e
+													// ) =>
+													// 	handleObjectClick(
+													// 		table.id,
+													// 		"table",
+													// 		e
+													// 			.evt
+													// 			.clientX,
+													// 		e
+													// 			.evt
+													// 			.clientY
+													// 	)
+													// }
+													onClick={(
+														e
+													) =>
+														handleObjectClick(
+															table.id,
+															"table",
+															e
+																.evt
+																.clientX,
+															e
+																.evt
+																.clientY
+														)
+													}
 												/>
 											)}
 											{renderTableText(
@@ -408,7 +596,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										</React.Fragment>
 									);
 								})}
-
 							{objects
 								.filter(
 									(feature) =>
@@ -478,8 +665,36 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 																e
 															)
 														}
+														// onClick={(
+														// 	e
+														// ) =>
+														// 	handleObjectClick(
+														// 		feature.id,
+														// 		"feature",
+														// 		e
+														// 			.evt
+														// 			.clientX,
+														// 		e
+														// 			.evt
+														// 			.clientY
+														// 	)
+														// }
+														onClick={(
+															e
+														) =>
+															handleObjectClick(
+																feature.id,
+																"feature",
+																e
+																	.evt
+																	.clientX,
+																e
+																	.evt
+																	.clientY
+															)
+														}
 													/>
-													<Text
+													{/* <Text
 														x={
 															feature.x *
 															containerSize.width
@@ -506,7 +721,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															}
 														}}
 														cursor="pointer"
-													/>
+													/> */}
 												</>
 											) : (
 												<>
@@ -545,8 +760,40 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 																e
 															)
 														}
+														// onClick={(
+														// 	e
+														// ) =>
+														// 	handleObjectClick(
+														// 		feature.id,
+														// 		"feature",
+														// 		e
+														// 			.evt
+														// 			.clientX,
+														// 		e
+														// 			.evt
+														// 			.clientY
+														// 	)
+														// }
+														onClick={(
+															e
+														) =>
+															handleObjectClick(
+																feature.id,
+																"feature",
+																e
+																	.evt
+																	.clientX,
+																e
+																	.evt
+																	.clientY
+															)
+														}
+														rotation={
+															feature.rotation ||
+															0
+														}
 													/>
-													<Text
+													{/* <Text
 														x={
 															feature.x *
 															containerSize.width
@@ -573,7 +820,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															}
 														}}
 														cursor="pointer"
-													/>
+													/> */}
 												</>
 											)}
 										</React.Fragment>
@@ -582,6 +829,15 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						</Layer>
 					</Stage>
 				)}
+			{selectedObject && (
+				<OptionsBar
+					x={selectedObject.x}
+					y={selectedObject.y}
+					onDelete={handleDelete}
+					onRotateCW={rotateCW}
+					onRotateCCW={rotateCCW}
+				/>
+			)}
 		</div>
 	);
 };

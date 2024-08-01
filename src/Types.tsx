@@ -162,6 +162,7 @@ export type Feature = {
 	roomId?: string; // Stationary features can be associated with a room
 	x: number;
 	y: number;
+	rotation?: number;
 };
 
 export interface Table {
@@ -174,6 +175,7 @@ export interface Table {
 	// roomName: string;
 	x: number;
 	y: number;
+	rotation?: number;
 }
 
 export interface VendorCardProps extends VendorDetails {
@@ -191,4 +193,12 @@ export interface RoomEditModalProps {
 	onSave: (updatedRoom: Room) => void;
 	isOpen: boolean;
 	roomToEdit: Room;
+}
+
+export interface OptionsBarProps {
+	x: number;
+	y: number;
+	onDelete: () => void;
+	onRotateCW: () => void;
+	onRotateCCW: () => void;
 }
