@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Text, Circle } from "react-konva";
-import { KonvaEventObject } from "konva/lib/Node";
-import { Feature, Room, Table, CanvasAreaProps } from "../Types";
+// import { KonvaEventObject } from "konva/lib/Node";
+import { Table, CanvasAreaProps } from "../Types";
 import OptionsBar from "./OptionsBar";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -17,6 +17,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	vendors,
 	openEditModal,
 	removeObjectFromCanvas,
+	toggleLockObject,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -56,6 +57,22 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		const id = node.attrs.id;
 		const type = node.attrs.type;
 
+		// const isLocked =
+		// 	type === "table"
+		// 		? tables.find((table) => table.id === id)?.locked
+		// 		: features.find((feature) => feature.id === id)?.locked;
+
+		// // If the object is locked, do nothing
+		// if (isLocked) return;
+		const item =
+			type === "table"
+				? tables.find((table) => table.id === id)
+				: features.find((feature) => feature.id === id);
+
+		if (item?.isLocked) {
+			return; // Prevent dragging if the item is locked
+		}
+
 		// Get dimensions of the item being dragged
 		const itemWidthFeet =
 			type === "table"
@@ -93,6 +110,23 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
 		const x = e.target.x() / containerSize.width;
 		const y = e.target.y() / containerSize.height;
+
+		// Find the item and check if it's locked
+		// const item =
+		// 	type === "table"
+		// 		? tables.find((table) => table.id === id)
+		// 		: features.find((feature) => feature.id === id);
+
+		// if (item?.locked) return; // Prevent updating position if locked
+		const isLocked =
+			type === "table"
+				? tables.find((table) => table.id === id)?.isLocked
+				: features.find((feature) => feature.id === id)
+						?.isLocked;
+
+		// If the object is locked, do nothing
+		if (isLocked) return;
+
 		if (type === "table") {
 			setTables((prevTables) =>
 				prevTables.map((table) =>
@@ -113,6 +147,26 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		"table-8": { width: 8, height: 2.5 },
 		"table-5": { width: 5, height: 5 },
 	};
+
+	// const toggleLockObject = (id: string, type: "table" | "feature") => {
+	// 	if (type === "table") {
+	// 		setTables((prevTables: Table[]) =>
+	// 			prevTables.map((table) =>
+	// 				table.id === id
+	// 					? { ...table, locked: !table.isLocked }
+	// 					: table
+	// 			)
+	// 		);
+	// 	} else {
+	// 		setFeatures((prevFeatures: Feature[]) =>
+	// 			prevFeatures.map((feature) =>
+	// 				feature.id === id
+	// 					? { ...feature, locked: !feature.isLocked }
+	// 					: feature
+	// 			)
+	// 		);
+	// 	}
+	// };
 
 	const getFontSizes = (roomWidthFeet: number, isCircle: boolean) => {
 		if (roomWidthFeet < 50) {
@@ -214,29 +268,37 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	) => {
 		if (type === "table") {
 			setTables((prevTables) =>
-				prevTables.map((table) =>
-					table.id === id
-						? {
-								...table,
-								rotation:
-									(table.rotation || 0) +
-									angle,
-						  }
-						: table
-				)
+				prevTables.map((table) => {
+					if (table.id === id) {
+						// Check if the table is locked
+						if (table.isLocked) return table;
+
+						// Update rotation
+						const newRotation =
+							((table.rotation || 0) + angle) % 360;
+						return { ...table, rotation: newRotation };
+					}
+					return table;
+				})
 			);
 		} else {
 			setFeatures((prevFeatures) =>
-				prevFeatures.map((feature) =>
-					feature.id === id
-						? {
-								...feature,
-								rotation:
-									(feature.rotation || 0) +
-									angle,
-						  }
-						: feature
-				)
+				prevFeatures.map((feature) => {
+					if (feature.id === id) {
+						// Check if the feature is locked
+						if (feature.isLocked) return feature;
+
+						// Update rotation
+						const newRotation =
+							((feature.rotation || 0) + angle) %
+							360;
+						return {
+							...feature,
+							rotation: newRotation,
+						};
+					}
+					return feature;
+				})
 			);
 		}
 	};
@@ -290,7 +352,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					text={`${table.tableNumber}`}
 					fontSize={tableNumberFontSize}
 					fill="white"
-					draggable
+					draggable={!table.isLocked}
 					onDragMove={handleDragMove}
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
@@ -319,7 +381,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					text={vendorName}
 					fontSize={vendorNameFontSize}
 					fill="white"
-					draggable
+					draggable={!table.isLocked}
 					onDragMove={handleDragMove}
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
@@ -481,7 +543,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 														2
 													}
 													fill="blue"
-													draggable
+													draggable={
+														!table.isLocked
+													}
 													onDragMove={
 														handleDragMove
 													}
@@ -540,7 +604,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 														tableHeightPixels
 													}
 													fill="blue"
-													draggable
+													draggable={
+														!table.isLocked
+													}
 													onDragMove={
 														handleDragMove
 													}
@@ -652,7 +718,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 														// 	30
 														// }
 														fill="green"
-														draggable
+														draggable={
+															!feature.isLocked
+														}
 														onDragMove={
 															handleDragMove
 														}
@@ -747,7 +815,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															15
 														}
 														fill="red"
-														draggable
+														draggable={
+															!feature.isLocked
+														}
 														onDragMove={
 															handleDragMove
 														}
@@ -836,6 +906,25 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					onDelete={handleDelete}
 					onRotateCW={rotateCW}
 					onRotateCCW={rotateCCW}
+					onToggleLock={() =>
+						toggleLockObject(
+							selectedObject.id,
+							selectedObject.type
+						)
+					}
+					isLocked={
+						selectedObject.type === "table"
+							? !!tables.find(
+									(table) =>
+										table.id ===
+										selectedObject.id
+							  )?.isLocked
+							: !!features.find(
+									(feature) =>
+										feature.id ===
+										selectedObject.id
+							  )?.isLocked
+					}
 				/>
 			)}
 		</div>

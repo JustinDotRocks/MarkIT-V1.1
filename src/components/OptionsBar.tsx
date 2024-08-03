@@ -7,6 +7,8 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	onDelete,
 	onRotateCW,
 	onRotateCCW,
+	onToggleLock,
+	isLocked,
 }) => {
 	return (
 		<div
@@ -35,6 +37,12 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
 			>
 				Rotate CW
+			</button>
+			<button
+				onClick={onToggleLock}
+				className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded"
+			>
+				{isLocked ? "Unlock" : "Lock"}
 			</button>
 		</div>
 	);

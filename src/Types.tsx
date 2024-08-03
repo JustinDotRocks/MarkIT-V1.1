@@ -110,7 +110,8 @@ export interface CanvasAreaProps {
 	features: Feature[];
 	vendors: Vendor[];
 	openEditModal: (room: Room) => void;
-	removeObjectFromCanvas: (id: string) => void; // ADDED
+	removeObjectFromCanvas: (id: string) => void;
+	toggleLockObject: (id: string, type: "table" | "feature") => void;
 }
 
 export interface VendorDetails {
@@ -163,6 +164,7 @@ export type Feature = {
 	x: number;
 	y: number;
 	rotation?: number;
+	isLocked?: boolean;
 };
 
 export interface Table {
@@ -176,6 +178,7 @@ export interface Table {
 	x: number;
 	y: number;
 	rotation?: number;
+	isLocked?: boolean;
 }
 
 export interface VendorCardProps extends VendorDetails {
@@ -201,4 +204,6 @@ export interface OptionsBarProps {
 	onDelete: () => void;
 	onRotateCW: () => void;
 	onRotateCCW: () => void;
+	onToggleLock: () => void;
+	isLocked: boolean;
 }

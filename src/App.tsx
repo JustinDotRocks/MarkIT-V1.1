@@ -69,6 +69,7 @@ const App: React.FC = () => {
 			roomId: selectedRoomId || "",
 			x: 0,
 			y: 0,
+			isLocked: false, // Initialize as unlocked
 		};
 		setFeatures((prevFeatures: Feature[]) => [
 			...prevFeatures,
@@ -100,9 +101,43 @@ const App: React.FC = () => {
 			tableNumber: nextTableNumber,
 			x: 0,
 			y: 0,
+			isLocked: false, // Initialize as unlocked
 		};
 
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	};
+
+	const toggleLockObject = (id: string, type: "table" | "feature") => {
+		if (type === "table") {
+			setTables((prevTables: Table[]) => {
+				const updatedTables = prevTables.map((table) =>
+					table.id === id
+						? { ...table, isLocked: !table.isLocked }
+						: table
+				);
+				saveToLocalStorage(
+					getStorageKeys().TABLES,
+					updatedTables
+				); // Save to local storage
+				return updatedTables;
+			});
+		} else {
+			setFeatures((prevFeatures: Feature[]) => {
+				const updatedFeatures = prevFeatures.map((feature) =>
+					feature.id === id
+						? {
+								...feature,
+								isLocked: !feature.isLocked,
+						  }
+						: feature
+				);
+				saveToLocalStorage(
+					getStorageKeys().FEATURES,
+					updatedFeatures
+				); // Save to local storage
+				return updatedFeatures;
+			});
+		}
 	};
 
 	const removeObjectFromCanvas = (id: string) => {
@@ -198,6 +233,7 @@ const App: React.FC = () => {
 					vendors={vendors}
 					openEditModal={openEditModal}
 					removeObjectFromCanvas={removeObjectFromCanvas}
+					toggleLockObject={toggleLockObject}
 				/>
 				{isModalOpen && roomToEdit && (
 					// <RoomEditModal
