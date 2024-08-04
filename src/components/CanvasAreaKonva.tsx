@@ -318,8 +318,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const renderTableText = (
 		table: Table,
 		tableWidthPixels: number,
-		tableHeightPixels: number,
-		vendorName: string
+		tableHeightPixels: number
+		// vendorName: string
 	) => {
 		const textX = table.x * containerSize.width + tableWidthPixels / 4;
 		const textY =
@@ -330,17 +330,17 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		// Determine font sizes based on room width
 		const {
 			tableNumberFontSize,
-			vendorNameFontSize,
+			// vendorNameFontSize,
 			xOffset,
-			xOffsetVendorName,
+			// xOffsetVendorName,
 			yOffset,
 		} = room
 			? getFontSizes(parseFloat(room.width), isCircle)
 			: {
 					tableNumberFontSize: 12,
-					vendorNameFontSize: 8,
+					// vendorNameFontSize: 8,
 					xOffset: 35,
-					xOffsetVendorName: 45,
+					// xOffsetVendorName: 45,
 					yOffset: 0,
 			  }; // Default values if room is undefined
 
@@ -375,7 +375,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					}
 					rotation={table.rotation || 0}
 				/>
-				<Text
+				{/* <Text
 					x={textX - xOffsetVendorName}
 					y={textY - yOffset}
 					text={vendorName}
@@ -403,23 +403,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						)
 					}
 					rotation={table.rotation || 0}
-				/>
-				{/* <Text
-					x={textX + tableWidthPixels / 2}
-					y={textY}
-					text="X"
-					fontSize={tableNumberFontSize}
-					fill="red"
-					onClick={() => {
-						if (
-							window.confirm(
-								"Are you sure you want to delete this table?"
-							)
-						) {
-							removeObjectFromCanvas(table.id);
-						}
-					}}
-					cursor="pointer"
 				/> */}
 			</React.Fragment>
 		);
@@ -656,8 +639,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											{renderTableText(
 												table,
 												tableWidthPixels,
-												tableHeightPixels,
-												vendorName
+												tableHeightPixels
+												// vendorName
 											)}
 										</React.Fragment>
 									);
@@ -924,6 +907,27 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										feature.id ===
 										selectedObject.id
 							  )?.isLocked
+					}
+					vendorName={
+						selectedObject.type === "table"
+							? tables.find(
+									(table) =>
+										table.id ===
+										selectedObject.id
+							  )?.vendorId
+								? vendors.find(
+										(vendor) =>
+											vendor.id ===
+											tables.find(
+												(
+													table
+												) =>
+													table.id ===
+													selectedObject.id
+											)?.vendorId
+								  )?.name || ""
+								: ""
+							: ""
 					}
 				/>
 			)}

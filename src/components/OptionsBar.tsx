@@ -9,6 +9,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	onRotateCCW,
 	onToggleLock,
 	isLocked,
+	vendorName,
 }) => {
 	return (
 		<div
@@ -20,6 +21,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				transform: "translate(-50%, -100%)", // Center it horizontally and move it above
 			}}
 		>
+			<p>{vendorName}</p> {/* Display the vendor name */}
 			<button
 				onClick={onDelete}
 				className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"

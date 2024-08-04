@@ -206,4 +206,5 @@ export interface OptionsBarProps {
 	onRotateCCW: () => void;
 	onToggleLock: () => void;
 	isLocked: boolean;
+	vendorName: string;
 }
