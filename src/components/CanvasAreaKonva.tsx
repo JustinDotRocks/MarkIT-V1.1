@@ -44,12 +44,28 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			const roomWidthFeet = parseFloat(room.width);
 			const roomHeightFeet = parseFloat(room.depth);
 
-			const roomWidthPixels = roomWidthFeet * feetToPixels;
+			// Determine the greater dimension and set it to the horizontal axis
+			const greaterDimensionFeet = Math.max(
+				roomWidthFeet,
+				roomHeightFeet
+			);
+			const lesserDimensionFeet = Math.min(
+				roomWidthFeet,
+				roomHeightFeet
+			);
+
+			// const roomWidthPixels = roomWidthFeet * feetToPixels;
+			const roomWidthPixels = greaterDimensionFeet * feetToPixels;
+			const roomHeightPixels = lesserDimensionFeet * feetToPixels;
 			const scaleWidth = containerSize.width / roomWidthPixels;
 
+			// setContainerSize({
+			// 	width: containerSize.width,
+			// 	height: roomHeightFeet * feetToPixels * scaleWidth,
+			// });
 			setContainerSize({
-				width: containerSize.width,
-				height: roomHeightFeet * feetToPixels * scaleWidth,
+				width: roomWidthPixels * scaleWidth,
+				height: roomHeightPixels * scaleWidth,
 			});
 		}
 	}, [room, containerSize.width]);
