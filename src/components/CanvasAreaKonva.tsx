@@ -33,6 +33,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		y: number;
 	} | null>(null);
 
+	const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false); // New state for locking/unlocking all objects
+
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
 	const feetToPixels = 25; // Scale factor
@@ -167,6 +169,22 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	// 		);
 	// 	}
 	// };
+
+	const lockAllObjects = () => {
+		setAreAllObjectsLocked((prev) => !prev);
+		setTables((prevTables) =>
+			prevTables.map((table) => ({
+				...table,
+				isLocked: !areAllObjectsLocked,
+			}))
+		);
+		setFeatures((prevFeatures) =>
+			prevFeatures.map((feature) => ({
+				...feature,
+				isLocked: !areAllObjectsLocked,
+			}))
+		);
+	};
 
 	const getFontSizes = (roomWidthFeet: number, isCircle: boolean) => {
 		if (roomWidthFeet < 50) {
@@ -411,37 +429,52 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	return (
 		<div
 			ref={containerRef}
-			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full m-8"
+			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full"
 		>
-			<div className="canvas-area flex flex-row">
-				{rooms.map((room) => (
-					<div key={room.id} className="room">
-						<h3 className="flex justify-between items-center">
-							<span>{room.name}</span>
-							<button
-								// onClick={() =>
-								// 	removeRoom(room.id)
-								// }
-								onClick={() =>
-									handleRemoveRoom(room.id)
-								}
-								className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-							>
-								Delete
-							</button>
-							<button
-								onClick={() =>
-									openEditModal(room)
-								}
-								className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
-							>
-								Edit
-							</button>
-						</h3>
-						<p>Width: {room.width}</p>
-						<p>Depth: {room.depth}</p>
-					</div>
-				))}
+			<div className="canvas-area flex flex-col">
+				<div className="flex flex-row">
+					{rooms.map((room) => (
+						<div key={room.id} className="room">
+							<h3 className="flex justify-between items-center">
+								<span>{room.name}</span>
+								<button
+									// onClick={() =>
+									// 	removeRoom(room.id)
+									// }
+									onClick={() =>
+										handleRemoveRoom(
+											room.id
+										)
+									}
+									className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+								>
+									Delete
+								</button>
+								<button
+									onClick={() =>
+										openEditModal(room)
+									}
+									className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
+								>
+									Edit
+								</button>
+							</h3>
+							<p>Width: {room.width}</p>
+							<p>Depth: {room.depth}</p>
+						</div>
+					))}
+				</div>
+				<div className="room-details-container w-full p-4 mb-4 bg-blue-200">
+					{/* Container with light blue background */}
+					<button
+						onClick={lockAllObjects}
+						className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded"
+					>
+						{areAllObjectsLocked
+							? "Unlock All Objects"
+							: "Lock All Objects"}
+					</button>
+				</div>
 			</div>
 			{room &&
 				containerSize.width > 0 &&

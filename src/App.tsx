@@ -219,22 +219,25 @@ const App: React.FC = () => {
 					setSelectedRoomId={setSelectedRoomId}
 					updateVendorDetails={updateVendorDetails}
 				/>
-
-				<CanvasAreaKonva
-					objects={features}
-					// removeObject={removeObjectFromCanvas}
-					rooms={rooms}
-					tables={tables}
-					removeRoom={removeRoom}
-					selectedRoomId={selectedRoomId}
-					setTables={setTables}
-					setFeatures={setFeatures}
-					features={features}
-					vendors={vendors}
-					openEditModal={openEditModal}
-					removeObjectFromCanvas={removeObjectFromCanvas}
-					toggleLockObject={toggleLockObject}
-				/>
+				<div className="flex-grow flex-col justify-center m-8 items-center overflow-y-auto h-full">
+					<CanvasAreaKonva
+						objects={features}
+						// removeObject={removeObjectFromCanvas}
+						rooms={rooms}
+						tables={tables}
+						removeRoom={removeRoom}
+						selectedRoomId={selectedRoomId}
+						setTables={setTables}
+						setFeatures={setFeatures}
+						features={features}
+						vendors={vendors}
+						openEditModal={openEditModal}
+						removeObjectFromCanvas={
+							removeObjectFromCanvas
+						}
+						toggleLockObject={toggleLockObject}
+					/>
+				</div>
 				{isModalOpen && roomToEdit && (
 					// <RoomEditModal
 					// 	room={roomToEdit}
