@@ -3,6 +3,7 @@ import { Stage, Layer, Rect, Text, Circle } from "react-konva";
 // import { KonvaEventObject } from "konva/lib/Node";
 import { Table, CanvasAreaProps } from "../Types";
 import OptionsBar from "./OptionsBar";
+import RoomDetailsDisplay from "./RoomDetailsDisplay";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -246,12 +247,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
-	// 	// Handle room deletion with confirmation prompt
-	const handleRemoveRoom = (roomId: string) => {
-		if (window.confirm("Are you sure you want to delete the room?")) {
-			removeRoom(roomId);
-		}
-	};
+	// // 	// Handle room deletion with confirmation prompt
+	// const handleRemoveRoom = (roomId: string) => {
+	// 	if (window.confirm("Are you sure you want to delete the room?")) {
+	// 		removeRoom(roomId);
+	// 	}
+	// };
 
 	// const handleRemove = (id: string, type: "table" | "feature") => {
 	// 	if (window.confirm("Are you sure you want to delete this item?")) {
@@ -391,14 +392,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					onDragEnd={(e) =>
 						handleDragEnd(table.id, "table", e)
 					}
-					// onClick={(event) =>
-					// 	handleObjectClick(
-					// 		table.id,
-					// 		"table",
-					// 		event.evt.clientX,
-					// 		event.evt.clientY
-					// 	)
-					// }
 					onClick={(e) =>
 						handleObjectClick(
 							table.id,
@@ -408,6 +401,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						)
 					}
 					rotation={table.rotation || 0}
+					align="center"
+					verticalAlign="middle"
+					offsetX={tableWidthPixels / 4}
+					offsetY={tableHeightPixels / 4}
 				/>
 				{/* <Text
 					x={textX - xOffsetVendorName}
@@ -449,7 +446,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		>
 			<div className="canvas-area flex flex-col">
 				<div className="flex flex-row">
-					{rooms.map((room) => (
+					{/* {rooms.map((room) => (
 						<div key={room.id} className="room">
 							<h3 className="flex justify-between items-center">
 								<span>{room.name}</span>
@@ -478,7 +475,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							<p>Width: {room.width}</p>
 							<p>Depth: {room.depth}</p>
 						</div>
-					))}
+					))} */}
+					<RoomDetailsDisplay
+						rooms={rooms}
+						handleRemoveRoom={removeRoom}
+						openEditModal={openEditModal}
+						removeRoom={removeRoom}
+					/>
 				</div>
 				<div className="room-details-container w-full p-4 mb-4 bg-blue-200">
 					{/* Container with light blue background */}
@@ -541,12 +544,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												  ) *
 												  feetToPixels
 												: 1));
-									const vendorName =
-										vendors.find(
-											(vendor) =>
-												vendor.id ===
-												table.vendorId
-										)?.name || "";
+									// const vendorName =
+									// 	vendors.find(
+									// 		(vendor) =>
+									// 			vendor.id ===
+									// 			table.vendorId
+									// 	)?.name || "";
 									return (
 										<React.Fragment
 											key={table.id}
@@ -590,20 +593,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															e
 														)
 													}
-													// onClick={(
-													// 	e
-													// ) =>
-													// 	handleObjectClick(
-													// 		table.id,
-													// 		"table",
-													// 		e
-													// 			.evt
-													// 			.clientX,
-													// 		e
-													// 			.evt
-													// 			.clientY
-													// 	)
-													// }
 													onClick={(
 														e
 													) =>
@@ -617,6 +606,16 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 																.evt
 																.clientY
 														)
+													}
+													offsetX={
+														0
+													}
+													offsetY={
+														0
+													}
+													rotation={
+														table.rotation ||
+														0
 													}
 												/>
 											) : (
@@ -655,20 +654,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 														table.rotation ||
 														0
 													}
-													// onClick={(
-													// 	e
-													// ) =>
-													// 	handleObjectClick(
-													// 		table.id,
-													// 		"table",
-													// 		e
-													// 			.evt
-													// 			.clientX,
-													// 		e
-													// 			.evt
-													// 			.clientY
-													// 	)
-													// }
+													offsetX={
+														tableWidthPixels /
+														2
+													}
+													offsetY={
+														tableHeightPixels /
+														2
+													}
 													onClick={(
 														e
 													) =>
@@ -765,20 +758,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 																e
 															)
 														}
-														// onClick={(
-														// 	e
-														// ) =>
-														// 	handleObjectClick(
-														// 		feature.id,
-														// 		"feature",
-														// 		e
-														// 			.evt
-														// 			.clientX,
-														// 		e
-														// 			.evt
-														// 			.clientY
-														// 	)
-														// }
 														onClick={(
 															e
 														) =>
@@ -834,15 +813,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															feature.y *
 															containerSize.height
 														}
-														// x={
-														// 	feature.x *
-														// 	feetToPixels
-														// }
-														// y={
-														// 	feature.y *
-														// 	feetToPixels *
-														// 	adjustmentFactor
-														// }
 														radius={
 															15
 														}
@@ -862,20 +832,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 																e
 															)
 														}
-														// onClick={(
-														// 	e
-														// ) =>
-														// 	handleObjectClick(
-														// 		feature.id,
-														// 		"feature",
-														// 		e
-														// 			.evt
-														// 			.clientX,
-														// 		e
-														// 			.evt
-														// 			.clientY
-														// 	)
-														// }
 														onClick={(
 															e
 														) =>

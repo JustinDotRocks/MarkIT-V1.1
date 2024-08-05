@@ -42,7 +42,7 @@ export interface RoomSetupModalProps {
 export interface RoomDetailsComponentProps {
 	// addRoom: (name: string, width: string, depth: string) => void;
 	openModal: () => void;
-	openEditModal?: (room: Room) => void;
+	openEditModal: (room: Room) => void;
 	rooms: Room[];
 }
 
@@ -207,4 +207,11 @@ export interface OptionsBarProps {
 	onToggleLock: () => void;
 	isLocked: boolean;
 	vendorName: string;
+}
+
+export interface RoomDetailsDisplayProps {
+	rooms: Room[];
+	handleRemoveRoom: (roomId: string) => void;
+	openEditModal: (room: Room) => void;
+	removeRoom: (id: string) => void;
 }
