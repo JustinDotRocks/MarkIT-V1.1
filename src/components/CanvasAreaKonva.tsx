@@ -71,90 +71,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	}, [room, containerSize.width]);
 
-	// const dragParams = {
-	// 	containerSize,
-	// 	tables,
-	// 	features,
-	// 	setTables,
-	// 	setFeatures,
-	// };
-
-	const handleDragMove = (e: any) => {
-		const node = e.target;
-		const id = node.attrs.id;
-		const type = node.attrs.type;
-
-		const item =
-			type === "table"
-				? tables.find((table) => table.id === id)
-				: features.find((feature) => feature.id === id);
-
-		if (item?.isLocked) {
-			return; // Prevent dragging if the item is locked
-		}
-
-		// Get dimensions of the item being dragged
-		const itemWidthFeet =
-			type === "table"
-				? tables.find((table) => table.id === id)?.type ===
-				  "table-6"
-					? 6
-					: tables.find((table) => table.id === id)
-							?.type === "table-8"
-					? 8
-					: 5
-				: 1.5; // Assuming feature width is 1.5 feet for example
-		const itemHeightFeet =
-			type === "table"
-				? 2.5 // Assuming table height is 2.5 feet for all types
-				: 1.5; // Assuming feature height is 1.5 feet for example
-
-		const itemWidthPixels = itemWidthFeet * feetToPixels;
-		const itemHeightPixels = itemHeightFeet * feetToPixels;
-
-		// Ensure x and y are within the bounds
-		let x = node.x();
-		let y = node.y();
-
-		if (x < 0) x = 0;
-		if (y < 0) y = 0;
-		if (x + itemWidthPixels > containerSize.width)
-			x = containerSize.width - itemWidthPixels;
-		if (y + itemHeightPixels > containerSize.height)
-			y = containerSize.height - itemHeightPixels;
-
-		node.x(x);
-		node.y(y);
-	};
-
-	const handleDragEnd = (id: string, type: "table" | "feature", e: any) => {
-		const x = e.target.x() / containerSize.width;
-		const y = e.target.y() / containerSize.height;
-
-		const isLocked =
-			type === "table"
-				? tables.find((table) => table.id === id)?.isLocked
-				: features.find((feature) => feature.id === id)
-						?.isLocked;
-
-		// If the object is locked, do nothing
-		if (isLocked) return;
-
-		if (type === "table") {
-			setTables((prevTables) =>
-				prevTables.map((table) =>
-					table.id === id ? { ...table, x, y } : table
-				)
-			);
-		} else {
-			setFeatures((prevFeatures) =>
-				prevFeatures.map((feature) =>
-					feature.id === id ? { ...feature, x, y } : feature
-				)
-			);
-		}
-	};
-
 	const lockAllObjects = () => {
 		setAreAllObjectsLocked((prev) => !prev);
 		setTables((prevTables) =>
@@ -241,24 +157,49 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((table) => (
-									<TableComponent
+									// <TableComponent
+									// 	key={table.id}
+									// 	table={table}
+									// 	containerSize={
+									// 		containerSize
+									// 	}
+									// 	room={room}
+									// 	feetToPixels={
+									// 		feetToPixels
+									// 	}
+									// 	handleDragMove={
+									// 		handleDragMove
+									// 	}
+									// 	handleDragEnd={
+									// 		handleDragEnd
+									// 	}
+									// 	handleObjectClick={
+									// 		handleObjectClick
+									// 	}
+									// />
+									<DragAndDropHandler
 										key={table.id}
-										table={table}
+										item={table}
 										containerSize={
 											containerSize
 										}
-										room={room}
 										feetToPixels={
 											feetToPixels
 										}
-										handleDragMove={
-											handleDragMove
+										room={room}
+										tables={tables}
+										features={features}
+										setTables={
+											setTables
 										}
-										handleDragEnd={
-											handleDragEnd
+										setFeatures={
+											setFeatures
 										}
-										handleObjectClick={
+										onObjectClick={
 											handleObjectClick
+										}
+										Component={
+											TableComponent
 										}
 									/>
 								))}
@@ -269,24 +210,49 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((feature) => {
-									<FeatureComponent
+									// <FeatureComponent
+									// 	key={feature.id}
+									// 	feature={feature}
+									// 	containerSize={
+									// 		containerSize
+									// 	}
+									// 	room={room}
+									// 	feetToPixels={
+									// 		feetToPixels
+									// 	}
+									// 	handleDragMove={
+									// 		handleDragMove
+									// 	}
+									// 	handleDragEnd={
+									// 		handleDragEnd
+									// 	}
+									// 	handleObjectClick={
+									// 		handleObjectClick
+									// 	}
+									// />
+									<DragAndDropHandler
 										key={feature.id}
-										feature={feature}
-										containerSize={
-											containerSize
-										}
-										room={room}
+										item={feature}
 										feetToPixels={
 											feetToPixels
 										}
-										handleDragMove={
-											handleDragMove
+										room={room}
+										containerSize={
+											containerSize
 										}
-										handleDragEnd={
-											handleDragEnd
+										tables={tables}
+										features={features}
+										setTables={
+											setTables
 										}
-										handleObjectClick={
+										setFeatures={
+											setFeatures
+										}
+										onObjectClick={
 											handleObjectClick
+										}
+										Component={
+											FeatureComponent
 										}
 									/>;
 								})}

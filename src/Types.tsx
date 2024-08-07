@@ -278,6 +278,9 @@ export interface FeatureComponentProps {
 // }
 export interface DragAndDropComponentProps {
 	item: Table | Feature;
+	containerSize: { width: number; height: number };
+	room: Room | undefined;
+	feetToPixels: number;
 	onDragMove: (e: any) => void;
 	onDragEnd: (e: any) => void;
 	onObjectClick: (
@@ -291,6 +294,8 @@ export interface DragAndDropComponentProps {
 export interface DragAndDropHandlerProps {
 	item: Table | Feature;
 	containerSize: { width: number; height: number };
+	room: Room | undefined;
+	feetToPixels: number;
 	tables: Table[];
 	features: Feature[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;

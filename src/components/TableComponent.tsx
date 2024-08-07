@@ -1,16 +1,20 @@
 import React from "react";
 import { Rect, Circle, Text } from "react-konva";
-import { TableComponentProps } from "../Types";
+// import { TableComponentProps } from "../Types";
+import { DragAndDropComponentProps, Table } from "../Types";
 
-const TableComponent: React.FC<TableComponentProps> = ({
-	table,
+const TableComponent: React.FC<DragAndDropComponentProps> = ({
+	// table,
+	item,
 	containerSize,
 	room,
 	feetToPixels,
-	handleDragMove,
-	handleDragEnd,
-	handleObjectClick,
+	// handleDragMove,
+	// handleDragEnd,
+	// handleObjectClick,
+	onObjectClick,
 }) => {
+	const table = item as Table;
 	const tableDimensions = {
 		"table-6": { width: 6, height: 2.5 },
 		"table-8": { width: 8, height: 2.5 },
@@ -72,10 +76,10 @@ const TableComponent: React.FC<TableComponentProps> = ({
 		? getFontSizes(parseFloat(room.width), isCircle)
 		: { tableNumberFontSize: 12, xOffset: 35, yOffset: 0 };
 
-	const onDragEndWrapper = (e: any) => {
-		console.log("TableComponent onDragEnd triggered", { table, e });
-		handleDragEnd(table.id, "table", e);
-	};
+	// const onDragEndWrapper = (e: any) => {
+	// 	console.log("TableComponent onDragEnd triggered", { table, e });
+	// 	handleDragEnd(table.id, "table", e);
+	// };
 
 	return (
 		// <React.Fragment>
@@ -179,13 +183,10 @@ const TableComponent: React.FC<TableComponentProps> = ({
 					}
 					fill="blue"
 					draggable={!table.isLocked}
-					onDragMove={handleDragMove}
-					onDragEnd={onDragEndWrapper}
-					// onDragEnd={(e) =>
-					// 	handleDragEnd(table.id, "table", e)
-					// }
+					// onDragMove={handleDragMove}
+					// onDragEnd={onDragEndWrapper}
 					onClick={(e) =>
-						handleObjectClick(
+						onObjectClick(
 							table.id,
 							"table",
 							e.evt.clientX,
@@ -206,13 +207,13 @@ const TableComponent: React.FC<TableComponentProps> = ({
 					height={tableHeightPixels}
 					fill="blue"
 					draggable={!table.isLocked}
-					onDragMove={(e) => handleDragMove(e)}
-					onDragEnd={onDragEndWrapper}
+					// onDragMove={(e) => handleDragMove(e)}
+					// onDragEnd={onDragEndWrapper}
 					rotation={table.rotation || 0}
 					offsetX={tableWidthPixels / 2}
 					offsetY={tableHeightPixels / 2}
 					onClick={(e) =>
-						handleObjectClick(
+						onObjectClick(
 							table.id,
 							"table",
 							e.evt.clientX,
@@ -228,10 +229,10 @@ const TableComponent: React.FC<TableComponentProps> = ({
 				fontSize={tableNumberFontSize}
 				fill="white"
 				draggable={!table.isLocked}
-				onDragMove={(e) => handleDragMove(e)}
-				onDragEnd={onDragEndWrapper}
+				// onDragMove={(e) => handleDragMove(e)}
+				// onDragEnd={onDragEndWrapper}
 				onClick={(e) =>
-					handleObjectClick(
+					onObjectClick(
 						table.id,
 						"table",
 						e.evt.clientX,
