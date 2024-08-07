@@ -215,3 +215,101 @@ export interface RoomDetailsDisplayProps {
 	openEditModal: (room: Room) => void;
 	removeRoom: (id: string) => void;
 }
+
+export interface LockAllObjectsButtonProps {
+	areAllObjectsLocked: boolean;
+	lockAllObjects: () => void;
+}
+
+export interface TableComponentProps {
+	table: Table;
+	containerSize: { width: number; height: number };
+	room: Room | undefined;
+	feetToPixels: number;
+	handleDragMove: (e: any) => void;
+	handleDragEnd: (id: string, type: "table" | "feature", e: any) => void;
+	handleObjectClick: (
+		id: string,
+		type: "table" | "feature",
+		x: number,
+		y: number
+	) => void;
+}
+
+export interface FeatureComponentProps {
+	feature: Feature;
+	containerSize: { width: number; height: number };
+	room: Room | undefined;
+	feetToPixels: number;
+	handleDragMove: (e: any) => void;
+	handleDragEnd: (id: string, type: "table" | "feature", e: any) => void;
+	handleObjectClick: (
+		id: string,
+		type: "table" | "feature",
+		x: number,
+		y: number
+	) => void;
+}
+
+// export interface DragAndDropHandlerProps {
+// 	containerSize: { width: number; height: number };
+// 	tables: Table[];
+// 	features: Feature[];
+// 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+// 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+// }
+// export interface DragAndDropHandlerProps {
+// 	containerSize: {
+// 		width: number;
+// 		height: number;
+// 	};
+// 	tables: Table[];
+// 	features: Feature[];
+// 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+// 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+// 	onObjectClick: (
+// 		id: string,
+// 		type: "table" | "feature",
+// 		x: number,
+// 		y: number
+// 	) => void;
+// 	Component: React.FC<any>;
+// 	item: Table | Feature;
+// }
+export interface DragAndDropComponentProps {
+	item: Table | Feature;
+	onDragMove: (e: any) => void;
+	onDragEnd: (e: any) => void;
+	onObjectClick: (
+		id: string,
+		type: "table" | "feature",
+		x: number,
+		y: number
+	) => void;
+}
+
+export interface DragAndDropHandlerProps {
+	item: Table | Feature;
+	containerSize: { width: number; height: number };
+	tables: Table[];
+	features: Feature[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	onObjectClick: (
+		id: string,
+		type: "table" | "feature",
+		x: number,
+		y: number
+	) => void;
+	Component: React.FC<DragAndDropComponentProps>;
+}
+
+export interface RotateHandlerProps {
+	item: Table | Feature;
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	children: (props: {
+		rotateCW: () => void;
+		rotateCCW: () => void;
+	}) => React.ReactNode;
+}
