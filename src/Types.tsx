@@ -30,13 +30,13 @@ export interface RoomSetupModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	addRoom: (name: string, width: string, depth: string) => void;
-	editRoom: (
+	editRoom?: (
 		id: string,
 		name: string,
 		width: string,
 		depth: string
 	) => void;
-	roomToEdit: Room | null;
+	roomToEdit?: Room | null;
 }
 
 export interface RoomDetailsComponentProps {
@@ -113,6 +113,7 @@ export interface CanvasAreaProps {
 	removeObjectFromCanvas: (id: string) => void;
 	toggleLockObject: (id: string, type: "table" | "feature") => void;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	openAddRoomModal: () => void;
 }
 
 export interface VendorDetails {
@@ -216,6 +217,8 @@ export interface RoomDetailsDisplayProps {
 	openEditModal: (room: Room) => void;
 	removeRoom: (id: string) => void;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	openAddRoomModal: () => void;
+	selectedRoomId: string | null;
 }
 
 export interface LockAllObjectsButtonProps {

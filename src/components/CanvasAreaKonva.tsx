@@ -23,6 +23,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	removeObjectFromCanvas,
 	toggleLockObject,
 	setSelectedRoomId,
+	openAddRoomModal,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -124,6 +125,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					openEditModal={openEditModal}
 					removeRoom={removeRoom}
 					setSelectedRoomId={setSelectedRoomId}
+					openAddRoomModal={openAddRoomModal}
+					selectedRoomId={selectedRoomId}
 				/>
 			</div>
 			<div className="room-details-container w-full p-4 mb-4 bg-blue-200">

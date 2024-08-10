@@ -5,6 +5,7 @@ import SideBar from "./components/SideBar/SideBar";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import { Feature, Room, Vendor, Table } from "./Types";
 import RoomEditModal from "./components/RoomEditModal";
+import RoomSetupModal from "./components/RoomSetupModal";
 
 import {
 	saveToLocalStorage,
@@ -33,6 +34,7 @@ const App: React.FC = () => {
 	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
 	const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isRoomModalOpen, setIsRoomModalOpen] = useState<boolean>(false);
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
 		useState<boolean>(false);
@@ -56,6 +58,9 @@ const App: React.FC = () => {
 		saveToLocalStorage(getStorageKeys().VENDORS, vendors);
 		saveToLocalStorage(getStorageKeys().TABLES, tables);
 	}, [features, rooms, vendors, tables]);
+
+	const openRoomModal = () => setIsRoomModalOpen(true);
+	const closeRoomModal = () => setIsRoomModalOpen(false);
 
 	const addObjectToCanvas = (
 		type: "door" | "obstacle",
@@ -188,6 +193,17 @@ const App: React.FC = () => {
 	// 	closeEditModal();
 	// };
 
+	const addRoom = (name: string, width: string, depth: string) => {
+		const newRoom: Room = {
+			id: Date.now().toString(),
+			name,
+			width,
+			depth,
+			tables: [],
+		};
+		setRooms((prevRooms) => [...prevRooms, newRoom]);
+	};
+
 	const updateRoom = (updatedRoom: Room) => {
 		setRooms((prevRooms) =>
 			prevRooms.map((room) =>
@@ -237,14 +253,11 @@ const App: React.FC = () => {
 						}
 						toggleLockObject={toggleLockObject}
 						setSelectedRoomId={setSelectedRoomId}
+						openAddRoomModal={openRoomModal}
 					/>
 				</div>
+
 				{isModalOpen && roomToEdit && (
-					// <RoomEditModal
-					// 	room={roomToEdit}
-					// 	onClose={closeEditModal}
-					// 	onSave={handleRoomUpdate}
-					// />
 					<RoomEditModal
 						isOpen={isModalOpen}
 						onClose={closeEditModal}
@@ -260,6 +273,11 @@ const App: React.FC = () => {
 						onSave={updateRoom}
 					/>
 				)}
+				<RoomSetupModal
+					isOpen={isRoomModalOpen}
+					onClose={closeRoomModal}
+					addRoom={addRoom}
+				/>
 			</div>
 		</div>
 	);
