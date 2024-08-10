@@ -6,6 +6,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	rooms,
 	openEditModal,
 	removeRoom,
+	setSelectedRoomId,
 }) => {
 	// 	// Handle room deletion with confirmation prompt
 	const handleRemoveRoom = (roomId: string) => {
@@ -15,9 +16,13 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	};
 
 	return (
-		<div className="flex flex-row">
+		<div className="flex flex-wrap">
 			{rooms.map((room) => (
-				<div key={room.id} className="room">
+				<div
+					key={room.id}
+					className="room border-2 border-gray-300 rounded-lg p-4 m-2 hover:bg-gray-100 cursor-pointer active:bg-gray-200 transition-all duration-200"
+					onClick={() => setSelectedRoomId(room.id)}
+				>
 					<h3 className="flex justify-between items-center">
 						<span>{room.name}</span>
 						<button

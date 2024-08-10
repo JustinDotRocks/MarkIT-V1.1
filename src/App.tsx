@@ -236,6 +236,7 @@ const App: React.FC = () => {
 							removeObjectFromCanvas
 						}
 						toggleLockObject={toggleLockObject}
+						setSelectedRoomId={setSelectedRoomId}
 					/>
 				</div>
 				{isModalOpen && roomToEdit && (

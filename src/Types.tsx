@@ -112,6 +112,7 @@ export interface CanvasAreaProps {
 	openEditModal: (room: Room) => void;
 	removeObjectFromCanvas: (id: string) => void;
 	toggleLockObject: (id: string, type: "table" | "feature") => void;
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface VendorDetails {
@@ -214,6 +215,7 @@ export interface RoomDetailsDisplayProps {
 	handleRemoveRoom: (roomId: string) => void;
 	openEditModal: (room: Room) => void;
 	removeRoom: (id: string) => void;
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface LockAllObjectsButtonProps {
