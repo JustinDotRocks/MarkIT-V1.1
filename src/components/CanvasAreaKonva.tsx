@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
-// import { KonvaEventObject } from "konva/lib/Node";
-import { Table, CanvasAreaProps } from "../Types";
+import { CanvasAreaProps } from "../Types";
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
 import LockAllObjectsButton from "./LockAllObjectsButton";
@@ -12,7 +11,6 @@ import DragAndDropHandler from "./DragAndDropHandler";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
-	// removeObject,
 	rooms,
 	tables,
 	setTables,
@@ -138,8 +136,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					<Stage
 						width={containerSize.width}
 						height={containerSize.height}
-						onMouseDown={handleStageClick} // Deselect object on stage click
-						onTouchStart={handleStageClick} // Deselect object on touch
+						onMouseDown={handleStageClick}
+						onTouchStart={handleStageClick}
 					>
 						<Layer>
 							<Rect
@@ -157,26 +155,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((table) => (
-									// <TableComponent
-									// 	key={table.id}
-									// 	table={table}
-									// 	containerSize={
-									// 		containerSize
-									// 	}
-									// 	room={room}
-									// 	feetToPixels={
-									// 		feetToPixels
-									// 	}
-									// 	handleDragMove={
-									// 		handleDragMove
-									// 	}
-									// 	handleDragEnd={
-									// 		handleDragEnd
-									// 	}
-									// 	handleObjectClick={
-									// 		handleObjectClick
-									// 	}
-									// />
 									<DragAndDropHandler
 										key={table.id}
 										item={table}
@@ -210,26 +188,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((feature) => {
-									// <FeatureComponent
-									// 	key={feature.id}
-									// 	feature={feature}
-									// 	containerSize={
-									// 		containerSize
-									// 	}
-									// 	room={room}
-									// 	feetToPixels={
-									// 		feetToPixels
-									// 	}
-									// 	handleDragMove={
-									// 		handleDragMove
-									// 	}
-									// 	handleDragEnd={
-									// 		handleDragEnd
-									// 	}
-									// 	handleObjectClick={
-									// 		handleObjectClick
-									// 	}
-									// />
 									<DragAndDropHandler
 										key={feature.id}
 										item={feature}

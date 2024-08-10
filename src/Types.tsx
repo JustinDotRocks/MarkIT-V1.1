@@ -251,31 +251,6 @@ export interface FeatureComponentProps {
 	) => void;
 }
 
-// export interface DragAndDropHandlerProps {
-// 	containerSize: { width: number; height: number };
-// 	tables: Table[];
-// 	features: Feature[];
-// 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
-// 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
-// }
-// export interface DragAndDropHandlerProps {
-// 	containerSize: {
-// 		width: number;
-// 		height: number;
-// 	};
-// 	tables: Table[];
-// 	features: Feature[];
-// 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
-// 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
-// 	onObjectClick: (
-// 		id: string,
-// 		type: "table" | "feature",
-// 		x: number,
-// 		y: number
-// 	) => void;
-// 	Component: React.FC<any>;
-// 	item: Table | Feature;
-// }
 export interface DragAndDropComponentProps {
 	item: Table | Feature;
 	containerSize: { width: number; height: number };
