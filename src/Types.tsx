@@ -114,6 +114,7 @@ export interface CanvasAreaProps {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
 		details?: string;
+		tableNumber: number;
 	}) => void;
 }
 
@@ -303,10 +304,12 @@ export interface RotateHandlerProps {
 export interface AddTablesModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	// addTable: (type: "table-6" | "table-8" | "table-5") => void;
 	addTable: (tableData: {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
 		details?: string;
+		tableNumber: number;
 	}) => void;
+	tables: Table[];
+	selectedRoomId: string | null;
 }

@@ -35,9 +35,9 @@ const App: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isRoomModalOpen, setIsRoomModalOpen] = useState<boolean>(false);
 
-	const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
-		useState<boolean>(false);
-	const [objectToDelete, setObjectToDelete] = useState<string | null>(null);
+	// const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+	// 	useState<boolean>(false);
+	// const [objectToDelete, setObjectToDelete] = useState<string | null>(null);
 
 	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries
 	// useEffect(() => {
@@ -85,24 +85,14 @@ const App: React.FC = () => {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
 		details?: string;
+		tableNumber: number;
 	}) => {
-		const { type, id, details } = tableData;
-
-		// Get the next table number for the selected room
-		const existingTables = tables.filter(
-			(table) => table.roomId === selectedRoomId
-		);
-		const nextTableNumber = existingTables.length + 1;
-
 		const newTable: Table = {
-			id,
-			type,
-			details,
+			...tableData,
 			roomId: selectedRoomId || "",
-			tableNumber: nextTableNumber,
 			x: 0,
 			y: 0,
-			isLocked: false, // Initialize as unlocked
+			isLocked: false,
 		};
 
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
@@ -266,7 +256,7 @@ const App: React.FC = () => {
 								depth: "",
 								tables: [],
 							}
-						} // Provide a default room if roomToEdit is null
+						}
 						onSave={updateRoom}
 					/>
 				)}

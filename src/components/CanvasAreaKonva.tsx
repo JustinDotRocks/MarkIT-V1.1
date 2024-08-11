@@ -155,6 +155,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					isOpen={isAddTablesModalOpen}
 					onClose={closeAddTablesModal}
 					addTable={addTable}
+					tables={tables}
+					selectedRoomId={selectedRoomId}
 				/>
 			)}
 			{room &&
