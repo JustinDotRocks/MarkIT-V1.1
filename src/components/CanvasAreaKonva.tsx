@@ -8,6 +8,7 @@ import TableComponent from "./TableComponent";
 import FeatureComponent from "./FeatureComponent";
 import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
+import AddTablesModal from "./AddTablesModal";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -24,12 +25,15 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	toggleLockObject,
 	setSelectedRoomId,
 	openAddRoomModal,
+	addTable,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
 		width: window.innerWidth * 0.9, // Use 90% of the window width
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
+
+	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -44,6 +48,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
 	const feetToPixels = 25; // Scale factor
+
+	const openAddTablesModal = () => setIsAddTablesModalOpen(true);
+	const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
 
 	useEffect(() => {
 		if (room) {
@@ -134,7 +141,22 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					areAllObjectsLocked={areAllObjectsLocked}
 					lockAllObjects={lockAllObjects}
 				/>
+				{selectedRoomId && (
+					<button
+						onClick={openAddTablesModal}
+						className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+					>
+						Add Tables
+					</button>
+				)}
 			</div>
+			{isAddTablesModalOpen && (
+				<AddTablesModal
+					isOpen={isAddTablesModalOpen}
+					onClose={closeAddTablesModal}
+					addTable={addTable}
+				/>
+			)}
 			{room &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (

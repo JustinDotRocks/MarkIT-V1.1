@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
-// import CanvasArea from "./components/CanvasArea/CanvasArea";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import { Feature, Room, Vendor, Table } from "./Types";
 import RoomEditModal from "./components/RoomEditModal";
@@ -82,21 +81,18 @@ const App: React.FC = () => {
 		]);
 	};
 
-	const addTableToCanvas = (
-		type: "table-6" | "table-8" | "table-5",
-		id: string,
-		details?: string
-	) => {
+	const addTableToCanvas = (tableData: {
+		type: "table-6" | "table-8" | "table-5";
+		id: string;
+		details?: string;
+	}) => {
+		const { type, id, details } = tableData;
+
 		// Get the next table number for the selected room
 		const existingTables = tables.filter(
 			(table) => table.roomId === selectedRoomId
 		);
 		const nextTableNumber = existingTables.length + 1;
-
-		// Find the name of the selected room
-		// const roomName =
-		// 	rooms.find((room) => room.id === selectedRoomId)?.name ||
-		// 	"Unknown Room";
 
 		const newTable: Table = {
 			id,
@@ -222,7 +218,7 @@ const App: React.FC = () => {
 				<SideBar
 					activeMode={activeMode}
 					addObject={addObjectToCanvas}
-					addTable={addTableToCanvas}
+					// addTable={addTableToCanvas}
 					rooms={rooms}
 					setRooms={setRooms}
 					vendors={vendors}
@@ -254,6 +250,7 @@ const App: React.FC = () => {
 						toggleLockObject={toggleLockObject}
 						setSelectedRoomId={setSelectedRoomId}
 						openAddRoomModal={openRoomModal}
+						addTable={addTableToCanvas}
 					/>
 				</div>
 

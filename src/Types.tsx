@@ -53,11 +53,6 @@ export interface SideBarProps {
 		id: string,
 		details?: string
 	) => void;
-	addTable: (
-		type: "table-6" | "table-8" | "table-5",
-		id: string,
-		details?: string
-	) => void;
 	rooms: Room[];
 	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
 	vendors: Vendor[];
@@ -114,6 +109,12 @@ export interface CanvasAreaProps {
 	toggleLockObject: (id: string, type: "table" | "feature") => void;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 	openAddRoomModal: () => void;
+	// addTable: (type: "table-6" | "table-8" | "table-5") => void;
+	addTable: (tableData: {
+		type: "table-6" | "table-8" | "table-5";
+		id: string;
+		details?: string;
+	}) => void;
 }
 
 export interface VendorDetails {
@@ -297,4 +298,15 @@ export interface RotateHandlerProps {
 		rotateCW: () => void;
 		rotateCCW: () => void;
 	}) => React.ReactNode;
+}
+
+export interface AddTablesModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	// addTable: (type: "table-6" | "table-8" | "table-5") => void;
+	addTable: (tableData: {
+		type: "table-6" | "table-8" | "table-5";
+		id: string;
+		details?: string;
+	}) => void;
 }
