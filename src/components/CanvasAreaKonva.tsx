@@ -9,6 +9,7 @@ import FeatureComponent from "./FeatureComponent";
 import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
 import AddTablesModal from "./AddTablesModal";
+import AddFeaturesModal from "./AddFeaturesModal"; // Add this import
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -26,6 +27,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	setSelectedRoomId,
 	openAddRoomModal,
 	addTable,
+	addFeature,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -34,6 +36,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	});
 
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
+	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
+		useState(false);
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -51,6 +55,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const openAddTablesModal = () => setIsAddTablesModalOpen(true);
 	const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
+
+	const openAddFeaturesModal = () => setIsAddFeaturesModalOpen(true);
+	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
 
 	useEffect(() => {
 		if (room) {
@@ -77,6 +84,16 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			});
 		}
 	}, [room, containerSize.width]);
+
+	useEffect(() => {
+		console.log("Features in CanvasAreaKonva:", features);
+	}, [features]);
+
+	// Log the selected roomId and room details
+	useEffect(() => {
+		console.log("Selected Room ID:", selectedRoomId);
+		console.log("Current Room Object:", room);
+	}, [selectedRoomId, room]);
 
 	const lockAllObjects = () => {
 		setAreAllObjectsLocked((prev) => !prev);
@@ -142,12 +159,20 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					lockAllObjects={lockAllObjects}
 				/>
 				{selectedRoomId && (
-					<button
-						onClick={openAddTablesModal}
-						className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-					>
-						Add Tables
-					</button>
+					<>
+						<button
+							onClick={openAddTablesModal}
+							className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+						>
+							Add Tables
+						</button>
+						<button
+							onClick={openAddFeaturesModal} // Add this button
+							className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded ml-4"
+						>
+							Add Features
+						</button>
+					</>
 				)}
 			</div>
 			{isAddTablesModalOpen && (
@@ -156,6 +181,15 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					onClose={closeAddTablesModal}
 					addTable={addTable}
 					tables={tables}
+					selectedRoomId={selectedRoomId}
+				/>
+			)}
+			{isAddFeaturesModalOpen && (
+				<AddFeaturesModal
+					isOpen={isAddFeaturesModalOpen}
+					onClose={closeAddFeaturesModal}
+					addFeature={addFeature}
+					features={features}
 					selectedRoomId={selectedRoomId}
 				/>
 			)}
@@ -217,31 +251,43 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((feature) => {
-									<DragAndDropHandler
-										key={feature.id}
-										item={feature}
-										feetToPixels={
-											feetToPixels
-										}
-										room={room}
-										containerSize={
-											containerSize
-										}
-										tables={tables}
-										features={features}
-										setTables={
-											setTables
-										}
-										setFeatures={
-											setFeatures
-										}
-										onObjectClick={
-											handleObjectClick
-										}
-										Component={
-											FeatureComponent
-										}
-									/>;
+									console.log(
+										"Rendering Feature:",
+										feature
+									);
+									return (
+										<DragAndDropHandler
+											key={
+												feature.id
+											}
+											item={feature}
+											feetToPixels={
+												feetToPixels
+											}
+											room={room}
+											containerSize={
+												containerSize
+											}
+											tables={
+												tables
+											}
+											features={
+												features
+											}
+											setTables={
+												setTables
+											}
+											setFeatures={
+												setFeatures
+											}
+											onObjectClick={
+												handleObjectClick
+											}
+											Component={
+												FeatureComponent
+											}
+										/>
+									);
 								})}
 						</Layer>
 					</Stage>

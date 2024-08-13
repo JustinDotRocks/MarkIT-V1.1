@@ -12,7 +12,39 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 	room,
 }) => {
 	const feature = item as Feature;
+
+	console.log("FeatureComponent rendering feature:", feature);
+
+	// Define dimensions for different feature types
+	const featureDimensions: {
+		[key: string]: { width?: number; height?: number; radius?: number };
+	} = {
+		door: { width: 3, height: 1 },
+		obstacle: { radius: 2 },
+	};
+
 	const isDoor = feature.type === "door";
+
+	// Calculate dimensions in pixels
+	const dimensions = featureDimensions[feature.type] || {};
+
+	const featureWidthPixels =
+		(dimensions.width || 0) *
+		feetToPixels *
+		(containerSize.width /
+			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
+
+	const featureHeightPixels =
+		(dimensions.height || 0) *
+		feetToPixels *
+		(containerSize.width /
+			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
+
+	const featureRadiusPixels =
+		(dimensions.radius || 0) *
+		feetToPixels *
+		(containerSize.width /
+			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
 
 	return (
 		<React.Fragment>
@@ -22,24 +54,8 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					type="feature"
 					x={feature.x * containerSize.width}
 					y={feature.y * containerSize.height}
-					width={
-						2 *
-						feetToPixels *
-						(containerSize.width /
-							(room?.width
-								? parseFloat(room.width) *
-								  feetToPixels
-								: 1))
-					}
-					height={
-						2 *
-						feetToPixels *
-						(containerSize.width /
-							(room?.width
-								? parseFloat(room.width) *
-								  feetToPixels
-								: 1))
-					}
+					width={featureWidthPixels}
+					height={featureHeightPixels}
 					fill="green"
 					draggable={!feature.isLocked}
 					onDragMove={onDragMove}
@@ -59,7 +75,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					type="feature"
 					x={feature.x * containerSize.width}
 					y={feature.y * containerSize.height}
-					radius={15}
+					radius={featureRadiusPixels}
 					fill="red"
 					draggable={!feature.isLocked}
 					onDragMove={onDragMove}

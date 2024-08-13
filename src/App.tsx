@@ -61,25 +61,25 @@ const App: React.FC = () => {
 	const openRoomModal = () => setIsRoomModalOpen(true);
 	const closeRoomModal = () => setIsRoomModalOpen(false);
 
-	const addObjectToCanvas = (
-		type: "door" | "obstacle",
-		id: string,
-		details?: string
-	) => {
-		const newFeature: Feature = {
-			id,
-			type,
-			details,
-			roomId: selectedRoomId || "",
-			x: 0,
-			y: 0,
-			isLocked: false, // Initialize as unlocked
-		};
-		setFeatures((prevFeatures: Feature[]) => [
-			...prevFeatures,
-			newFeature,
-		]);
-	};
+	// const addObjectToCanvas = (
+	// 	type: "door" | "obstacle",
+	// 	id: string,
+	// 	details?: string
+	// ) => {
+	// 	const newFeature: Feature = {
+	// 		id,
+	// 		type,
+	// 		details,
+	// 		roomId: selectedRoomId || "",
+	// 		x: 0,
+	// 		y: 0,
+	// 		isLocked: false, // Initialize as unlocked
+	// 	};
+	// 	setFeatures((prevFeatures: Feature[]) => [
+	// 		...prevFeatures,
+	// 		newFeature,
+	// 	]);
+	// };
 
 	const addTableToCanvas = (tableData: {
 		type: "table-6" | "table-8" | "table-5";
@@ -96,6 +96,25 @@ const App: React.FC = () => {
 		};
 
 		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	};
+
+	const addFeatureToCanvas = (featureData: {
+		type: "door" | "obstacle";
+		id: string;
+		details?: string;
+	}) => {
+		const newFeature: Feature = {
+			...featureData,
+			roomId: selectedRoomId || "",
+			x: 0,
+			y: 0,
+			isLocked: false,
+		};
+
+		setFeatures((prevFeatures: Feature[]) => [
+			...prevFeatures,
+			newFeature,
+		]);
 	};
 
 	const toggleLockObject = (id: string, type: "table" | "feature") => {
@@ -207,7 +226,7 @@ const App: React.FC = () => {
 			<div className="relative flex flex-col flex-grow overflow-scroll">
 				<SideBar
 					activeMode={activeMode}
-					addObject={addObjectToCanvas}
+					// addObject={addObjectToCanvas}
 					// addTable={addTableToCanvas}
 					rooms={rooms}
 					setRooms={setRooms}
@@ -241,6 +260,7 @@ const App: React.FC = () => {
 						setSelectedRoomId={setSelectedRoomId}
 						openAddRoomModal={openRoomModal}
 						addTable={addTableToCanvas}
+						addFeature={addFeatureToCanvas}
 					/>
 				</div>
 

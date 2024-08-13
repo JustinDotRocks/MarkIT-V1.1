@@ -11,48 +11,8 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 	const [tableType, setTableType] = useState<
 		"table-6" | "table-8" | "table-5"
 	>("table-6");
-	const [quantity, setQuantity] = useState<number>(1); // New state for quantity
+	const [quantity, setQuantity] = useState<number>(1);
 
-	// const handleAddTableClick = () => {
-	//     const baseId = Date.now().toString(); // Base ID for unique identification
-	//     const details = ""; // Optional: Add any details if needed
-
-	//     for (let i = 0; i < quantity; i++) {
-	//         const id = `${baseId}-${i}`; // Generate unique ID for each table
-	//         const existingTables = tables.filter(
-	//             (table) => table.roomId === selectedRoomId
-	//         );
-	//         const nextTableNumber = existingTables.length + i + 1; // Calculate unique table number
-	//         addTable({ type: tableType, id, details, tableNumber: nextTableNumber });
-	//     }
-
-	//     onClose(); // Close the modal after adding tables
-	// };
-
-	// const handleAddTableClick = () => {
-	// 	if (!selectedRoomId) return;
-
-	// 	const baseId = Date.now().toString(); // Base ID for unique identification
-	// 	const details = ""; // Optional: Add any details if needed
-
-	// 	// Get the existing tables for the selected room
-	// 	const existingTables = tables.filter(
-	// 		(table) => table.roomId === selectedRoomId
-	// 	);
-
-	// 	for (let i = 0; i < quantity; i++) {
-	// 		const id = `${baseId}-${i}`;
-	// 		const nextTableNumber = existingTables.length + i + 1; // Calculate unique table number
-	// 		addTable({
-	// 			type: tableType,
-	// 			id,
-	// 			details,
-	// 			tableNumber: nextTableNumber,
-	// 		});
-	// 	}
-
-	// 	onClose(); // Close the modal after adding tables
-	// };
 	const handleAddTableClick = () => {
 		if (!selectedRoomId) return;
 

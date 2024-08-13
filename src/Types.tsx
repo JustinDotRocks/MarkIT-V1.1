@@ -48,11 +48,11 @@ export interface RoomDetailsComponentProps {
 
 export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
-	addObject: (
-		type: "door" | "obstacle",
-		id: string,
-		details?: string
-	) => void;
+	// addObject: (
+	// 	type: "door" | "obstacle",
+	// 	id: string,
+	// 	details?: string
+	// ) => void;
 	rooms: Room[];
 	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
 	vendors: Vendor[];
@@ -116,6 +116,11 @@ export interface CanvasAreaProps {
 		details?: string;
 		tableNumber: number;
 	}) => void;
+	addFeature: (featureData: {
+		type: "door" | "obstacle";
+		id: string;
+		details?: string;
+	}) => void; // Add this line
 }
 
 export interface VendorDetails {
@@ -311,5 +316,17 @@ export interface AddTablesModalProps {
 		tableNumber: number;
 	}) => void;
 	tables: Table[];
+	selectedRoomId: string | null;
+}
+
+export interface AddFeaturesModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	addFeature: (featureData: {
+		type: "door" | "obstacle";
+		id: string;
+		details?: string;
+	}) => void;
+	features: Feature[];
 	selectedRoomId: string | null;
 }
