@@ -330,3 +330,11 @@ export interface AddFeaturesModalProps {
 	features: Feature[];
 	selectedRoomId: string | null;
 }
+
+export interface InfoModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	room: Room; // Ensure this is a full Room type
+	openEditModal: (room: Room) => void;
+	removeRoom: (roomId: string) => void;
+}

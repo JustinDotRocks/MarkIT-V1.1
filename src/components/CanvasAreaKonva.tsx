@@ -9,7 +9,9 @@ import FeatureComponent from "./FeatureComponent";
 import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
 import AddTablesModal from "./AddTablesModal";
-import AddFeaturesModal from "./AddFeaturesModal"; // Add this import
+import AddFeaturesModal from "./AddFeaturesModal";
+import InfoModal from "./InfoModal";
+import { FiInfo } from "react-icons/fi";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -38,6 +40,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
 		useState(false);
+	const [isRoomInfoModalOpen, setIsRoomInfoModalOpen] = useState(false);
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -58,6 +61,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const openAddFeaturesModal = () => setIsAddFeaturesModalOpen(true);
 	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
+
+	const toggleRoomInfoModal = () => setIsRoomInfoModalOpen((prev) => !prev);
 
 	useEffect(() => {
 		if (room) {
@@ -172,6 +177,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						>
 							Add Features
 						</button>
+						<div
+							onClick={toggleRoomInfoModal}
+							className="cursor-pointer text-blue-500 inline-block ml-2"
+						>
+							<FiInfo size={24} />
+						</div>
 					</>
 				)}
 			</div>
@@ -191,6 +202,15 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					addFeature={addFeature}
 					features={features}
 					selectedRoomId={selectedRoomId}
+				/>
+			)}
+			{room && (
+				<InfoModal
+					isOpen={isRoomInfoModalOpen}
+					onClose={toggleRoomInfoModal}
+					room={room}
+					openEditModal={openEditModal}
+					removeRoom={removeRoom}
 				/>
 			)}
 			{room &&
