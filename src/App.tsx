@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { Feature, Room, Vendor, Table } from "./Types";
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
-import { Feature, Room, Vendor, Table } from "./Types";
 import RoomEditModal from "./components/RoomEditModal";
 import RoomSetupModal from "./components/RoomSetupModal";
-
+import VendorModePage from "./components/VendorModePage";
 import {
 	saveToLocalStorage,
 	loadFromLocalStorage,
@@ -200,79 +201,114 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<div className="flex flex-col h-screen">
-			<NavBar
-				activeMode={activeMode}
-				setActiveMode={setActiveMode}
-			/>
-			<div className="relative flex flex-col flex-grow overflow-scroll">
-				<SideBar
+		<Router>
+			<div className="flex flex-col h-screen">
+				<NavBar
 					activeMode={activeMode}
-					// addObject={addObjectToCanvas}
-					// addTable={addTableToCanvas}
-					rooms={rooms}
-					setRooms={setRooms}
-					vendors={vendors}
-					setVendors={setVendors}
-					features={features}
-					setFeatures={setFeatures}
-					tables={tables}
-					setTables={setTables}
-					selectedRoomId={selectedRoomId}
-					setSelectedRoomId={setSelectedRoomId}
-					updateVendorDetails={updateVendorDetails}
+					setActiveMode={setActiveMode}
 				/>
-				<div className="flex-grow flex-col justify-center m-8 items-center overflow-y-auto h-full">
-					<CanvasAreaKonva
-						objects={features}
-						// removeObject={removeObjectFromCanvas}
+				<div className="relative flex flex-col flex-grow overflow-scroll">
+					<SideBar
+						activeMode={activeMode}
+						// addObject={addObjectToCanvas}
+						// addTable={addTableToCanvas}
 						rooms={rooms}
-						tables={tables}
-						removeRoom={removeRoom}
-						selectedRoomId={selectedRoomId}
-						setTables={setTables}
-						setFeatures={setFeatures}
-						features={features}
+						setRooms={setRooms}
 						vendors={vendors}
-						openEditModal={openEditModal}
-						removeObjectFromCanvas={
-							removeObjectFromCanvas
-						}
-						toggleLockObject={toggleLockObject}
+						setVendors={setVendors}
+						features={features}
+						setFeatures={setFeatures}
+						tables={tables}
+						setTables={setTables}
+						selectedRoomId={selectedRoomId}
 						setSelectedRoomId={setSelectedRoomId}
-						openAddRoomModal={openRoomModal}
-						addTable={addTableToCanvas}
-						addFeature={addFeatureToCanvas}
-						areAllObjectsLocked={areAllObjectsLocked}
-						setAreAllObjectsLocked={
-							setAreAllObjectsLocked
-						}
+						updateVendorDetails={updateVendorDetails}
+					/>
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<div className="flex-grow flex-col justify-center m-8 items-center overflow-y-auto h-full">
+									<CanvasAreaKonva
+										objects={features}
+										// removeObject={removeObjectFromCanvas}
+										rooms={rooms}
+										tables={tables}
+										removeRoom={
+											removeRoom
+										}
+										selectedRoomId={
+											selectedRoomId
+										}
+										setTables={
+											setTables
+										}
+										setFeatures={
+											setFeatures
+										}
+										features={features}
+										vendors={vendors}
+										openEditModal={
+											openEditModal
+										}
+										removeObjectFromCanvas={
+											removeObjectFromCanvas
+										}
+										toggleLockObject={
+											toggleLockObject
+										}
+										setSelectedRoomId={
+											setSelectedRoomId
+										}
+										openAddRoomModal={
+											openRoomModal
+										}
+										addTable={
+											addTableToCanvas
+										}
+										addFeature={
+											addFeatureToCanvas
+										}
+										areAllObjectsLocked={
+											areAllObjectsLocked
+										}
+										setAreAllObjectsLocked={
+											setAreAllObjectsLocked
+										}
+									/>
+								</div>
+							}
+						></Route>
+						<Route
+							path="/vendor-mode"
+							element={<VendorModePage />}
+						/>
+					</Routes>
+
+					{isModalOpen && roomToEdit && (
+						<RoomEditModal
+							isOpen={isModalOpen}
+							onClose={closeEditModal}
+							roomToEdit={
+								roomToEdit || {
+									id: "",
+									name: "",
+									width: "",
+									depth: "",
+									tables: [],
+								}
+							}
+							onSave={updateRoom}
+						/>
+					)}
+					<RoomSetupModal
+						isOpen={isRoomModalOpen}
+						onClose={closeRoomModal}
+						addRoom={addRoom}
 					/>
 				</div>
-
-				{isModalOpen && roomToEdit && (
-					<RoomEditModal
-						isOpen={isModalOpen}
-						onClose={closeEditModal}
-						roomToEdit={
-							roomToEdit || {
-								id: "",
-								name: "",
-								width: "",
-								depth: "",
-								tables: [],
-							}
-						}
-						onSave={updateRoom}
-					/>
-				)}
-				<RoomSetupModal
-					isOpen={isRoomModalOpen}
-					onClose={closeRoomModal}
-					addRoom={addRoom}
-				/>
 			</div>
-		</div>
+		</Router>
 	);
 };
 

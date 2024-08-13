@@ -1,5 +1,6 @@
 // src/components/NavBar.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import { NavBarProps } from "../../Types";
 
@@ -22,16 +23,30 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 					>
 						Setup Mode
 					</Button> */}
-					<Button
-						className={`ml-2 px-4 py-2 rounded ${
-							activeMode === "vendor"
-								? "bg-blue-500"
-								: "bg-gray-700 hover:bg-gray-600"
-						}`}
-						onClick={() => toggleMode("vendor")}
-					>
-						Vendor Mode
-					</Button>
+					<Link to="/">
+						<Button
+							className={`px-4 py-2 rounded ${
+								activeMode === ""
+									? "bg-blue-500"
+									: "bg-gray-700 hover:bg-gray-600"
+							}`}
+							onClick={() => toggleMode("")}
+						>
+							Home
+						</Button>
+					</Link>
+					<Link to="/vendor-mode">
+						<Button
+							className={`ml-2 px-4 py-2 rounded ${
+								activeMode === "vendor"
+									? "bg-blue-500"
+									: "bg-gray-700 hover:bg-gray-600"
+							}`}
+							onClick={() => toggleMode("vendor")}
+						>
+							Vendor Mode
+						</Button>
+					</Link>
 				</div>
 				<a href="/about" className="hover:underline">
 					About
