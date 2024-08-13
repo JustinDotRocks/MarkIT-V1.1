@@ -1,6 +1,6 @@
 import React from "react";
 import { SideBarProps } from "../../Types";
-import SetupModeComponent from "../SetupModeComponent";
+// import SetupModeComponent from "../SetupModeComponent";
 import VendorModeComponent from "../VendorModeComponent";
 
 const SideBar: React.FC<SideBarProps> = ({
@@ -54,7 +54,7 @@ const SideBar: React.FC<SideBarProps> = ({
 					: "max-h-0 opacity-0 invisible"
 			} overflow-hidden`}
 		>
-			{activeMode === "setup" ? (
+			{/* {activeMode === "setup" ? (
 				<SetupModeComponent
 					rooms={rooms}
 					setRooms={setRooms}
@@ -64,18 +64,18 @@ const SideBar: React.FC<SideBarProps> = ({
 					setTables={setTables}
 					tables={tables}
 				/>
-			) : (
-				<VendorModeComponent
-					setVendors={setVendors}
-					vendors={vendors}
-					tables={tables}
-					rooms={rooms}
-					updateTableAssignment={updateTableAssignment}
-					deleteVendor={deleteVendor}
-					updateVendorDetails={updateVendorDetails}
-					selectedRoomId={selectedRoomId}
-				/>
-			)}
+			) : ( */}
+			<VendorModeComponent
+				setVendors={setVendors}
+				vendors={vendors}
+				tables={tables}
+				rooms={rooms}
+				updateTableAssignment={updateTableAssignment}
+				deleteVendor={deleteVendor}
+				updateVendorDetails={updateVendorDetails}
+				selectedRoomId={selectedRoomId}
+			/>
+			{/* )} */}
 		</aside>
 	);
 };
