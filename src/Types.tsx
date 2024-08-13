@@ -121,6 +121,8 @@ export interface CanvasAreaProps {
 		id: string;
 		details?: string;
 	}) => void; // Add this line
+	areAllObjectsLocked: boolean;
+	setAreAllObjectsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface VendorDetails {

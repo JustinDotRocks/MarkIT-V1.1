@@ -30,6 +30,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	openAddRoomModal,
 	addTable,
 	addFeature,
+	areAllObjectsLocked,
+	setAreAllObjectsLocked,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -49,8 +51,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		x: number;
 		y: number;
 	} | null>(null);
-
-	const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false);
 
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
@@ -101,17 +101,19 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	}, [selectedRoomId, room]);
 
 	const lockAllObjects = () => {
-		setAreAllObjectsLocked((prev) => !prev);
+		const allLocked = areAllObjectsLocked;
+		setAreAllObjectsLocked(!allLocked);
+
 		setTables((prevTables) =>
 			prevTables.map((table) => ({
 				...table,
-				isLocked: !areAllObjectsLocked,
+				isLocked: !allLocked,
 			}))
 		);
 		setFeatures((prevFeatures) =>
 			prevFeatures.map((feature) => ({
 				...feature,
-				isLocked: !areAllObjectsLocked,
+				isLocked: !allLocked,
 			}))
 		);
 	};

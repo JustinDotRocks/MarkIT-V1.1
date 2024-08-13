@@ -35,6 +35,8 @@ const App: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isRoomModalOpen, setIsRoomModalOpen] = useState<boolean>(false);
 
+	const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false);
+
 	// const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
 	// 	useState<boolean>(false);
 	// const [objectToDelete, setObjectToDelete] = useState<string | null>(null);
@@ -60,26 +62,6 @@ const App: React.FC = () => {
 
 	const openRoomModal = () => setIsRoomModalOpen(true);
 	const closeRoomModal = () => setIsRoomModalOpen(false);
-
-	// const addObjectToCanvas = (
-	// 	type: "door" | "obstacle",
-	// 	id: string,
-	// 	details?: string
-	// ) => {
-	// 	const newFeature: Feature = {
-	// 		id,
-	// 		type,
-	// 		details,
-	// 		roomId: selectedRoomId || "",
-	// 		x: 0,
-	// 		y: 0,
-	// 		isLocked: false, // Initialize as unlocked
-	// 	};
-	// 	setFeatures((prevFeatures: Feature[]) => [
-	// 		...prevFeatures,
-	// 		newFeature,
-	// 	]);
-	// };
 
 	const addTableToCanvas = (tableData: {
 		type: "table-6" | "table-8" | "table-5";
@@ -125,10 +107,15 @@ const App: React.FC = () => {
 						? { ...table, isLocked: !table.isLocked }
 						: table
 				);
+				// Check if any table is unlocked after toggling
+				const allLocked = updatedTables.every(
+					(table) => table.isLocked
+				);
+				setAreAllObjectsLocked(allLocked);
 				saveToLocalStorage(
 					getStorageKeys().TABLES,
 					updatedTables
-				); // Save to local storage
+				);
 				return updatedTables;
 			});
 		} else {
@@ -141,10 +128,14 @@ const App: React.FC = () => {
 						  }
 						: feature
 				);
+				const allLocked = updatedFeatures.every(
+					(feature) => feature.isLocked
+				);
+				setAreAllObjectsLocked(allLocked);
 				saveToLocalStorage(
 					getStorageKeys().FEATURES,
 					updatedFeatures
-				); // Save to local storage
+				);
 				return updatedFeatures;
 			});
 		}
@@ -188,15 +179,6 @@ const App: React.FC = () => {
 		setIsModalOpen(false);
 		setRoomToEdit(null);
 	};
-
-	// const handleRoomUpdate = (updatedRoom: Room) => {
-	// 	setRooms((prevRooms) =>
-	// 		prevRooms.map((room) =>
-	// 			room.id === updatedRoom.id ? updatedRoom : room
-	// 		)
-	// 	);
-	// 	closeEditModal();
-	// };
 
 	const addRoom = (name: string, width: string, depth: string) => {
 		const newRoom: Room = {
@@ -261,6 +243,10 @@ const App: React.FC = () => {
 						openAddRoomModal={openRoomModal}
 						addTable={addTableToCanvas}
 						addFeature={addFeatureToCanvas}
+						areAllObjectsLocked={areAllObjectsLocked}
+						setAreAllObjectsLocked={
+							setAreAllObjectsLocked
+						}
 					/>
 				</div>
 
