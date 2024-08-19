@@ -6,18 +6,20 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 	isOpen,
 	onClose,
 	vendors,
-	onAssign,
+	// onAssign,
 	tables,
 	rooms,
+	setTables,
+	selectedTableId,
 }) => {
 	const [selectedVendorId, setSelectedVendorId] = useState<string>("");
 
-	const handleAssign = () => {
-		if (selectedVendorId) {
-			onAssign(selectedVendorId);
-			onClose();
-		}
-	};
+	// const handleAssign = () => {
+	// 	if (selectedVendorId) {
+	// 		onAssign(selectedVendorId);
+	// 		onClose();
+	// 	}
+	// };
 
 	useEffect(() => {
 		if (isOpen) {
@@ -28,6 +30,30 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 	}, [isOpen]);
 
 	if (!isOpen) return null;
+
+	const handleAssignVendor = (vendorId: string) => {
+		if (selectedTableId) {
+			setTables((prevTables) =>
+				prevTables.map((table) =>
+					table.id === selectedTableId
+						? { ...table, vendorId }
+						: table
+				)
+			);
+			setSelectedVendorId("");
+			onClose(); // Close the modal after assignment
+		}
+	};
+
+	// const handleRemoveVendor = (tableId: string) => {
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.id === tableId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+	// };
 
 	// Helper function to determine if a vendor is assigned to any table
 	const isVendorAssigned = (vendorId: string) => {
@@ -49,13 +75,29 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 		return {
 			tableNumber: assignedTable.tableNumber,
 			roomName,
+			tableId: assignedTable.id,
 		};
+	};
+
+	// const handleModalClose = (event: MouseEvent) => {
+	// 	if (event.target === event.currentTarget) {
+	// 		onClose();
+	// 	}
+	// };
+	const handleModalClose: React.MouseEventHandler<HTMLDivElement> = (
+		event
+	) => {
+		// Check if the click was on the backdrop, not the content inside the modal
+		if (event.target === event.currentTarget) {
+			onClose();
+		}
 	};
 
 	return (
 		<div
 			className="fixed inset-0 flex items-center justify-center z-50"
 			style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+			onClick={handleModalClose}
 		>
 			<div className="bg-white p-4 rounded-lg w-96 z-60">
 				<h2 className="text-xl font-bold mb-4">
@@ -77,7 +119,9 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 								<button
 									onClick={() =>
 										!isAssigned &&
-										onAssign(vendor.id)
+										handleAssignVendor(
+											vendor.id
+										)
 									}
 									disabled={isAssigned}
 									className={`py-2 px-4 rounded w-full font-bold ${
@@ -102,6 +146,18 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 										</span>
 									)}
 								</button>
+								{/* {isAssigned && (
+									<button
+										onClick={() =>
+											handleRemoveVendor(
+												assignmentDetails?.tableId!
+											)
+										}
+										className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+									>
+										Remove Vendor
+									</button>
+								)} */}
 							</li>
 						);
 					})}

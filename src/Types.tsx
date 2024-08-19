@@ -137,6 +137,7 @@ export interface CanvasAreaProps {
 	}) => void; // Add this line
 	areAllObjectsLocked: boolean;
 	setAreAllObjectsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+	handleRemoveVendor?: (tableId: string) => void;
 }
 
 export interface VendorDetails {
@@ -368,7 +369,9 @@ export interface AssignVendorModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	vendors: Vendor[];
-	onAssign: (vendorId: string) => void;
+	// onAssign: (vendorId: string) => void;
 	tables: Table[];
 	rooms: Room[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	selectedTableId: string | null;
 }

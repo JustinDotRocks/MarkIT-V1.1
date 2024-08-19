@@ -33,6 +33,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	addFeature,
 	areAllObjectsLocked,
 	setAreAllObjectsLocked,
+	// handleRemoveVendor,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -155,18 +156,23 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		setIsModalOpen(true);
 	};
 
-	const handleAssignVendor = (vendorId: string) => {
-		if (selectedTableId) {
-			setTables((prevTables) =>
-				prevTables.map((table) =>
-					table.id === selectedTableId
-						? { ...table, vendorId }
-						: table
-				)
-			);
-			setSelectedTableId(null);
-		}
+	const handleRemoveVendorClick = (tableId: string) => {
+		setSelectedTableId(tableId);
+		setIsModalOpen(true);
 	};
+
+	// const handleAssignVendor = (vendorId: string) => {
+	// 	if (selectedTableId) {
+	// 		setTables((prevTables) =>
+	// 			prevTables.map((table) =>
+	// 				table.id === selectedTableId
+	// 					? { ...table, vendorId }
+	// 					: table
+	// 			)
+	// 		);
+	// 		setSelectedTableId(null);
+	// 	}
+	// };
 
 	const handleRemoveVendor = (tableId: string) => {
 		setTables((prevTables) =>
@@ -422,9 +428,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				vendors={vendors}
-				onAssign={handleAssignVendor}
+				// onAssign={handleAssignVendor}
 				tables={tables}
 				rooms={rooms}
+				setTables={setTables}
+				selectedTableId={selectedObject?.id || null}
 			/>
 		</div>
 	);

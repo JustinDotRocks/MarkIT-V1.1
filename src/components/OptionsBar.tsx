@@ -49,14 +49,20 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{isLocked ? "Unlock" : "Lock"}
 			</button>
 			<button onClick={onAddVendor}>Add Vendor</button>
-			{vendorName && (
+			{/* {vendorName && (
 				<button
 					onClick={onRemoveVendor}
 					className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
 				>
 					Remove Vendor
 				</button>
-			)}
+			)} */}
+			<button
+				onClick={onRemoveVendor}
+				className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
+			>
+				Remove Vendor
+			</button>
 		</div>
 	);
 };
