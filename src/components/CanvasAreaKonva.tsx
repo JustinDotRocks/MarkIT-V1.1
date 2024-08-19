@@ -11,6 +11,7 @@ import DragAndDropHandler from "./DragAndDropHandler";
 import AddTablesModal from "./AddTablesModal";
 import AddFeaturesModal from "./AddFeaturesModal";
 import InfoModal from "./InfoModal";
+import AssignVendorModal from "./AssignVendorModal";
 import { FiInfo } from "react-icons/fi";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -63,6 +64,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
 
 	const toggleRoomInfoModal = () => setIsRoomInfoModalOpen((prev) => !prev);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedTableId, setSelectedTableId] = useState<string | null>(
+		null
+	);
 
 	useEffect(() => {
 		if (room) {
@@ -143,6 +149,34 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			? tables.find((table) => table.id === selectedObject.id)
 			: features.find((feature) => feature.id === selectedObject.id)
 		: null;
+
+	const handleAddVendorClick = (tableId: string) => {
+		setSelectedTableId(tableId);
+		setIsModalOpen(true);
+	};
+
+	const handleAssignVendor = (vendorId: string) => {
+		if (selectedTableId) {
+			setTables((prevTables) =>
+				prevTables.map((table) =>
+					table.id === selectedTableId
+						? { ...table, vendorId }
+						: table
+				)
+			);
+			setSelectedTableId(null);
+		}
+	};
+
+	const handleRemoveVendor = (tableId: string) => {
+		setTables((prevTables) =>
+			prevTables.map((table) =>
+				table.id === tableId
+					? { ...table, vendorId: undefined }
+					: table
+			)
+		);
+	};
 
 	return (
 		<div
@@ -370,10 +404,28 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										: ""
 									: ""
 							}
+							onAddVendor={() =>
+								handleAddVendorClick(
+									selectedObject.id
+								)
+							}
+							onRemoveVendor={() =>
+								handleRemoveVendor(
+									selectedObject.id
+								)
+							}
 						/>
 					)}
 				</RotateHandler>
 			)}
+			<AssignVendorModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				vendors={vendors}
+				onAssign={handleAssignVendor}
+				tables={tables}
+				rooms={rooms}
+			/>
 		</div>
 	);
 };

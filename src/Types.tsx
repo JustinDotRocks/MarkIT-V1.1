@@ -232,6 +232,8 @@ export interface OptionsBarProps {
 	onToggleLock: () => void;
 	isLocked: boolean;
 	vendorName: string;
+	onAddVendor: () => void;
+	onRemoveVendor: () => void;
 }
 
 export interface RoomDetailsDisplayProps {
@@ -360,4 +362,13 @@ export interface AddVendorModalProps {
 	onClose: () => void;
 	addVendor: (newVendor: Vendor) => void;
 	selectedRoomId: string | null;
+}
+
+export interface AssignVendorModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	vendors: Vendor[];
+	onAssign: (vendorId: string) => void;
+	tables: Table[];
+	rooms: Room[];
 }
