@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { VendorDetails, VendorCardProps, Table } from "../../Types";
+import { VendorCardProps, Table } from "../../Types";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,
@@ -7,7 +8,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	vendorProducts,
 	vendorDetails,
 	tableNumber,
-	// roomName,
 	roomId,
 	signedIn,
 	electricityRequired,
@@ -17,9 +17,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	deleteVendor,
 	updateVendorDetails,
 }) => {
-	// ADD: State to toggle edit mode
 	const [isEditing, setIsEditing] = useState(false);
-
+	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 	const [editableVendor, setEditableVendor] = useState({
 		id,
 		name: vendorName,
@@ -30,6 +29,17 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		roomId,
 	});
 	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
+
+	const truncateText = (text: string, maxLength: number) => {
+		if (text.length > maxLength) {
+			return text.substring(0, maxLength) + "...";
+		}
+		return text;
+	};
+
+	const toggleAccordion = () => {
+		setIsAccordionOpen(!isAccordionOpen);
+	};
 
 	useEffect(() => {
 		if (!editableVendor.roomId) return;
@@ -186,15 +196,34 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				<>
 					<div>Vendor Name: {vendorName}</div>
 					<div>Products: {vendorProducts}</div>
-					<div>Vendor Details: {vendorDetails}</div>
-					{/* <div>Signed In: {signedIn ? "Yes" : "No"}</div> */}
+					{/* <div>Vendor Details: {vendorDetails}</div> */}
+					<div className="flex justify-between items-center mt-2">
+						<div>
+							Vendor Details:{" "}
+							{truncateText(vendorDetails, 30)}
+						</div>
+						<button
+							onClick={toggleAccordion}
+							className="focus:outline-none"
+						>
+							{isAccordionOpen ? (
+								<FaChevronUp />
+							) : (
+								<FaChevronDown />
+							)}
+						</button>
+					</div>
+					{isAccordionOpen && (
+						<div className="mt-2">
+							<div>{vendorDetails}</div>
+						</div>
+					)}
 					<div>
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
 					</div>
-					<div>
-						{/* Display the selected room */}
-						Selected Room:{" "}
+					{/* <div>
+						Selected Room:
 						{editableVendor.roomId
 							? rooms.find(
 									(room) =>
@@ -202,7 +231,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 										editableVendor.roomId
 							  )?.name || "No Room Selected"
 							: "No Room Selected"}
-					</div>{" "}
+					</div> */}
 					<div className="mb-2">
 						<label className="block text-white">
 							Select Room:

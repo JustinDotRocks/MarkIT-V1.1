@@ -354,3 +354,10 @@ export interface InfoModalProps {
 	openEditModal: (room: Room) => void;
 	removeRoom: (roomId: string) => void;
 }
+
+export interface AddVendorModalProps {
+	isOpen: boolean;
+	onClose: () => void;
+	addVendor: (newVendor: Vendor) => void;
+	selectedRoomId: string | null;
+}
