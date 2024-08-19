@@ -200,6 +200,35 @@ const App: React.FC = () => {
 		);
 	};
 
+	// const updateTableAssignment = (tableId: string, vendorId: string) => {
+	// 	// Update the selected table to have the new vendorId
+	// 	setTables((prevTables: Table[]) =>
+	// 		prevTables.map((table: Table) =>
+	// 			table.id === tableId
+	// 				? { ...table, vendorId }
+	// 				: table.vendorId === vendorId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+	// };
+
+	// const deleteVendor = (vendorId: string) => {
+	// 	// Remove vendor from the list
+	// 	setVendors((prevVendors: Vendor[]) =>
+	// 		prevVendors.filter((vendor: Vendor) => vendor.id !== vendorId)
+	// 	);
+
+	// 	// Unassign any tables associated with this vendor
+	// 	setTables((prevTables: Table[]) =>
+	// 		prevTables.map((table: Table) =>
+	// 			table.vendorId === vendorId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+	// };
+
 	return (
 		<Router>
 			<div className="flex flex-col h-screen">
@@ -208,7 +237,7 @@ const App: React.FC = () => {
 					setActiveMode={setActiveMode}
 				/>
 				<div className="relative flex flex-col flex-grow overflow-scroll">
-					<SideBar
+					{/* <SideBar
 						activeMode={activeMode}
 						// addObject={addObjectToCanvas}
 						// addTable={addTableToCanvas}
@@ -223,7 +252,7 @@ const App: React.FC = () => {
 						selectedRoomId={selectedRoomId}
 						setSelectedRoomId={setSelectedRoomId}
 						updateVendorDetails={updateVendorDetails}
-					/>
+					/> */}
 					<Routes>
 						<Route
 							path="/"
@@ -281,7 +310,31 @@ const App: React.FC = () => {
 						></Route>
 						<Route
 							path="/vendor-mode"
-							element={<VendorModePage />}
+							// element={<VendorModePage />}
+							element={
+								<VendorModePage
+									vendors={vendors}
+									setVendors={setVendors}
+									tables={tables}
+									setTables={setTables}
+									rooms={rooms}
+									updateVendorDetails={
+										updateVendorDetails
+									}
+									selectedRoomId={
+										selectedRoomId
+									}
+									setSelectedRoomId={
+										setSelectedRoomId
+									}
+									// updateTableAssignment={
+									// 	updateTableAssignment
+									// }
+									// deleteVendor={
+									// 	deleteVendor
+									// }
+								/>
+							}
 						/>
 					</Routes>
 

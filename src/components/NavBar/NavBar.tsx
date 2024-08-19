@@ -32,7 +32,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 							}`}
 							onClick={() => toggleMode("")}
 						>
-							Home
+							Venue
 						</Button>
 					</Link>
 					<Link to="/vendor-mode">

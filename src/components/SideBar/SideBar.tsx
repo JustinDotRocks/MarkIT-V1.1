@@ -17,34 +17,34 @@ const SideBar: React.FC<SideBarProps> = ({
 	setSelectedRoomId,
 	updateVendorDetails,
 }) => {
-	const updateTableAssignment = (tableId: string, vendorId: string) => {
-		// Update the selected table to have the new vendorId
-		setTables((prevTables) =>
-			prevTables.map((table) =>
-				table.id === tableId
-					? { ...table, vendorId }
-					: table.vendorId === vendorId
-					? { ...table, vendorId: undefined }
-					: table
-			)
-		);
-	};
+	// const updateTableAssignment = (tableId: string, vendorId: string) => {
+	// 	// Update the selected table to have the new vendorId
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.id === tableId
+	// 				? { ...table, vendorId }
+	// 				: table.vendorId === vendorId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+	// };
 
-	const deleteVendor = (vendorId: string) => {
-		// Remove vendor from the list
-		setVendors((prevVendors) =>
-			prevVendors.filter((vendor) => vendor.id !== vendorId)
-		);
+	// const deleteVendor = (vendorId: string) => {
+	// 	// Remove vendor from the list
+	// 	setVendors((prevVendors) =>
+	// 		prevVendors.filter((vendor) => vendor.id !== vendorId)
+	// 	);
 
-		// Unassign any tables associated with this vendor
-		setTables((prevTables) =>
-			prevTables.map((table) =>
-				table.vendorId === vendorId
-					? { ...table, vendorId: undefined }
-					: table
-			)
-		);
-	};
+	// 	// Unassign any tables associated with this vendor
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.vendorId === vendorId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+	// };
 
 	return (
 		<aside
@@ -65,7 +65,7 @@ const SideBar: React.FC<SideBarProps> = ({
 					tables={tables}
 				/>
 			) : ( */}
-			<VendorModeComponent
+			{/* <VendorModeComponent
 				setVendors={setVendors}
 				vendors={vendors}
 				tables={tables}
@@ -74,7 +74,7 @@ const SideBar: React.FC<SideBarProps> = ({
 				deleteVendor={deleteVendor}
 				updateVendorDetails={updateVendorDetails}
 				selectedRoomId={selectedRoomId}
-			/>
+			/> */}
 			{/* )} */}
 		</aside>
 	);

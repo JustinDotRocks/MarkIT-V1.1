@@ -121,7 +121,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	};
 
 	return (
-		<div className="card-container bg-gray-700 rounded-lg shadow-md p-4 m-4">
+		<div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
 			{/* **ADDED: Conditional rendering based on isEditing state** */}
 			{isEditing ? (
 				<>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { VendorModeComponentProps, Vendor } from "../Types";
+import { VendorModeComponentProps, Vendor, Table } from "../Types";
 import Input from "./Input/Input";
 import Button from "./Button/Button";
 import VendorCard from "./VendorCard/VendorCard";

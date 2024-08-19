@@ -19,16 +19,25 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 	};
 
 	const dimensions = tableDimensions[table.type];
-	const tableWidthPixels =
-		dimensions.width *
-		feetToPixels *
-		(containerSize.width /
-			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
-	const tableHeightPixels =
-		dimensions.height *
-		feetToPixels *
-		(containerSize.width /
-			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
+
+	// Determine the dominant dimension (whether width or height is longer)
+	const dominantRoomDimension =
+		parseFloat(room?.width || "0") >= parseFloat(room?.depth || "0")
+			? "width"
+			: "depth";
+
+	const scalingAdjustment = 2; // Increase this value to scale down the tables
+
+	const scaleFactor =
+		(dominantRoomDimension === "width"
+			? containerSize.width /
+			  (parseFloat(room?.width || "1") * feetToPixels)
+			: containerSize.height /
+			  (parseFloat(room?.depth || "1") * feetToPixels)) *
+		scalingAdjustment;
+
+	const tableWidthPixels = dimensions.width * feetToPixels * scaleFactor;
+	const tableHeightPixels = dimensions.height * feetToPixels * scaleFactor;
 
 	const textX = table.x * containerSize.width + tableWidthPixels / 2;
 	const textY = table.y * containerSize.height + tableHeightPixels / 2;

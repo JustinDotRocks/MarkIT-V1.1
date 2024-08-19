@@ -80,11 +80,25 @@ export interface VendorModeComponentProps {
 	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 	vendors: Vendor[];
 	tables: Table[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	rooms: Room[];
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 	selectedRoomId: string | null;
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export interface VendorModePageProps {
+	vendors: Vendor[];
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
+	tables: Table[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	rooms: Room[];
+	updateVendorDetails: (updatedVendor: Vendor) => void;
+	selectedRoomId: string | null;
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	// No updateTableAssignment and deleteVendor here
 }
 
 export type CanvasObject = {
