@@ -101,11 +101,12 @@ export interface VendorModePageProps {
 	// No updateTableAssignment and deleteVendor here
 }
 
-export type CanvasObject = {
-	id: string;
-	type: string;
-	details?: string;
-};
+// export type CanvasObject = {
+// 	id: string;
+// 	type: string;
+// 	details?: string;
+// };
+export type CanvasObject = Table | Feature;
 
 export interface CanvasAreaProps {
 	objects: Feature[];
@@ -289,6 +290,7 @@ export interface DragAndDropComponentProps {
 	feetToPixels: number;
 	onDragMove: (e: any) => void;
 	onDragEnd: (e: any) => void;
+	onDragStart: (e: any) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
@@ -298,7 +300,8 @@ export interface DragAndDropComponentProps {
 }
 
 export interface DragAndDropHandlerProps {
-	item: Table | Feature;
+	// item: Table | Feature;
+	item: CanvasObject;
 	containerSize: { width: number; height: number };
 	room: Room | undefined;
 	feetToPixels: number;
