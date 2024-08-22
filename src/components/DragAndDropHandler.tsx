@@ -13,65 +13,6 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	onObjectClick,
 	Component,
 }) => {
-	// const handleDragMove = (e: any) => {
-	// 	const node = e.target;
-	// 	const id = item.id;
-	// 	const type = item.type;
-
-	// 	const foundItem = type.includes("table")
-	// 		? tables.find((table) => table.id === id)
-	// 		: features.find((feature) => feature.id === id);
-
-	// 	if (foundItem?.isLocked) {
-	// 		return; // Prevent dragging if the item is locked
-	// 	}
-
-	// 	const itemWidthFeet =
-	// 		type === "table-6" ? 6 : type === "table-8" ? 8 : 5;
-	// 	const itemHeightFeet = type.includes("table") ? 2.5 : 1.5;
-
-	// 	const itemWidthPixels = itemWidthFeet * 25; // feetToPixels
-	// 	const itemHeightPixels = itemHeightFeet * 25; // feetToPixels
-
-	// 	let x = node.x();
-	// 	let y = node.y();
-
-	// 	if (x < 0) x = 0;
-	// 	if (y < 0) y = 0;
-	// 	if (x + itemWidthPixels > containerSize.width)
-	// 		x = containerSize.width - itemWidthPixels;
-	// 	if (y + itemHeightPixels > containerSize.height)
-	// 		y = containerSize.height - itemHeightPixels;
-
-	// 	node.x(x);
-	// 	node.y(y);
-
-	// 	// Check for overlaps
-	// 	const isOverlapping = tables.concat(features).some((object) => {
-	// 		if (object.id === id) return false; // Skip itself
-
-	// 		const objBox = object.getClientRect();
-	// 		const nodeBox = {
-	// 			x: x,
-	// 			y: y,
-	// 			width: itemWidthPixels,
-	// 			height: itemHeightPixels,
-	// 		};
-
-	// 		return (
-	// 			nodeBox.x < objBox.x + objBox.width &&
-	// 			nodeBox.x + nodeBox.width > objBox.x &&
-	// 			nodeBox.y < objBox.y + objBox.height &&
-	// 			nodeBox.y + nodeBox.height > objBox.y
-	// 		);
-	// 	});
-
-	// 	if (!isOverlapping) {
-	// 		node.x(x);
-	// 		node.y(y);
-	// 	}
-	// };
-
 	const handleDragMove = (e: any) => {
 		const node = e.target;
 		const id = item.id;
@@ -81,14 +22,16 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 			? tables.find((table) => table.id === id)
 			: features.find((feature) => feature.id === id);
 
-		if (!foundItem || foundItem.isLocked) return; // Ensure item exists and is not locked
+		if (foundItem?.isLocked) {
+			return; // Prevent dragging if the item is locked
+		}
 
 		const itemWidthFeet =
 			type === "table-6" ? 6 : type === "table-8" ? 8 : 5;
 		const itemHeightFeet = type.includes("table") ? 2.5 : 1.5;
 
-		const itemWidthPixels = itemWidthFeet * feetToPixels;
-		const itemHeightPixels = itemHeightFeet * feetToPixels;
+		const itemWidthPixels = itemWidthFeet * 25; // feetToPixels
+		const itemHeightPixels = itemHeightFeet * 25; // feetToPixels
 
 		let x = node.x();
 		let y = node.y();
@@ -100,28 +43,85 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		if (y + itemHeightPixels > containerSize.height)
 			y = containerSize.height - itemHeightPixels;
 
-		const tempObject = {
-			...foundItem,
-			x: x / containerSize.width,
-			y: y / containerSize.height,
-		};
+		node.x(x);
+		node.y(y);
 
-		// Simplified collision check
-		// const isOverlapping = false;
-		const isOverlapping = checkCollision(tempObject, [
-			...tables,
-			...features,
-		]);
+		// Check for overlaps
+		// const isOverlapping = tables.concat(features).some((object) => {
+		// 	if (object.id === id) return false; // Skip itself
 
-		if (!isOverlapping) {
-			node.x(x);
-			node.y(y);
-		} else {
-			// Reset to the original position if overlapping
-			node.x(foundItem.x * containerSize.width);
-			node.y(foundItem.y * containerSize.height);
-		}
+		// 	const objBox = object.getClientRect();
+		// 	const nodeBox = {
+		// 		x: x,
+		// 		y: y,
+		// 		width: itemWidthPixels,
+		// 		height: itemHeightPixels,
+		// 	};
+
+		// 	return (
+		// 		nodeBox.x < objBox.x + objBox.width &&
+		// 		nodeBox.x + nodeBox.width > objBox.x &&
+		// 		nodeBox.y < objBox.y + objBox.height &&
+		// 		nodeBox.y + nodeBox.height > objBox.y
+		// 	);
+		// });
+
+		// if (!isOverlapping) {
+		// 	node.x(x);
+		// 	node.y(y);
+		// }
 	};
+
+	// const handleDragMove = (e: any) => {
+	// 	const node = e.target;
+	// 	const id = item.id;
+	// 	const type = item.type;
+
+	// 	const foundItem = type.includes("table")
+	// 		? tables.find((table) => table.id === id)
+	// 		: features.find((feature) => feature.id === id);
+
+	// 	if (!foundItem || foundItem.isLocked) return; // Ensure item exists and is not locked
+
+	// 	const itemWidthFeet =
+	// 		type === "table-6" ? 6 : type === "table-8" ? 8 : 5;
+	// 	const itemHeightFeet = type.includes("table") ? 2.5 : 1.5;
+
+	// 	const itemWidthPixels = itemWidthFeet * feetToPixels;
+	// 	const itemHeightPixels = itemHeightFeet * feetToPixels;
+
+	// 	let x = node.x();
+	// 	let y = node.y();
+
+	// 	if (x < 0) x = 0;
+	// 	if (y < 0) y = 0;
+	// 	if (x + itemWidthPixels > containerSize.width)
+	// 		x = containerSize.width - itemWidthPixels;
+	// 	if (y + itemHeightPixels > containerSize.height)
+	// 		y = containerSize.height - itemHeightPixels;
+
+	// 	const tempObject = {
+	// 		...foundItem,
+	// 		x: x / containerSize.width,
+	// 		y: y / containerSize.height,
+	// 	};
+
+	// 	// Simplified collision check
+	// 	const isOverlapping = false;
+	// 	// const isOverlapping = checkCollision(tempObject, [
+	// 	// 	...tables,
+	// 	// 	...features,
+	// 	// ]);
+
+	// 	// if (!isOverlapping) {
+	// 	// 	node.x(x);
+	// 	// 	node.y(y);
+	// 	// } else {
+	// 	// 	// Reset to the original position if overlapping
+	// 	// 	node.x(foundItem.x * containerSize.width);
+	// 	// 	node.y(foundItem.y * containerSize.height);
+	// 	// }
+	// };
 
 	// const checkCollision = (
 	// 	movingObject: Table | Feature,
@@ -231,6 +231,104 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 
 	// 	if (!foundItem || foundItem.isLocked) return;
 	// };
+	const handleDragEnd = (e: any) => {
+		const id = item.id;
+		const x = e.target.x() / containerSize.width;
+		const y = e.target.y() / containerSize.height;
+
+		console.log(`DragEnd for ${id}: x=${x}, y=${y}`);
+
+		const foundItem = item.type.includes("table")
+			? tables.find((table) => table.id === id)
+			: features.find((feature) => feature.id === id);
+
+		if (!foundItem || foundItem.isLocked) return;
+
+		// Create a temporary object with new position to check for collisions
+		// const tempObject = {
+		// 	...foundItem,
+		// 	x: x,
+		// 	y: y,
+		// };
+
+		// const isOverlapping = checkCollision(
+		// 	tempObject,
+		// 	tables.concat(features)
+		// );
+		// const isOverlapping = item.type.includes("table")
+		// 	? checkCollision(
+		// 			tempObject as Table,
+		// 			tables.concat(tables as Table[])
+		// 	  )
+		// 	: checkCollision(
+		// 			tempObject as Feature,
+		// 			features.concat(features as Feature[])
+		// 	  );
+
+		// if (!isOverlapping) {
+		// 	if (item.type.includes("table")) {
+		// 		setTables((prevTables) => {
+		// 			const updatedTables = prevTables.map((table) =>
+		// 				table.id === id ? { ...table, x, y } : table
+		// 			);
+		// 			console.log("Updated Tables: ", updatedTables);
+		// 			return updatedTables;
+		// 		});
+		// 	} else {
+		// 		setFeatures((prevFeatures) => {
+		// 			const updatedFeatures = prevFeatures.map(
+		// 				(feature) =>
+		// 					feature.id === id
+		// 						? { ...feature, x, y }
+		// 						: feature
+		// 			);
+		// 			console.log(
+		// 				"Updated Features: ",
+		// 				updatedFeatures
+		// 			);
+		// 			return updatedFeatures;
+		// 		});
+		// 	}
+		// } else {
+		// 	// Reset to the original position if overlapping
+		// 	e.target.position({
+		// 		x: foundItem.x * containerSize.width,
+		// 		y: foundItem.y * containerSize.height,
+		// 	});
+		// }
+		// if (!isOverlapping) {
+		// 	if (item.type.includes("table")) {
+		// 		setTables((prevTables) => {
+		// 			const updatedTables = prevTables.map((table) =>
+		// 				table.id === id ? { ...table, x, y } : table
+		// 			);
+		// 			console.log("Updated Tables: ", updatedTables);
+		// 			return updatedTables;
+		// 		});
+		// 	} else {
+		// 		setFeatures((prevFeatures) => {
+		// 			const updatedFeatures = prevFeatures.map(
+		// 				(feature) =>
+		// 					feature.id === id
+		// 						? { ...feature, x, y }
+		// 						: feature
+		// 			);
+		// 			console.log(
+		// 				"Updated Features: ",
+		// 				updatedFeatures
+		// 			);
+		// 			return updatedFeatures;
+		// 		});
+		// 	}
+		// } else if (foundItem) {
+		// 	// Ensure foundItem is defined before accessing its properties
+		// 	// Reset to the original position if overlapping
+		// 	e.target.position({
+		// 		x: foundItem.x * containerSize.width,
+		// 		y: foundItem.y * containerSize.height,
+		// 	});
+		// }
+	};
 	// const handleDragEnd = (e: any) => {
 	// 	const id = item.id;
 	// 	const x = e.target.x() / containerSize.width;
@@ -251,51 +349,9 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	// 		y: y,
 	// 	};
 
-	// 	// const isOverlapping = checkCollision(
-	// 	// 	tempObject,
-	// 	// 	tables.concat(features)
-	// 	// );
-	// 	const isOverlapping = item.type.includes("table")
-	// 		? checkCollision(
-	// 				tempObject as Table,
-	// 				tables.concat(tables as Table[])
-	// 		  )
-	// 		: checkCollision(
-	// 				tempObject as Feature,
-	// 				features.concat(features as Feature[])
-	// 		  );
+	// 	// Simplified collision check
+	// 	const isOverlapping = false;
 
-	// 	// if (!isOverlapping) {
-	// 	// 	if (item.type.includes("table")) {
-	// 	// 		setTables((prevTables) => {
-	// 	// 			const updatedTables = prevTables.map((table) =>
-	// 	// 				table.id === id ? { ...table, x, y } : table
-	// 	// 			);
-	// 	// 			console.log("Updated Tables: ", updatedTables);
-	// 	// 			return updatedTables;
-	// 	// 		});
-	// 	// 	} else {
-	// 	// 		setFeatures((prevFeatures) => {
-	// 	// 			const updatedFeatures = prevFeatures.map(
-	// 	// 				(feature) =>
-	// 	// 					feature.id === id
-	// 	// 						? { ...feature, x, y }
-	// 	// 						: feature
-	// 	// 			);
-	// 	// 			console.log(
-	// 	// 				"Updated Features: ",
-	// 	// 				updatedFeatures
-	// 	// 			);
-	// 	// 			return updatedFeatures;
-	// 	// 		});
-	// 	// 	}
-	// 	// } else {
-	// 	// 	// Reset to the original position if overlapping
-	// 	// 	e.target.position({
-	// 	// 		x: foundItem.x * containerSize.width,
-	// 	// 		y: foundItem.y * containerSize.height,
-	// 	// 	});
-	// 	// }
 	// 	if (!isOverlapping) {
 	// 		if (item.type.includes("table")) {
 	// 			setTables((prevTables) => {
@@ -320,8 +376,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	// 				return updatedFeatures;
 	// 			});
 	// 		}
-	// 	} else if (foundItem) {
-	// 		// Ensure foundItem is defined before accessing its properties
+	// 	} else {
 	// 		// Reset to the original position if overlapping
 	// 		e.target.position({
 	// 			x: foundItem.x * containerSize.width,
@@ -329,61 +384,6 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	// 		});
 	// 	}
 	// };
-	const handleDragEnd = (e: any) => {
-		const id = item.id;
-		const x = e.target.x() / containerSize.width;
-		const y = e.target.y() / containerSize.height;
-
-		console.log(`DragEnd for ${id}: x=${x}, y=${y}`);
-
-		const foundItem = item.type.includes("table")
-			? tables.find((table) => table.id === id)
-			: features.find((feature) => feature.id === id);
-
-		if (!foundItem || foundItem.isLocked) return;
-
-		// Create a temporary object with new position to check for collisions
-		const tempObject = {
-			...foundItem,
-			x: x,
-			y: y,
-		};
-
-		// Simplified collision check
-		const isOverlapping = false;
-
-		if (!isOverlapping) {
-			if (item.type.includes("table")) {
-				setTables((prevTables) => {
-					const updatedTables = prevTables.map((table) =>
-						table.id === id ? { ...table, x, y } : table
-					);
-					console.log("Updated Tables: ", updatedTables);
-					return updatedTables;
-				});
-			} else {
-				setFeatures((prevFeatures) => {
-					const updatedFeatures = prevFeatures.map(
-						(feature) =>
-							feature.id === id
-								? { ...feature, x, y }
-								: feature
-					);
-					console.log(
-						"Updated Features: ",
-						updatedFeatures
-					);
-					return updatedFeatures;
-				});
-			}
-		} else {
-			// Reset to the original position if overlapping
-			e.target.position({
-				x: foundItem.x * containerSize.width,
-				y: foundItem.y * containerSize.height,
-			});
-		}
-	};
 
 	const areObjectsOverlapping = (object1: any, object2: any) => {
 		const obj1Box = object1.getClientRect();
