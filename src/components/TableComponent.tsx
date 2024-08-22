@@ -26,13 +26,13 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 			? "width"
 			: "depth";
 
-	const scalingAdjustment = 2; // Increase this value to scale down the tables
+	const scalingAdjustment = 1; // Increase this value to scale down the tables
 
 	const scaleFactor =
 		(dominantRoomDimension === "width"
 			? containerSize.width /
 			  (parseFloat(room?.width || "1") * feetToPixels)
-			: containerSize.height /
+			: containerSize.width /
 			  (parseFloat(room?.depth || "1") * feetToPixels)) *
 		scalingAdjustment;
 
@@ -82,6 +82,11 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 		? getFontSizes(parseFloat(room.width), isCircle)
 		: { tableNumberFontSize: 12, xOffset: 35, yOffset: 0 };
 
+	// Calculate the radius based on the table's actual dimensions
+	const circleRadiusPixels = isCircle
+		? (dimensions.width * feetToPixels * scaleFactor) / 2
+		: 0;
+
 	return (
 		<React.Fragment>
 			{isCircle ? (
@@ -90,16 +95,17 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					type="table"
 					x={table.x * containerSize.width}
 					y={table.y * containerSize.height}
-					radius={
-						(dimensions.width *
-							feetToPixels *
-							(containerSize.width /
-								(room?.width
-									? parseFloat(room.width) *
-									  feetToPixels
-									: 1))) /
-						2
-					}
+					// radius={
+					// 	(dimensions.width *
+					// 		feetToPixels *
+					// 		(containerSize.width /
+					// 			(room?.width
+					// 				? parseFloat(room.width) *
+					// 				  feetToPixels
+					// 				: 1))) /
+					// 	2
+					// }
+					radius={circleRadiusPixels}
 					fill="blue"
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
