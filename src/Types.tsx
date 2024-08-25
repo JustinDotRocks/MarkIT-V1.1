@@ -223,6 +223,7 @@ export interface RoomEditModalProps {
 	onSave: (updatedRoom: Room) => void;
 	isOpen: boolean;
 	roomToEdit: Room;
+	selectedRoomId: string | null;
 }
 
 export interface OptionsBarProps {
@@ -356,9 +357,14 @@ export interface AddFeaturesModalProps {
 export interface InfoModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	room: Room; // Ensure this is a full Room type
+	room: Room;
 	openEditModal: (room: Room) => void;
 	removeRoom: (roomId: string) => void;
+	selectedRoomId: string | null;
+	// roomToEdit: Room | null;
+	// isRoomEditModalOpen: boolean;
+	// setIsRoomEditModalOpen: (isOpen: boolean) => void;
+	// updateRoom: (updatedRoom: Room) => void;
 }
 
 export interface AddVendorModalProps {
@@ -377,4 +383,30 @@ export interface AssignVendorModalProps {
 	rooms: Room[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedTableId: string | null;
+}
+
+export interface RoomOptionsProps {
+	areAllObjectsLocked: boolean;
+	lockAllObjects: () => void;
+	selectedRoomId: string | null;
+	// toggleRoomInfoModal: () => void;
+	addTable: (tableData: {
+		type: "table-6" | "table-8" | "table-5";
+		id: string;
+		details?: string;
+		tableNumber: number;
+	}) => void;
+	tables: Table[];
+	addFeature: (featureData: {
+		type: "door" | "obstacle";
+		id: string;
+		details?: string;
+	}) => void;
+	features: Feature[];
+	room: Room | null;
+	removeRoom: (roomId: string) => void;
+	openEditModal: (room: Room) => void;
+	rooms: Room[];
+	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
+	openAddRoomModal: () => void;
 }

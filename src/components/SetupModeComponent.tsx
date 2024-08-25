@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SetupModeComponentProps, Room, Feature, Table } from "../Types";
 import FeatureInputButtonPair from "./FeatureInputButtonPair";
 import RoomDetailsComponent from "./RoomDetailsComponent";
-import RoomSetupModal from "./RoomSetupModal";
+import RoomSetupModal from "./AddRoomModal";
 import { v4 as uuidv4 } from "uuid";
 
 const SetupModeComponent: React.FC<SetupModeComponentProps> = ({

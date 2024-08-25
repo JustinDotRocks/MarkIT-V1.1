@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { RoomSetupModalProps } from "../Types"; // Updated import
 
 const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
@@ -6,6 +6,8 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 	onClose,
 	addRoom,
 }) => {
+	const modalRef = useRef<HTMLDivElement>(null);
+
 	const [roomName, setRoomName] = useState("");
 	const [roomWidth, setRoomWidth] = useState("");
 	const [roomDepth, setRoomDepth] = useState("");
@@ -32,14 +34,35 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 		setRoomName("");
 		setRoomWidth("");
 		setRoomDepth("");
-		onClose(); // Close the modal after adding a room
+		onClose();
 	};
+
+	// if (!isOpen) return null;
+
+	const handleClickOutside = (event: MouseEvent) => {
+		if (
+			modalRef.current &&
+			!modalRef.current.contains(event.target as Node)
+		) {
+			if (onClose) onClose();
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	if (!isOpen) return null;
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-			<div className="bg-gray-800 p-8 rounded shadow-lg w-1/3">
+			<div
+				ref={modalRef}
+				className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
+			>
 				<h2 className="text-xl font-bold mb-4">Add Room</h2>
 				<input
 					type="text"

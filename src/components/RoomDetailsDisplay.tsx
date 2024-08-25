@@ -1,6 +1,6 @@
 // RoomDetailsDisplay.tsx
 import React from "react";
-import { Room, RoomDetailsDisplayProps } from "../Types";
+import { RoomDetailsDisplayProps } from "../Types";
 
 const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	rooms,

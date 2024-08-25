@@ -13,6 +13,7 @@ import AddFeaturesModal from "./AddFeaturesModal";
 import InfoModal from "./InfoModal";
 import AssignVendorModal from "./AssignVendorModal";
 import { FiInfo } from "react-icons/fi";
+import RoomOptions from "./RoomOptions";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -41,10 +42,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
 
-	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
-	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
-		useState(false);
-	const [isRoomInfoModalOpen, setIsRoomInfoModalOpen] = useState(false);
+	// const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
+	// const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
+	// 	useState(false);
+	// const [isRoomInfoModalOpen, setIsRoomInfoModalOpen] = useState(false);
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -58,13 +59,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const feetToPixels = 25; // Scale factor
 
-	const openAddTablesModal = () => setIsAddTablesModalOpen(true);
-	const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
+	// const openAddTablesModal = () => setIsAddTablesModalOpen(true);
+	// const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
 
-	const openAddFeaturesModal = () => setIsAddFeaturesModalOpen(true);
-	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
+	// const openAddFeaturesModal = () => setIsAddFeaturesModalOpen(true);
+	// const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
 
-	const toggleRoomInfoModal = () => setIsRoomInfoModalOpen((prev) => !prev);
+	// const toggleRoomInfoModal = () => setIsRoomInfoModalOpen((prev) => !prev);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedTableId, setSelectedTableId] = useState<string | null>(
@@ -96,16 +97,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			});
 		}
 	}, [room, containerSize.width]);
-
-	useEffect(() => {
-		console.log("Features in CanvasAreaKonva:", features);
-	}, [features]);
-
-	// Log the selected roomId and room details
-	useEffect(() => {
-		console.log("Selected Room ID:", selectedRoomId);
-		console.log("Current Room Object:", room);
-	}, [selectedRoomId, room]);
 
 	const lockAllObjects = () => {
 		const allLocked = areAllObjectsLocked;
@@ -200,59 +191,24 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					selectedRoomId={selectedRoomId}
 				/>
 			</div>
-			<div className="room-details-container w-full p-4 mb-4 bg-blue-200">
-				<LockAllObjectsButton
+			{room !== undefined && (
+				<RoomOptions
 					areAllObjectsLocked={areAllObjectsLocked}
 					lockAllObjects={lockAllObjects}
-				/>
-				{selectedRoomId && (
-					<>
-						<button
-							onClick={openAddTablesModal}
-							className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-						>
-							Add Tables
-						</button>
-						<button
-							onClick={openAddFeaturesModal} // Add this button
-							className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded ml-4"
-						>
-							Add Features
-						</button>
-						<div
-							onClick={toggleRoomInfoModal}
-							className="cursor-pointer text-blue-500 inline-block ml-2"
-						>
-							<FiInfo size={24} />
-						</div>
-					</>
-				)}
-			</div>
-			{isAddTablesModalOpen && (
-				<AddTablesModal
-					isOpen={isAddTablesModalOpen}
-					onClose={closeAddTablesModal}
+					selectedRoomId={selectedRoomId}
+					// toggleRoomInfoModal={() =>
+					// 	setIsRoomInfoModalOpen(!isRoomInfoModalOpen)
+					// }
 					addTable={addTable}
 					tables={tables}
-					selectedRoomId={selectedRoomId}
-				/>
-			)}
-			{isAddFeaturesModalOpen && (
-				<AddFeaturesModal
-					isOpen={isAddFeaturesModalOpen}
-					onClose={closeAddFeaturesModal}
 					addFeature={addFeature}
 					features={features}
-					selectedRoomId={selectedRoomId}
-				/>
-			)}
-			{room && (
-				<InfoModal
-					isOpen={isRoomInfoModalOpen}
-					onClose={toggleRoomInfoModal}
 					room={room}
-					openEditModal={openEditModal}
 					removeRoom={removeRoom}
+					openEditModal={openEditModal}
+					rooms={rooms}
+					setSelectedRoomId={setSelectedRoomId}
+					openAddRoomModal={openAddRoomModal}
 				/>
 			)}
 			{room &&

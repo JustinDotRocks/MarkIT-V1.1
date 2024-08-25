@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import RoomEditModal from "./components/RoomEditModal";
-import RoomSetupModal from "./components/RoomSetupModal";
+import AddRoomModal from "./components/AddRoomModal";
 import VendorModePage from "./components/VendorModePage";
 import {
 	saveToLocalStorage,
@@ -237,22 +237,6 @@ const App: React.FC = () => {
 					setActiveMode={setActiveMode}
 				/>
 				<div className="relative flex flex-col flex-grow overflow-scroll">
-					{/* <SideBar
-						activeMode={activeMode}
-						// addObject={addObjectToCanvas}
-						// addTable={addTableToCanvas}
-						rooms={rooms}
-						setRooms={setRooms}
-						vendors={vendors}
-						setVendors={setVendors}
-						features={features}
-						setFeatures={setFeatures}
-						tables={tables}
-						setTables={setTables}
-						selectedRoomId={selectedRoomId}
-						setSelectedRoomId={setSelectedRoomId}
-						updateVendorDetails={updateVendorDetails}
-					/> */}
 					<Routes>
 						<Route
 							path="/"
@@ -351,10 +335,11 @@ const App: React.FC = () => {
 									tables: [],
 								}
 							}
+							selectedRoomId={selectedRoomId}
 							onSave={updateRoom}
 						/>
 					)}
-					<RoomSetupModal
+					<AddRoomModal
 						isOpen={isRoomModalOpen}
 						onClose={closeRoomModal}
 						addRoom={addRoom}
