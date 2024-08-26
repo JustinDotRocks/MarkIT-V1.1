@@ -12,6 +12,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendorName,
 	onAddVendor,
 	onRemoveVendor,
+	objectType,
 }) => {
 	return (
 		<div
@@ -48,73 +49,27 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 			>
 				{isLocked ? "Unlock" : "Lock"}
 			</button>
-			<button onClick={onAddVendor}>Add Vendor</button>
-			{/* {vendorName && (
-				<button
-					onClick={onRemoveVendor}
-					className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
-				>
-					Remove Vendor
-				</button>
-			)} */}
-			<button
-				onClick={onRemoveVendor}
-				className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded"
-			>
-				Remove Vendor
-			</button>
+			{objectType === "table" && (
+				<>
+					{vendorName ? (
+						<button
+							onClick={onRemoveVendor}
+							className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 mr-2 rounded"
+						>
+							Remove Vendor
+						</button>
+					) : (
+						<button
+							onClick={onAddVendor}
+							className="bg-green-500 hover:bg-yellgreenow-700 text-white font-bold py-1 px-2 mr-2 rounded"
+						>
+							Add Vendor
+						</button>
+					)}
+				</>
+			)}
 		</div>
 	);
 };
 
 export default OptionsBar;
-
-// import React from "react";
-// import {
-// 	FaTrashAlt,
-// 	FaLock,
-// 	FaUnlock,
-// 	FaUserPlus,
-// 	FaChevronDown,
-// 	FaChevronUp,
-// } from "react-icons/fa";
-// import { OptionsBarProps } from "../Types";
-// import Button from "../components/Button/Button";
-
-// const OptionsBar: React.FC<OptionsBarProps> = ({
-// 	x,
-// 	y,
-// 	onDelete,
-// 	onRotateCW,
-// 	onRotateCCW,
-// 	onToggleLock,
-// 	isLocked,
-// 	onAddVendor,
-// }) => {
-// 	return (
-// 		<div
-// 			style={{ position: "absolute", top: y, left: x }}
-// 			className="options-bar"
-// 		>
-// 			<Button onClick={onRotateCW}>
-// 				<FaChevronDown />
-// 			</Button>
-// 			<Button onClick={onRotateCCW}>
-// 				<FaChevronUp />
-// 			</Button>
-// 			<Button onClick={onToggleLock}>
-// 				{isLocked ? <FaLock /> : <FaUnlock />}
-// 			</Button>
-// 			<Button onClick={onAddVendor}>
-// 				{" "}
-// 				{/* ADDED */}
-// 				<FaUserPlus /> Add Vendor
-// 			</Button>
-// 			<Button onClick={onDelete}>
-// 				<FaTrashAlt />
-// 			</Button>
-// 		</div>
-// 	);
-// };
-
-// export default OptionsBar;

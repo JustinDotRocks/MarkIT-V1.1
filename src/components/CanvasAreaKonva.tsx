@@ -376,6 +376,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									selectedObject.id
 								)
 							}
+							objectType={selectedObject.type}
 						/>
 					)}
 				</RotateHandler>

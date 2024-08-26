@@ -237,6 +237,7 @@ export interface OptionsBarProps {
 	vendorName: string;
 	onAddVendor: () => void;
 	onRemoveVendor: () => void;
+	objectType: "table" | "feature";
 }
 
 export interface RoomDetailsDisplayProps {

@@ -132,7 +132,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 
 	return (
 		<div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
-			{/* **ADDED: Conditional rendering based on isEditing state** */}
+			{/* Conditional rendering based on isEditing state** */}
 			{isEditing ? (
 				<>
 					<div>
@@ -196,15 +196,19 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				<>
 					<div>Vendor Name: {vendorName}</div>
 					<div>Products: {vendorProducts}</div>
-					{/* <div>Vendor Details: {vendorDetails}</div> */}
-					<div className="flex justify-between items-center mt-2">
-						<div>
-							Vendor Details:{" "}
-							{truncateText(vendorDetails, 30)}
+					{/* <div className="flex justify-between items-center m-3 overflow-hidden">
+						<div className="flex-1">
+							Vendor Details:
+							{isAccordionOpen
+								? vendorDetails
+								: truncateText(
+										vendorDetails,
+										20
+								  )}
 						</div>
 						<button
 							onClick={toggleAccordion}
-							className="focus:outline-none"
+							className="focus:outline-none ml-2"
 						>
 							{isAccordionOpen ? (
 								<FaChevronUp />
@@ -212,26 +216,41 @@ const VendorCard: React.FC<VendorCardProps> = ({
 								<FaChevronDown />
 							)}
 						</button>
-					</div>
-					{isAccordionOpen && (
-						<div className="mt-2">
-							<div>{vendorDetails}</div>
+					</div> */}
+					<div className="flex justify-between items-center m-3">
+						<div className="flex-1">
+							<div className="flex items-center justify-between">
+								<span>Vendor Details:</span>
+								<button
+									onClick={toggleAccordion}
+									className="focus:outline-none ml-2"
+								>
+									{isAccordionOpen ? (
+										<FaChevronUp />
+									) : (
+										<FaChevronDown />
+									)}
+								</button>
+							</div>
+							<div
+								className={`transition-all duration-300 ease-in-out overflow-hidden ${
+									isAccordionOpen
+										? "max-h-full"
+										: "max-h-0"
+								}`}
+							>
+								<span className="block mt-2">
+									{vendorDetails}
+								</span>
+							</div>
 						</div>
-					)}
+					</div>
+
 					<div>
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
 					</div>
-					{/* <div>
-						Selected Room:
-						{editableVendor.roomId
-							? rooms.find(
-									(room) =>
-										room.id ===
-										editableVendor.roomId
-							  )?.name || "No Room Selected"
-							: "No Room Selected"}
-					</div> */}
+
 					<div className="mb-2">
 						<label className="block text-white">
 							Select Room:
