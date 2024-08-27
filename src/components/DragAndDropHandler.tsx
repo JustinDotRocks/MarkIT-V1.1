@@ -156,6 +156,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		const node = e.target;
 		const id = item.id;
 		const type = item.type;
+
 		const foundItem = type.includes("table")
 			? tables.find((table) => table.id === id)
 			: features.find((feature) => feature.id === id);
@@ -168,17 +169,30 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 			type === "table-6" ? 6 : type === "table-8" ? 8 : 5;
 		const itemHeightFeet = type.includes("table") ? 2.5 : 1.5;
 
-		const itemWidthPixels = itemWidthFeet * 25; // feetToPixels
-		const itemHeightPixels = itemHeightFeet * 25; // feetToPixels
+		const itemWidthPixels = itemWidthFeet;
+		const itemHeightPixels = itemHeightFeet;
 
 		let x = node.x();
 		let y = node.y();
+
 		if (x < 0) x = 0;
 		if (y < 0) y = 0;
 		if (x + itemWidthPixels > containerSize.width)
 			x = containerSize.width - itemWidthPixels;
 		if (y + itemHeightPixels > containerSize.height)
 			y = containerSize.height - itemHeightPixels;
+
+		// Allow the object to be dragged to the edges of the room
+		// if (room) {
+		// 	x = Math.max(
+		// 		0,
+		// 		Math.min(x, containerSize.width - itemWidthPixels)
+		// 	);
+		// 	y = Math.max(
+		// 		0,
+		// 		Math.min(y, containerSize.height - itemHeightPixels)
+		// 	);
+		// }
 
 		node.x(x);
 		node.y(y);

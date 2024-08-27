@@ -4,7 +4,7 @@ import AddTablesModal from "./AddTablesModal";
 import AddFeaturesModal from "./AddFeaturesModal";
 import InfoModal from "./InfoModal";
 import { RoomOptionsProps } from "../Types";
-import RoomDetailsDisplay from "./RoomDetailsDisplay";
+import ClearAllTablesButton from "./ClearAllTablesButton"; // Import the new component
 
 const RoomOptions: React.FC<RoomOptionsProps> = ({
 	areAllObjectsLocked,
@@ -20,6 +20,7 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	rooms,
 	setSelectedRoomId,
 	openAddRoomModal,
+	setTables,
 }) => {
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
@@ -62,6 +63,13 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							onClose={closeAddFeaturesModal}
 							addFeature={addFeature}
 							features={features}
+							selectedRoomId={selectedRoomId}
+						/>
+
+						<ClearAllTablesButton
+							tables={tables}
+							// setTables={() => setTables(tables)}
+							setTables={setTables}
 							selectedRoomId={selectedRoomId}
 						/>
 						{room && (

@@ -411,6 +411,8 @@ export interface RoomOptionsProps {
 	rooms: Room[];
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 	openAddRoomModal: () => void;
+	// setTables: (tables: Table[]) => void;
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 }
 
 export interface DeleteConfirmationModalProps {
@@ -419,4 +421,10 @@ export interface DeleteConfirmationModalProps {
 	onConfirm: () => void;
 	message?: string;
 	triggerComponent: React.ReactNode; // A button or any element that triggers the modal
+}
+
+export interface ClearAllTablesButtonProps {
+	tables: Table[];
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	selectedRoomId: string | null;
 }

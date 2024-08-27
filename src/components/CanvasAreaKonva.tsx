@@ -209,6 +209,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					rooms={rooms}
 					setSelectedRoomId={setSelectedRoomId}
 					openAddRoomModal={openAddRoomModal}
+					setTables={setTables}
 				/>
 			)}
 			{room &&
