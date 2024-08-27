@@ -362,6 +362,7 @@ export interface InfoModalProps {
 	openEditModal: (room: Room) => void;
 	removeRoom: (roomId: string) => void;
 	selectedRoomId: string | null;
+
 	// roomToEdit: Room | null;
 	// isRoomEditModalOpen: boolean;
 	// setIsRoomEditModalOpen: (isOpen: boolean) => void;
@@ -410,4 +411,12 @@ export interface RoomOptionsProps {
 	rooms: Room[];
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 	openAddRoomModal: () => void;
+}
+
+export interface DeleteConfirmationModalProps {
+	// isOpen: boolean;
+	// onClose: () => void;
+	onConfirm: () => void;
+	message?: string;
+	triggerComponent: React.ReactNode; // A button or any element that triggers the modal
 }

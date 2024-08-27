@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { VendorCardProps, Table } from "../../Types";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,
@@ -317,12 +318,21 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							/>
 						</label>
 					</div>
-					<button
+					{/* <button
 						onClick={() => deleteVendor(id)}
 						className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 					>
 						Delete Vendor
-					</button>
+					</button> */}
+					<DeleteConfirmationModal
+						message="Are you sure you want to delete this Vendor?"
+						onConfirm={() => deleteVendor(id)}
+						triggerComponent={
+							<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+								Delete
+							</button>
+						}
+					/>
 					<button
 						onClick={() => setIsEditing(true)}
 						className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { InfoModalProps } from "../Types";
 import { FiInfo } from "react-icons/fi";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const InfoModal: React.FC<InfoModalProps> = ({
 	room,
@@ -68,12 +69,21 @@ const InfoModal: React.FC<InfoModalProps> = ({
 						>
 							Edit Room
 						</button>
-						<button
+						{/* <button
 							onClick={() => removeRoom(room.id)}
 							className="bg-red-500 text-white py-1 px-4 rounded"
 						>
 							Delete Room
-						</button>
+						</button> */}
+						<DeleteConfirmationModal
+							message="Are you sure you want to delete this Room?"
+							onConfirm={() => removeRoom(room.id)}
+							triggerComponent={
+								<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+									Delete
+								</button>
+							}
+						/>
 					</div>
 					<button
 						onClick={() =>

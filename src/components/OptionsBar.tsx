@@ -1,5 +1,6 @@
 import React from "react";
 import { OptionsBarProps } from "../Types";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const OptionsBar: React.FC<OptionsBarProps> = ({
 	x,
@@ -25,12 +26,22 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 			}}
 		>
 			<p>{vendorName}</p>
-			<button
-				onClick={onDelete}
+			{/* <button
+				// onClick={onDelete}
+				onClick={handleDeleteClick} // Open the confirmation modal
 				className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 			>
 				Delete
-			</button>
+			</button> */}
+			<DeleteConfirmationModal
+				message="Are you sure you want to delete this item?"
+				onConfirm={onDelete}
+				triggerComponent={
+					<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+						Delete
+					</button>
+				}
+			/>
 			<button
 				onClick={onRotateCCW}
 				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -68,6 +79,12 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 					)}
 				</>
 			)}
+			{/* <DeleteConfirmationModal
+				isOpen={isModalOpen}
+				onClose={handleCancel}
+				onConfirm={handleConfirmDelete}
+				message="Are you sure you want to delete this item?"
+			/> */}
 		</div>
 	);
 };
