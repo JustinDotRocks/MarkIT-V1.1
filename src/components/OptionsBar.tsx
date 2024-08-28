@@ -20,7 +20,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	const canvasHeight = window.innerHeight * 0.9; // Example: 90% of the window height
 
 	// Calculate the width of the OptionsBar for positioning
-	const optionsBarWidth = 200;
+	const optionsBarWidth = 300;
 	const optionsBarHeight = 100;
 
 	// Adjust position if near the edge
