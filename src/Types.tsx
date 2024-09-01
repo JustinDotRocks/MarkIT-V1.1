@@ -238,6 +238,8 @@ export interface OptionsBarProps {
 	onAddVendor: () => void;
 	onRemoveVendor: () => void;
 	objectType: "table" | "feature";
+	canvasWidth: number; // Add this line
+	canvasHeight: number; // Add this line
 }
 
 export interface RoomDetailsDisplayProps {
@@ -303,7 +305,6 @@ export interface DragAndDropComponentProps {
 
 export interface DragAndDropHandlerProps {
 	item: Table | Feature;
-	// item: CanvasObject;
 	containerSize: { width: number; height: number };
 	room: Room | undefined;
 	feetToPixels: number;

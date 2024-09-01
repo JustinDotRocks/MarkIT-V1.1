@@ -121,7 +121,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		type: "table" | "feature",
 		x: number,
 		y: number
+		// width: number,
+		// height: number
 	) => {
+		// Adjust x and y to be the center of the object
+		// const centerX = x + width / 2;
+		// const centerY = y + height / 2;
+		// setSelectedObject({ id, type, x: centerX, y: centerY });
 		setSelectedObject({ id, type, x, y });
 	};
 
@@ -311,6 +317,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						</Layer>
 					</Stage>
 				)}
+			{/* <div className="relative"> */}
 			{selectedObject && selectedTableOrFeature && (
 				<RotateHandler
 					item={selectedTableOrFeature}
@@ -321,6 +328,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						<OptionsBar
 							x={selectedObject.x}
 							y={selectedObject.y}
+							// x={
+							// 	selectedObject.x *
+							// 	containerSize.width
+							// }
+							// y={
+							// 	selectedObject.y *
+							// 	containerSize.height
+							// }
 							onDelete={handleDelete}
 							onRotateCW={rotateCW}
 							onRotateCCW={rotateCCW}
@@ -378,10 +393,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								)
 							}
 							objectType={selectedObject.type}
+							canvasWidth={containerSize.width}
+							canvasHeight={containerSize.height}
 						/>
 					)}
 				</RotateHandler>
 			)}
+			{/* </div> */}
 			<AssignVendorModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}

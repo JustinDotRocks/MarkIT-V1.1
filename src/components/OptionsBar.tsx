@@ -14,46 +14,75 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	onAddVendor,
 	onRemoveVendor,
 	objectType,
+	canvasWidth,
+	canvasHeight,
 }) => {
 	// Define canvas or container size (you can pass this as a prop if needed)
-	const canvasWidth = window.innerWidth * 0.9; // Example: 90% of the window width
-	const canvasHeight = window.innerHeight * 0.9; // Example: 90% of the window height
+	// const canvasWidth = window.innerWidth * 0.9; // Example: 90% of the window width
+	// const canvasHeight = window.innerHeight * 0.9; // Example: 90% of the window height
 
 	// Calculate the width of the OptionsBar for positioning
-	const optionsBarWidth = 300;
+	const optionsBarWidth = 400;
 	const optionsBarHeight = 100;
 
 	// Adjust position if near the edge
 	let adjustedX = x;
 	let adjustedY = y;
 
-	// Check if the OptionsBar would go off the left edge
-	if (x - optionsBarWidth / 2 < 0) {
-		adjustedX = optionsBarWidth / 2;
-	}
-	// Check if the OptionsBar would go off the right edge
-	else if (x + optionsBarWidth / 2 > canvasWidth) {
-		adjustedX = canvasWidth - optionsBarWidth / 2;
+	// // Check if the OptionsBar would go off the left edge
+	// if (x - optionsBarWidth / 2 < 0) {
+	// 	adjustedX = optionsBarWidth / 2;
+	// }
+	// // Check if the OptionsBar would go off the right edge
+	// else if (x + optionsBarWidth / 2 > canvasWidth) {
+	// 	adjustedX = canvasWidth - optionsBarWidth / 2;
+	// }
+
+	// // Check if the OptionsBar would go off the top edge of the canvas
+	// if (y - optionsBarHeight < 0) {
+	// 	adjustedY = optionsBarHeight; // Move it below the object
+	// }
+	// // Check if the OptionsBar would go off the bottom edge of the canvas
+	// else if (y + optionsBarHeight / 2 > canvasHeight) {
+	// 	adjustedY = canvasHeight - optionsBarHeight / 2;
+	// }
+
+	// Center the OptionsBar above the object
+	adjustedX = x - optionsBarWidth / 2;
+	adjustedY = y - optionsBarHeight;
+
+	// Ensure the OptionsBar remains within the canvas boundaries
+	// if (adjustedX < 0) adjustedX = 0; // Left boundary
+	// if (adjustedX + optionsBarWidth > window.innerWidth)
+	// 	adjustedX = window.innerWidth - optionsBarWidth; // Right boundary
+	// if (adjustedY < 0) adjustedY = y + 20; // If above the top, move it below the object
+	// if (adjustedY + optionsBarHeight > window.innerHeight)
+	// 	adjustedY = window.innerHeight - optionsBarHeight; // Bottom boundary
+	// Ensure the OptionsBar stays within the left boundary
+	if (adjustedX < 10) {
+		adjustedX = 10; // Add small padding from the left edge
+	} else if (adjustedX + optionsBarWidth > canvasWidth) {
+		// Ensure the OptionsBar stays within the right boundary
+		adjustedX = canvasWidth - optionsBarWidth - 10; // Add small padding from the right edge
 	}
 
-	// Check if the OptionsBar would go off the top edge of the canvas
-	if (y - optionsBarHeight < 0) {
-		adjustedY = optionsBarHeight; // Move it below the object
-	}
-	// Check if the OptionsBar would go off the bottom edge of the canvas
-	else if (y + optionsBarHeight / 2 > canvasHeight) {
-		adjustedY = canvasHeight - optionsBarHeight / 2;
+	// Ensure the OptionsBar stays within the top boundary
+	if (adjustedY < 10) {
+		adjustedY = y + 200; // Position below the object if it goes above the top
+	} else if (adjustedY + optionsBarHeight > canvasHeight) {
+		// Ensure the OptionsBar stays within the bottom boundary
+		adjustedY = canvasHeight - optionsBarHeight + 100; // Add small padding from the bottom edge
 	}
 
 	return (
 		<div
-			className="absolute bg-white border border-black rounded p-2"
+			className="relative bg-white border border-black rounded p-2"
 			style={{
-				// left: x,
-				// top: y - 10,
-				left: adjustedX + 100,
-				top: adjustedY - 10,
+				left: adjustedX + 200,
+				top: adjustedY - 675,
 				zIndex: 50,
+				width: optionsBarWidth,
+				height: optionsBarHeight,
 				transform: "translate(-50%, -100%)", // Center it horizontally and move it above
 			}}
 		>
