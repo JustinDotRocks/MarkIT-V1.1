@@ -131,6 +131,9 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		}
 	};
 
+	// Check if vendor details are present
+	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
+
 	return (
 		<div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
 			{/* Conditional rendering based on isEditing state** */}
@@ -197,41 +200,24 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				<>
 					<div>Vendor Name: {vendorName}</div>
 					<div>Products: {vendorProducts}</div>
-					{/* <div className="flex justify-between items-center m-3 overflow-hidden">
-						<div className="flex-1">
-							Vendor Details:
-							{isAccordionOpen
-								? vendorDetails
-								: truncateText(
-										vendorDetails,
-										20
-								  )}
-						</div>
-						<button
-							onClick={toggleAccordion}
-							className="focus:outline-none ml-2"
-						>
-							{isAccordionOpen ? (
-								<FaChevronUp />
-							) : (
-								<FaChevronDown />
-							)}
-						</button>
-					</div> */}
 					<div className="flex justify-between items-center m-3">
 						<div className="flex-1">
 							<div className="flex items-center justify-between">
 								<span>Vendor Details:</span>
-								<button
-									onClick={toggleAccordion}
-									className="focus:outline-none ml-2"
-								>
-									{isAccordionOpen ? (
-										<FaChevronUp />
-									) : (
-										<FaChevronDown />
-									)}
-								</button>
+								{hasDetails && (
+									<button
+										onClick={
+											toggleAccordion
+										}
+										className="focus:outline-none ml-2"
+									>
+										{isAccordionOpen ? (
+											<FaChevronUp />
+										) : (
+											<FaChevronDown />
+										)}
+									</button>
+								)}
 							</div>
 							<div
 								className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -246,7 +232,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							</div>
 						</div>
 					</div>
-
 					<div>
 						Electricity Required:{" "}
 						{electricityRequired ? "Yes" : "No"}
