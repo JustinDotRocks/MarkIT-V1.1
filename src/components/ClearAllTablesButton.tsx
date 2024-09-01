@@ -1,19 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { ClearAllTablesButtonProps, Table } from "../Types";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,
 	setTables,
 	selectedRoomId,
 }) => {
-	// const handleClearTables = () => {
-	// 	// Filter out tables that belong to the selected room
-	// 	const updatedTables = tables.filter(
-	// 		(table) => table.roomId !== selectedRoomId
-	// 	);
-	// 	// Update the state with the remaining tables
-	// 	setTables(updatedTables);
-	// };
+	const [, setIsModalOpen] = useState(false);
+	const closeModal = () => setIsModalOpen(false);
+
 	const handleClearTables = () => {
 		if (selectedRoomId) {
 			const filteredTables = tables.filter(
@@ -21,15 +17,19 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 			);
 			setTables(filteredTables);
 		}
+		closeModal();
 	};
 
 	return (
-		<button
-			onClick={handleClearTables}
-			className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
-		>
-			Clear All Tables
-		</button>
+		<DeleteConfirmationModal
+			message="Are you sure you want to delete this item?"
+			onConfirm={handleClearTables}
+			triggerComponent={
+				<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+					Clear All Tables
+				</button>
+			}
+		/>
 	);
 };
 
