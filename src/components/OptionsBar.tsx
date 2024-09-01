@@ -58,22 +58,17 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 			}}
 		>
 			<p>{vendorName}</p>
-			{/* <button
-				// onClick={onDelete}
-				onClick={handleDeleteClick} // Open the confirmation modal
-				className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-			>
-				Delete
-			</button> */}
-			<DeleteConfirmationModal
-				message="Are you sure you want to delete this item?"
-				onConfirm={onDelete}
-				triggerComponent={
-					<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-						Delete
-					</button>
-				}
-			/>
+			<div className="flex items-center justify-start">
+				<DeleteConfirmationModal
+					message="Are you sure you want to delete this item?"
+					onConfirm={onDelete}
+					triggerComponent={
+						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+							Delete
+						</button>
+					}
+				/>
+			</div>
 			<button
 				onClick={onRotateCCW}
 				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"

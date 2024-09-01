@@ -65,13 +65,13 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							features={features}
 							selectedRoomId={selectedRoomId}
 						/>
-
-						<ClearAllTablesButton
-							tables={tables}
-							// setTables={() => setTables(tables)}
-							setTables={setTables}
-							selectedRoomId={selectedRoomId}
-						/>
+						<div className="flex items-center justify-start">
+							<ClearAllTablesButton
+								tables={tables}
+								setTables={setTables}
+								selectedRoomId={selectedRoomId}
+							/>
+						</div>
 						{room && (
 							<InfoModal
 								isOpen={isInfoModalOpen}
