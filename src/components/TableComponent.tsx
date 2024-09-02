@@ -148,8 +148,10 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 				/>
 			)}
 			<Text
-				x={textX - xOffset}
-				y={textY - yOffset}
+				// x={textX - xOffset}
+				// y={textY - yOffset}
+				x={table.x * containerSize.width}
+				y={table.y * containerSize.height}
 				text={`${table.tableNumber}`}
 				fontSize={tableNumberFontSize}
 				fill="white"
@@ -167,8 +169,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 				rotation={table.rotation || 0}
 				align="center"
 				verticalAlign="middle"
-				offsetX={tableWidthPixels / 2}
-				offsetY={tableHeightPixels / 2}
+				offsetX={isCircle ? 4 : tableWidthPixels / 20}
+				offsetY={isCircle ? 8 : tableHeightPixels / 6}
 			/>
 		</React.Fragment>
 	);
