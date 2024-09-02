@@ -1,6 +1,78 @@
-// RotateHandler.tsx
+// import React from "react";
+// import { RotateHandlerProps, Table, Feature } from "../Types";
+
+// // Type guard for Table
+// const isTable = (item: Table | Feature): item is Table => {
+// 	return (
+// 		item.type === "table-6" ||
+// 		item.type === "table-8" ||
+// 		item.type === "table-5"
+// 	);
+// };
+
+// // Type guard for Feature
+// const isFeature = (item: Table | Feature): item is Feature => {
+// 	return item.type === "door" || item.type === "obstacle";
+// };
+
+// const RotateHandler: React.FC<RotateHandlerProps> = ({
+// 	item,
+// 	setTables,
+// 	setFeatures,
+// 	children,
+// }) => {
+// 	const rotateObject = (angle: number) => {
+// 		if (
+// 			"type" in item &&
+// 			(item.type === "table-6" ||
+// 				item.type === "table-8" ||
+// 				item.type === "table-5")
+// 		) {
+// 			setTables((prevTables) =>
+// 				prevTables.map((table) => {
+// 					if (table.id === item.id) {
+// 						if (table.isLocked) return table; // If the table is locked, don't rotate
+// 						const newRotation =
+// 							((table.rotation || 0) + angle) % 360;
+// 						return { ...table, rotation: newRotation };
+// 					}
+// 					return table;
+// 				})
+// 			);
+// 		} else {
+// 			setFeatures((prevFeatures) =>
+// 				prevFeatures.map((feature) => {
+// 					if (feature.id === item.id) {
+// 						if (feature.isLocked) return feature; // If the feature is locked, don't rotate
+// 						const newRotation =
+// 							((feature.rotation || 0) + angle) %
+// 							360;
+// 						return {
+// 							...feature,
+// 							rotation: newRotation,
+// 						};
+// 					}
+// 					return feature;
+// 				})
+// 			);
+// 		}
+// 	};
+
+// 	const rotateCW = () => {
+// 		rotateObject(45);
+// 	};
+
+// 	const rotateCCW = () => {
+// 		rotateObject(-45);
+// 	};
+
+// 	return <>{children({ rotateCW, rotateCCW })}</>;
+// };
+
+// export default RotateHandler;
+
 import React from "react";
-import { RotateHandlerProps } from "../Types";
+import { RotateHandlerProps, Table, Feature } from "../Types";
 
 const RotateHandler: React.FC<RotateHandlerProps> = ({
 	item,
@@ -9,16 +81,16 @@ const RotateHandler: React.FC<RotateHandlerProps> = ({
 	children,
 }) => {
 	const rotateObject = (angle: number) => {
+		// Check if the item is a Table
 		if (
-			"type" in item &&
-			(item.type === "table-6" ||
-				item.type === "table-8" ||
-				item.type === "table-5")
+			(item as Table).type === "table-6" ||
+			(item as Table).type === "table-8" ||
+			(item as Table).type === "table-5"
 		) {
 			setTables((prevTables) =>
 				prevTables.map((table) => {
 					if (table.id === item.id) {
-						if (table.isLocked) return table; // If the table is locked, don't rotate
+						if (table.isLocked) return table; // Skip rotation if locked
 						const newRotation =
 							((table.rotation || 0) + angle) % 360;
 						return { ...table, rotation: newRotation };
@@ -26,11 +98,16 @@ const RotateHandler: React.FC<RotateHandlerProps> = ({
 					return table;
 				})
 			);
-		} else {
+		}
+		// Check if the item is a Feature
+		else if (
+			(item as Feature).type === "door" ||
+			(item as Feature).type === "obstacle"
+		) {
 			setFeatures((prevFeatures) =>
 				prevFeatures.map((feature) => {
 					if (feature.id === item.id) {
-						if (feature.isLocked) return feature; // If the feature is locked, don't rotate
+						if (feature.isLocked) return feature; // Skip rotation if locked
 						const newRotation =
 							((feature.rotation || 0) + angle) %
 							360;
@@ -45,69 +122,10 @@ const RotateHandler: React.FC<RotateHandlerProps> = ({
 		}
 	};
 
-	const rotateCW = () => {
-		rotateObject(45);
-	};
-
-	const rotateCCW = () => {
-		rotateObject(-45);
-	};
+	const rotateCW = () => rotateObject(45);
+	const rotateCCW = () => rotateObject(-45);
 
 	return <>{children({ rotateCW, rotateCCW })}</>;
 };
 
 export default RotateHandler;
-
-// const rotateObject = (
-// 	id: string,
-// 	type: "table" | "feature",
-// 	angle: number
-// ) => {
-// 	if (type === "table") {
-// 		setTables((prevTables) =>
-// 			prevTables.map((table) => {
-// 				if (table.id === id) {
-// 					// Check if the table is locked
-// 					if (table.isLocked) return table;
-
-// 					// Update rotation
-// 					const newRotation =
-// 						((table.rotation || 0) + angle) % 360;
-// 					return { ...table, rotation: newRotation };
-// 				}
-// 				return table;
-// 			})
-// 		);
-// 	} else {
-// 		setFeatures((prevFeatures) =>
-// 			prevFeatures.map((feature) => {
-// 				if (feature.id === id) {
-// 					// Check if the feature is locked
-// 					if (feature.isLocked) return feature;
-
-// 					// Update rotation
-// 					const newRotation =
-// 						((feature.rotation || 0) + angle) %
-// 						360;
-// 					return {
-// 						...feature,
-// 						rotation: newRotation,
-// 					};
-// 				}
-// 				return feature;
-// 			})
-// 		);
-// 	}
-// };
-
-// const rotateCW = () => {
-// 	if (selectedObject) {
-// 		rotateObject(selectedObject.id, selectedObject.type, 45);
-// 	}
-// };
-
-// const rotateCCW = () => {
-// 	if (selectedObject) {
-// 		rotateObject(selectedObject.id, selectedObject.type, -45);
-// 	}
-// };

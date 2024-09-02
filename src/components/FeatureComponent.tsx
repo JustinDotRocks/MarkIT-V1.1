@@ -47,7 +47,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
 
 	return (
-		<React.Fragment>
+		<>
 			{isDoor ? (
 				<Rect
 					id={feature.id}
@@ -68,6 +68,9 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 							e.evt.clientY
 						)
 					}
+					rotation={feature.rotation || 0}
+					offsetX={featureWidthPixels / 2}
+					offsetY={featureHeightPixels / 2}
 				/>
 			) : (
 				<Circle
@@ -89,9 +92,11 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 						)
 					}
 					rotation={feature.rotation || 0}
+					offsetX={featureWidthPixels / 2}
+					offsetY={featureHeightPixels / 2}
 				/>
 			)}
-		</React.Fragment>
+		</>
 	);
 };
 

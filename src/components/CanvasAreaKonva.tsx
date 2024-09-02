@@ -3,16 +3,11 @@ import { Stage, Layer, Rect } from "react-konva";
 import { CanvasAreaProps } from "../Types";
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
-import LockAllObjectsButton from "./LockAllObjectsButton";
 import TableComponent from "./TableComponent";
 import FeatureComponent from "./FeatureComponent";
 import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
-import AddTablesModal from "./AddTablesModal";
-import AddFeaturesModal from "./AddFeaturesModal";
-import InfoModal from "./InfoModal";
 import AssignVendorModal from "./AssignVendorModal";
-import { FiInfo } from "react-icons/fi";
 import RoomOptions from "./RoomOptions";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -180,6 +175,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			)
 		);
 	};
+
+	// const selectedItem = selectedObject
+	// 	? selectedObject.type === "table"
+	// 		? tables.find((table) => table.id === selectedObject.id)
+	// 		: features.find((feature) => feature.id === selectedObject.id)
+	// 	: null;
 
 	return (
 		<div
