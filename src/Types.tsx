@@ -270,6 +270,7 @@ export interface TableComponentProps {
 		x: number,
 		y: number
 	) => void;
+	vendors: Vendor[]; // For Table color change on Vendor Sign In
 }
 
 export interface FeatureComponentProps {
@@ -301,6 +302,7 @@ export interface DragAndDropComponentProps {
 		x: number,
 		y: number
 	) => void;
+	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 }
 
 export interface DragAndDropHandlerProps {
@@ -319,6 +321,8 @@ export interface DragAndDropHandlerProps {
 		y: number
 	) => void;
 	Component: React.FC<DragAndDropComponentProps>;
+	// Component: React.FC<DragAndDropComponentProps & { vendors?: Vendor[] }>;
+	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 }
 
 export interface RotateHandlerProps {

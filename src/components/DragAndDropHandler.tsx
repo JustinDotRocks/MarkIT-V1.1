@@ -12,6 +12,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	setFeatures,
 	onObjectClick,
 	Component,
+	vendors,
 }) => {
 	// const handleDragMove = (e: any) => {
 	// 	const node = e.target;
@@ -490,6 +491,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 			containerSize={containerSize}
 			feetToPixels={feetToPixels}
 			room={room}
+			vendors={vendors}
 		/>
 	);
 };

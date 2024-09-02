@@ -1,8 +1,11 @@
 import React from "react";
 import { Rect, Circle, Text } from "react-konva";
-import { DragAndDropComponentProps, Table } from "../Types";
+import { DragAndDropComponentProps, Table, Vendor } from "../Types";
 
 const TableComponent: React.FC<DragAndDropComponentProps> = ({
+	// const TableComponent: React.FC<
+	// 	DragAndDropComponentProps & { vendors: Vendor[] }
+	// > = ({
 	item,
 	containerSize,
 	room,
@@ -10,6 +13,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 	onDragMove,
 	onDragEnd,
 	onObjectClick,
+	vendors = [],
 }) => {
 	const table = item as Table;
 	const tableDimensions = {
@@ -87,6 +91,17 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 		? (dimensions.width * feetToPixels * scaleFactor) / 2
 		: 0;
 
+	// Determine the vendor associated with this table
+	const associatedVendor = vendors.find(
+		(vendor) => vendor.id === table.vendorId
+	);
+
+	const fillColor = associatedVendor
+		? associatedVendor.signedIn
+			? "#38a169" // Green color to match "bg-green-500"
+			: "#e53e3e" // Red color to match "bg-red-500"
+		: "#a0aec0"; // Grey color if no vendor is associated
+
 	return (
 		<React.Fragment>
 			{isCircle ? (
@@ -106,7 +121,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					// 	2
 					// }
 					radius={circleRadiusPixels}
-					fill="blue"
+					fill={fillColor} // Use dynamic color
+					// fill="blue"
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
@@ -130,7 +146,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					y={table.y * containerSize.height}
 					width={tableWidthPixels}
 					height={tableHeightPixels}
-					fill="blue"
+					fill={fillColor} // Use dynamic color
+					// fill="blue"
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}

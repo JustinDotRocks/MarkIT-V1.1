@@ -335,6 +335,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										Component={
 											TableComponent
 										}
+										vendors={vendors}
 									/>
 								))}
 							{objects

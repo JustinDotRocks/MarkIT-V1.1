@@ -19,7 +19,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 	const featureDimensions: {
 		[key: string]: { width?: number; height?: number; radius?: number };
 	} = {
-		door: { width: 3, height: 1 },
+		door: { width: 1.5, height: 1 },
 		obstacle: { radius: 2 },
 	};
 
@@ -44,7 +44,9 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 		(dimensions.radius || 0) *
 		feetToPixels *
 		(containerSize.width /
-			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
+			(room?.width
+				? parseFloat(room.width) * (feetToPixels + 50)
+				: 1));
 
 	return (
 		<>
@@ -56,7 +58,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					y={feature.y * containerSize.height}
 					width={featureWidthPixels}
 					height={featureHeightPixels}
-					fill="green"
+					fill="orange"
 					draggable={!feature.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
@@ -79,7 +81,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					x={feature.x * containerSize.width}
 					y={feature.y * containerSize.height}
 					radius={featureRadiusPixels}
-					fill="red"
+					fill="black"
 					draggable={!feature.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
