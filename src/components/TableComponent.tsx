@@ -1,11 +1,8 @@
 import React from "react";
 import { Rect, Circle, Text } from "react-konva";
-import { DragAndDropComponentProps, Table, Vendor } from "../Types";
+import { DragAndDropComponentProps, Table } from "../Types";
 
 const TableComponent: React.FC<DragAndDropComponentProps> = ({
-	// const TableComponent: React.FC<
-	// 	DragAndDropComponentProps & { vendors: Vendor[] }
-	// > = ({
 	item,
 	containerSize,
 	room,
@@ -42,9 +39,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 
 	const tableWidthPixels = dimensions.width * feetToPixels * scaleFactor;
 	const tableHeightPixels = dimensions.height * feetToPixels * scaleFactor;
-
-	const textX = table.x * containerSize.width + tableWidthPixels / 2;
-	const textY = table.y * containerSize.height + tableHeightPixels / 2;
 
 	const isCircle = table.type === "table-5";
 
@@ -110,19 +104,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					type="table"
 					x={table.x * containerSize.width}
 					y={table.y * containerSize.height}
-					// radius={
-					// 	(dimensions.width *
-					// 		feetToPixels *
-					// 		(containerSize.width /
-					// 			(room?.width
-					// 				? parseFloat(room.width) *
-					// 				  feetToPixels
-					// 				: 1))) /
-					// 	2
-					// }
 					radius={circleRadiusPixels}
 					fill={fillColor} // Use dynamic color
-					// fill="blue"
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
@@ -147,7 +130,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					width={tableWidthPixels}
 					height={tableHeightPixels}
 					fill={fillColor} // Use dynamic color
-					// fill="blue"
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
@@ -165,8 +147,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 				/>
 			)}
 			<Text
-				// x={textX - xOffset}
-				// y={textY - yOffset}
 				x={table.x * containerSize.width}
 				y={table.y * containerSize.height}
 				text={`${table.tableNumber}`}

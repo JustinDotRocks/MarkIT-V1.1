@@ -138,7 +138,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const backgroundColor = signedIn ? "bg-green-500" : "bg-red-500";
 
 	return (
-		// <div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
 		<div
 			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
 		>
@@ -309,12 +308,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							/>
 						</label>
 					</div>
-					{/* <button
-						onClick={() => deleteVendor(id)}
-						className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Delete Vendor
-					</button> */}
 					<DeleteConfirmationModal
 						message="Are you sure you want to delete this Vendor?"
 						onConfirm={() => deleteVendor(id)}

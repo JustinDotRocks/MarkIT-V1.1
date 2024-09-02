@@ -64,21 +64,55 @@ const App: React.FC = () => {
 	const openRoomModal = () => setIsRoomModalOpen(true);
 	const closeRoomModal = () => setIsRoomModalOpen(false);
 
+	// const addTableToCanvas = (tableData: {
+	// 	type: "table-6" | "table-8" | "table-5";
+	// 	id: string;
+	// 	details?: string;
+	// 	tableNumber: number;
+	// }) => {
+	// 	const newTable: Table = {
+	// 		...tableData,
+	// 		roomId: selectedRoomId || "",
+	// 		x: 0,
+	// 		y: 0,
+	// 		isLocked: false,
+	// 	};
+
+	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
+	// };
 	const addTableToCanvas = (tableData: {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
 		details?: string;
 		tableNumber: number;
 	}) => {
-		const newTable: Table = {
-			...tableData,
-			roomId: selectedRoomId || "",
-			x: 0,
-			y: 0,
-			isLocked: false,
-		};
+		setTables((prevTables: Table[]) => {
+			// Filter tables to include only those in the selected room
+			const roomTables = prevTables.filter(
+				(table) => table.roomId === selectedRoomId
+			);
 
-		setTables((prevTables: Table[]) => [...prevTables, newTable]);
+			// Get the highest table number from the tables in the selected room
+			const maxTableNumber = roomTables.reduce((max, table) => {
+				return table.tableNumber > max
+					? table.tableNumber
+					: max;
+			}, 0);
+
+			// Assign the next table number by incrementing the highest number
+			const nextTableNumber = maxTableNumber + 1;
+
+			const newTable: Table = {
+				...tableData,
+				tableNumber: nextTableNumber,
+				roomId: selectedRoomId || "",
+				x: 0,
+				y: 0,
+				isLocked: false,
+			};
+
+			return [...prevTables, newTable];
+		});
 	};
 
 	const addFeatureToCanvas = (featureData: {

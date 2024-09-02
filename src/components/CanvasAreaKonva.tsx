@@ -29,18 +29,12 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	addFeature,
 	areAllObjectsLocked,
 	setAreAllObjectsLocked,
-	// handleRemoveVendor,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
 		width: window.innerWidth * 0.9, // Use 90% of the window width
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
-
-	// const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
-	// const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
-	// 	useState(false);
-	// const [isRoomInfoModalOpen, setIsRoomInfoModalOpen] = useState(false);
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -54,14 +48,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const feetToPixels = 25; // Scale factor
 
-	// const openAddTablesModal = () => setIsAddTablesModalOpen(true);
-	// const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
-
-	// const openAddFeaturesModal = () => setIsAddFeaturesModalOpen(true);
-	// const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
-
-	// const toggleRoomInfoModal = () => setIsRoomInfoModalOpen((prev) => !prev);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedTableId, setSelectedTableId] = useState<string | null>(
 		null
@@ -70,7 +56,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [scale, setScale] = useState(1);
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
 	const stageRef = useRef<any>(null); // Reference for the Konva stage
-	const [isStageDragging, setIsStageDragging] = useState(false); // State for stage dragging
 
 	useEffect(() => {
 		if (room) {
@@ -121,13 +106,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		type: "table" | "feature",
 		x: number,
 		y: number
-		// width: number,
-		// height: number
 	) => {
-		// Adjust x and y to be the center of the object
-		// const centerX = x + width / 2;
-		// const centerY = y + height / 2;
-		// setSelectedObject({ id, type, x: centerX, y: centerY });
 		setSelectedObject({ id, type, x, y });
 	};
 
@@ -152,24 +131,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		setSelectedTableId(tableId);
 		setIsModalOpen(true);
 	};
-
-	const handleRemoveVendorClick = (tableId: string) => {
-		setSelectedTableId(tableId);
-		setIsModalOpen(true);
-	};
-
-	// const handleAssignVendor = (vendorId: string) => {
-	// 	if (selectedTableId) {
-	// 		setTables((prevTables) =>
-	// 			prevTables.map((table) =>
-	// 				table.id === selectedTableId
-	// 					? { ...table, vendorId }
-	// 					: table
-	// 			)
-	// 		);
-	// 		setSelectedTableId(null);
-	// 	}
-	// };
 
 	const handleRemoveVendor = (tableId: string) => {
 		setTables((prevTables) =>
@@ -218,18 +179,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		stage.batchDraw(); // Update the stage
 	};
 
-	// Handle stage dragging start
-	const handleDragStageStart = () => {
-		setIsStageDragging(true);
-	};
-
-	// Handle stage dragging end
-	const handleDragStageEnd = () => {
-		setIsStageDragging(false);
-		const stage = stageRef.current;
-		setStagePosition({ x: stage.x(), y: stage.y() });
-	};
-
 	useEffect(() => {
 		const stage = stageRef.current;
 		if (stage) {
@@ -264,9 +213,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					areAllObjectsLocked={areAllObjectsLocked}
 					lockAllObjects={lockAllObjects}
 					selectedRoomId={selectedRoomId}
-					// toggleRoomInfoModal={() =>
-					// 	setIsRoomInfoModalOpen(!isRoomInfoModalOpen)
-					// }
 					addTable={addTable}
 					tables={tables}
 					addFeature={addFeature}
@@ -397,14 +343,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						<OptionsBar
 							x={selectedObject.x}
 							y={selectedObject.y}
-							// x={
-							// 	selectedObject.x *
-							// 	containerSize.width
-							// }
-							// y={
-							// 	selectedObject.y *
-							// 	containerSize.height
-							// }
 							onDelete={handleDelete}
 							onRotateCW={rotateCW}
 							onRotateCCW={rotateCCW}
@@ -473,7 +411,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				vendors={vendors}
-				// onAssign={handleAssignVendor}
 				tables={tables}
 				rooms={rooms}
 				setTables={setTables}
