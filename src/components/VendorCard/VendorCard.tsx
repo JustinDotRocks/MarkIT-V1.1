@@ -134,8 +134,14 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	// Check if vendor details are present
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
+	// Define background color based on signedIn state
+	const backgroundColor = signedIn ? "bg-green-500" : "bg-red-500";
+
 	return (
-		<div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
+		// <div className="card-container bg-gray-700 text-white rounded-lg shadow-md p-4 m-4 w-72">
+		<div
+			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
+		>
 			{/* Conditional rendering based on isEditing state** */}
 			{isEditing ? (
 				<>
