@@ -67,6 +67,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		null
 	);
 
+	const [scale, setScale] = useState(1);
+	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
+	const stageRef = useRef<any>(null); // Reference for the Konva stage
+	const [isStageDragging, setIsStageDragging] = useState(false); // State for stage dragging
+
 	useEffect(() => {
 		if (room) {
 			const roomWidthFeet = parseFloat(room.width);
@@ -176,11 +181,67 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		);
 	};
 
-	// const selectedItem = selectedObject
-	// 	? selectedObject.type === "table"
-	// 		? tables.find((table) => table.id === selectedObject.id)
-	// 		: features.find((feature) => feature.id === selectedObject.id)
-	// 	: null;
+	// Handle zooming with mouse wheel
+	const handleWheel = (e: any) => {
+		e.evt.preventDefault();
+
+		const stage = stageRef.current;
+		const oldScale = stage.scaleX();
+		const pointer = stage.getPointerPosition();
+
+		const scaleBy = 1.01; // Zoom factor
+		let direction = e.evt.deltaY > 0 ? 1 : -1;
+
+		// Revert zoom direction when using ctrlKey (for touchpads)
+		if (e.evt.ctrlKey) {
+			direction = -direction;
+		}
+
+		const newScale =
+			direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+		setScale(newScale);
+
+		const mousePointTo = {
+			x: (pointer.x - stage.x()) / oldScale,
+			y: (pointer.y - stage.y()) / oldScale,
+		};
+
+		const newPos = {
+			x: pointer.x - mousePointTo.x * newScale,
+			y: pointer.y - mousePointTo.y * newScale,
+		};
+
+		setStagePosition(newPos);
+		stage.scale({ x: newScale, y: newScale });
+		stage.position(newPos);
+		stage.batchDraw(); // Update the stage
+	};
+
+	// Handle stage dragging start
+	const handleDragStageStart = () => {
+		setIsStageDragging(true);
+	};
+
+	// Handle stage dragging end
+	const handleDragStageEnd = () => {
+		setIsStageDragging(false);
+		const stage = stageRef.current;
+		setStagePosition({ x: stage.x(), y: stage.y() });
+	};
+
+	useEffect(() => {
+		const stage = stageRef.current;
+		if (stage) {
+			stage.on("wheel", handleWheel);
+		}
+
+		return () => {
+			if (stage) {
+				stage.off("wheel", handleWheel);
+			}
+		};
+	}, []);
 
 	return (
 		<div
@@ -223,8 +284,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
 					<Stage
+						ref={stageRef}
 						width={containerSize.width}
 						height={containerSize.height}
+						scaleX={scale}
+						scaleY={scale}
+						draggable // Enable stage dragging
+						x={stagePosition.x}
+						y={stagePosition.y}
 						onMouseDown={handleStageClick}
 						onTouchStart={handleStageClick}
 					>
