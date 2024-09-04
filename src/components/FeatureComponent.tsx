@@ -13,8 +13,6 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 }) => {
 	const feature = item as Feature;
 
-	console.log("FeatureComponent rendering feature:", feature);
-
 	// Define dimensions for different feature types
 	const featureDimensions: {
 		[key: string]: { width?: number; height?: number; radius?: number };

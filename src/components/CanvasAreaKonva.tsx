@@ -182,15 +182,18 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	useEffect(() => {
 		const stage = stageRef.current;
 		if (stage) {
+			// Attach the wheel event handler for zooming
 			stage.on("wheel", handleWheel);
-		}
 
-		return () => {
-			if (stage) {
+			// Force an update to ensure all Konva internals are set up
+			stage.batchDraw();
+			console.log("Zoom event listener attached on stage:", stage);
+
+			return () => {
 				stage.off("wheel", handleWheel);
-			}
-		};
-	}, []);
+			};
+		}
+	}, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
 
 	return (
 		<div
@@ -291,10 +294,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										selectedRoomId
 								)
 								.map((feature) => {
-									console.log(
-										"Rendering Feature:",
-										feature
-									);
 									return (
 										<DragAndDropHandler
 											key={

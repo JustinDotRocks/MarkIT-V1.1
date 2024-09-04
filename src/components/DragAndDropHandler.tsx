@@ -53,14 +53,11 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		const x = e.target.x() / containerSize.width;
 		const y = e.target.y() / containerSize.height;
 
-		console.log(`DragEnd for ${id}: x=${x}, y=${y}`);
-
 		if (item.type.includes("table")) {
 			setTables((prevTables) => {
 				const updatedTables = prevTables.map((table) =>
 					table.id === id ? { ...table, x, y } : table
 				);
-				console.log("Updated Tables: ", updatedTables);
 				return updatedTables;
 			});
 		} else {
@@ -68,7 +65,6 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 				const updatedFeatures = prevFeatures.map((feature) =>
 					feature.id === id ? { ...feature, x, y } : feature
 				);
-				console.log("Updated Features: ", updatedFeatures);
 				return updatedFeatures;
 			});
 		}
