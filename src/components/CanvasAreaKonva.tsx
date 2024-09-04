@@ -29,6 +29,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	addFeature,
 	areAllObjectsLocked,
 	setAreAllObjectsLocked,
+	setVendors,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -132,7 +133,36 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		setIsModalOpen(true);
 	};
 
+	// const handleRemoveVendor = (tableId: string) => {
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.id === tableId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
+
+	// 	// Find the associated vendor and update the signedIn status
+	// 	const associatedVendor = vendors.find((vendor) =>
+	// 		tables.some(
+	// 			(table) =>
+	// 				table.id === tableId &&
+	// 				table.vendorId === vendor.id
+	// 		)
+	// 	);
+
+	// 	if (associatedVendor) {
+	// 		setVendors((prevVendors) =>
+	// 			prevVendors.map((vendor) =>
+	// 				vendor.id === associatedVendor.id
+	// 					? { ...vendor, signedIn: false }
+	// 					: vendor
+	// 			)
+	// 		);
+	// 	}
+	// };
 	const handleRemoveVendor = (tableId: string) => {
+		// Remove the vendor ID from the table
 		setTables((prevTables) =>
 			prevTables.map((table) =>
 				table.id === tableId
@@ -140,6 +170,27 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					: table
 			)
 		);
+
+		// Find the table that matches the tableId
+		const associatedTable = tables.find(
+			(table) => table.id === tableId
+		);
+
+		// If the table has a vendor associated, update that vendor
+		if (associatedTable?.vendorId) {
+			setVendors((prevVendors) =>
+				prevVendors.map((vendor) =>
+					vendor.id === associatedTable.vendorId
+						? {
+								...vendor,
+								signedIn: false,
+								roomId: "",
+								roomName: "",
+						  } // Clear roomId and roomName
+						: vendor
+				)
+			);
+		}
 	};
 
 	// Handle zooming with mouse wheel

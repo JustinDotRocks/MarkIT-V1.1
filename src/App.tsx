@@ -322,6 +322,9 @@ const App: React.FC = () => {
 										setAreAllObjectsLocked={
 											setAreAllObjectsLocked
 										}
+										setVendors={
+											setVendors
+										}
 									/>
 								</div>
 							}

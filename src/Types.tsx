@@ -139,6 +139,7 @@ export interface CanvasAreaProps {
 	areAllObjectsLocked: boolean;
 	setAreAllObjectsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 	handleRemoveVendor?: (tableId: string) => void;
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 }
 
 export interface VendorDetails {
