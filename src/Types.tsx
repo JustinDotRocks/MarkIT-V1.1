@@ -391,6 +391,7 @@ export interface AssignVendorModalProps {
 	rooms: Room[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedTableId: string | null;
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 }
 
 export interface RoomOptionsProps {

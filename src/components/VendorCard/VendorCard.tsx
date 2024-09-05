@@ -30,6 +30,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		roomId,
 	});
 	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
+	const [currentRoomName, setCurrentRoomName] = useState<string>("");
+	const [currentTableLabel, setCurrentTableLabel] = useState<string>("");
 
 	const truncateText = (text: string, maxLength: number) => {
 		if (text.length > maxLength) {
@@ -82,7 +84,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			"table-5": "5' Round Table",
 		};
 		const tableTypeLabel = tableTypeLabels[table.type] || table.type;
-		return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
+		// return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
+		return `Table ${table.tableNumber}: ${tableTypeLabel}`;
 	};
 
 	//  Filter out incomplete tables
@@ -114,6 +117,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				roomId: value,
 				roomName: selectedRoom ? selectedRoom.name : "",
 			}));
+			setCurrentRoomName(selectedRoom ? selectedRoom.name : ""); // Update current room display
 			localStorage.setItem(`vendor-${id}-roomId`, value); // Save to local storage
 			updateTableAssignment("", id); // Reset table selection when room changes
 		} else {
@@ -131,11 +135,34 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		}
 	};
 
+	// // Update current table label whenever the room or table selection changes
+	// useEffect(() => {
+	// 	const currentTable = tables.find(
+	// 		(table) => table.id === editableVendor.tableNumber
+	// 	);
+	// 	setCurrentTableLabel(
+	// 		currentTable ? getTableLabel(currentTable) : ""
+	// 	);
+	// }, [editableVendor.tableNumber, tables]);
+
 	// Check if vendor details are present
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
 	const backgroundColor = signedIn ? "bg-green-500" : "bg-red-500";
+
+	// Get assigned room and table details
+	// const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
+	// const assignedTable = tables.find(
+	// 	(table) => table.vendorId === editableVendor.id
+	// );
+	// const tableLabel = assignedTable ? getTableLabel(assignedTable) : "";
+
+	// Get assigned room and table details
+	const assignedRoom = rooms.find(
+		(room) => room.id === editableVendor.roomId
+	);
+	const assignedTable = tables.find((table) => table.id === tableNumber);
 
 	return (
 		<div
@@ -242,7 +269,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						{electricityRequired ? "Yes" : "No"}
 					</div>
 
-					<div className="mb-2">
+					{/* <div className="mb-2">
 						<label className="block text-white">
 							Select Room:
 						</label>
@@ -293,6 +320,16 @@ const VendorCard: React.FC<VendorCardProps> = ({
 								</option>
 							))}
 						</select>
+					</div> */}
+					<div className="mt-2 text-white">
+						<strong>Assigned Room:</strong>{" "}
+						{assignedRoom ? assignedRoom.name : "None"}
+					</div>
+					<div className="mt-2 text-white">
+						<strong>Assigned Table:</strong>{" "}
+						{assignedTable
+							? getTableLabel(assignedTable)
+							: "None"}
 					</div>
 					<div>
 						<label>

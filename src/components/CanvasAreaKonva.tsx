@@ -162,7 +162,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	// 	}
 	// };
 	const handleRemoveVendor = (tableId: string) => {
-		// Remove the vendor ID from the table
+		// First, update tables state to remove the vendorId from the table
 		setTables((prevTables) =>
 			prevTables.map((table) =>
 				table.id === tableId
@@ -171,26 +171,35 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			)
 		);
 
-		// Find the table that matches the tableId
-		const associatedTable = tables.find(
-			(table) => table.id === tableId
-		);
+		// Update vendors after the table state has been modified
+		setVendors((prevVendors) => {
+			// Find the vendor associated with the table
+			const associatedVendor = prevVendors.find((vendor) =>
+				tables.some(
+					(table) =>
+						table.id === tableId &&
+						table.vendorId === vendor.id
+				)
+			);
 
-		// If the table has a vendor associated, update that vendor
-		if (associatedTable?.vendorId) {
-			setVendors((prevVendors) =>
-				prevVendors.map((vendor) =>
-					vendor.id === associatedTable.vendorId
+			if (associatedVendor) {
+				// Remove room and table association from the vendor
+				localStorage.removeItem(
+					`vendor-${associatedVendor.id}-roomId`
+				); // Clear room from localStorage
+				return prevVendors.map((vendor) =>
+					vendor.id === associatedVendor.id
 						? {
 								...vendor,
 								signedIn: false,
-								roomId: "",
-								roomName: "",
-						  } // Clear roomId and roomName
+								roomId: "", // Clear room association
+								roomName: "", // Clear room name
+						  }
 						: vendor
-				)
-			);
-		}
+				);
+			}
+			return prevVendors;
+		});
 	};
 
 	// Handle zooming with mouse wheel
@@ -465,6 +474,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				rooms={rooms}
 				setTables={setTables}
 				selectedTableId={selectedObject?.id || null}
+				setVendors={setVendors}
 			/>
 		</div>
 	);

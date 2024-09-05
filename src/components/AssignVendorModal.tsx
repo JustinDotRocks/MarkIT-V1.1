@@ -11,6 +11,7 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 	rooms,
 	setTables,
 	selectedTableId,
+	setVendors,
 }) => {
 	const [selectedVendorId, setSelectedVendorId] = useState<string>("");
 
@@ -31,17 +32,99 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 
 	if (!isOpen) return null;
 
+	// const handleAssignVendor = (vendorId: string) => {
+	// 	if (selectedTableId) {
+	// 		setTables((prevTables) =>
+	// 			prevTables.map((table) =>
+	// 				table.id === selectedTableId
+	// 					? { ...table, vendorId }
+	// 					: table
+	// 			)
+	// 		);
+	// 		setSelectedVendorId("");
+	// 		onClose(); // Close the modal after assignment
+	// 	}
+	// };
+	// const handleAssignVendor = (vendorId: string) => {
+	// 	if (selectedTableId) {
+	// 		const selectedTable = tables.find(
+	// 			(table) => table.id === selectedTableId
+	// 		);
+	// 		const room = rooms.find(
+	// 			(room) => room.id === selectedTable?.roomId
+	// 		);
+
+	// 		if (selectedTable && room) {
+	// 			// Update the table with the vendor ID
+	// 			setTables((prevTables) =>
+	// 				prevTables.map((table) =>
+	// 					table.id === selectedTableId
+	// 						? { ...table, vendorId }
+	// 						: table
+	// 				)
+	// 			);
+
+	// 			// Update the vendor with room details
+	// 			setVendors((prevVendors) =>
+	// 				prevVendors.map((vendor) =>
+	// 					vendor.id === vendorId
+	// 						? {
+	// 								...vendor,
+	// 								signedIn: false,
+	// 								roomId: room.id,
+	// 								roomName: room.name,
+	// 						  }
+	// 						: vendor
+	// 				)
+	// 			);
+
+	// 			setSelectedVendorId("");
+	// 			onClose(); // Close the modal after assignment
+	// 		}
+	// 	}
+	// };
 	const handleAssignVendor = (vendorId: string) => {
 		if (selectedTableId) {
-			setTables((prevTables) =>
-				prevTables.map((table) =>
-					table.id === selectedTableId
-						? { ...table, vendorId }
-						: table
-				)
+			const selectedTable = tables.find(
+				(table) => table.id === selectedTableId
 			);
-			setSelectedVendorId("");
-			onClose(); // Close the modal after assignment
+			const room = rooms.find(
+				(room) => room.id === selectedTable?.roomId
+			);
+
+			if (selectedTable && room) {
+				// Update the table with the vendor ID
+				setTables((prevTables) =>
+					prevTables.map((table) =>
+						table.id === selectedTableId
+							? { ...table, vendorId }
+							: table
+					)
+				);
+
+				// Update the vendor with room details
+				setVendors((prevVendors) =>
+					prevVendors.map((vendor) =>
+						vendor.id === vendorId
+							? {
+									...vendor,
+									signedIn: false,
+									roomId: room.id,
+									roomName: room.name,
+							  }
+							: vendor
+					)
+				);
+
+				// Update localStorage with new room assignment
+				localStorage.setItem(
+					`vendor-${vendorId}-roomId`,
+					room.id
+				);
+
+				setSelectedVendorId("");
+				onClose(); // Close the modal after assignment
+			}
 		}
 	};
 
