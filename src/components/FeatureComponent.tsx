@@ -18,10 +18,11 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 		[key: string]: { width?: number; height?: number; radius?: number };
 	} = {
 		door: { width: 1.5, height: 1 },
-		obstacle: { radius: 2 },
+		obstacle: { width: 0.75, height: 0.75 },
 	};
 
 	const isDoor = feature.type === "door";
+	const isObstacle = feature.type === "obstacle";
 
 	// Calculate dimensions in pixels
 	const dimensions = featureDimensions[feature.type] || {};
@@ -48,7 +49,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 
 	return (
 		<>
-			{isDoor ? (
+			{/* {isDoor ? (
 				<Rect
 					id={feature.id}
 					type="feature"
@@ -95,7 +96,32 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					offsetX={featureWidthPixels / 2}
 					offsetY={featureHeightPixels / 2}
 				/>
-			)}
+			)} */}
+			{isDoor || isObstacle ? (
+				<Rect
+					id={feature.id}
+					type="feature"
+					x={feature.x * containerSize.width}
+					y={feature.y * containerSize.height}
+					width={featureWidthPixels}
+					height={featureHeightPixels}
+					fill={isDoor ? "orange" : "black"} // Orange for doors, black for obstacles
+					draggable={!feature.isLocked}
+					onDragMove={onDragMove}
+					onDragEnd={onDragEnd}
+					onClick={(e) =>
+						onObjectClick(
+							feature.id,
+							"feature",
+							e.evt.clientX,
+							e.evt.clientY
+						)
+					}
+					rotation={feature.rotation || 0}
+					offsetX={featureWidthPixels / 2}
+					offsetY={featureHeightPixels / 2}
+				/>
+			) : null}
 		</>
 	);
 };
