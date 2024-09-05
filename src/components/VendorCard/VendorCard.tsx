@@ -149,8 +149,9 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
-	const backgroundColor = signedIn ? "bg-green-500" : "bg-red-500";
-
+	const backgroundColor = signedIn
+		? "bg-customLightGreen"
+		: "bg-customOrange";
 	// Get assigned room and table details
 	// const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
 	// const assignedTable = tables.find(
