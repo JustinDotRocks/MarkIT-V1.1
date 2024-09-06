@@ -165,6 +165,12 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	);
 	const assignedTable = tables.find((table) => table.id === tableNumber);
 
+	// Check if both room and table are selected
+	// const isSignInDisabled = !editableVendor.roomId || !tableNumber;
+
+	// Check if both room and table are selected
+	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
+
 	return (
 		<div
 			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
@@ -332,7 +338,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							? getTableLabel(assignedTable)
 							: "None"}
 					</div>
-					<div>
+					{/* <div>
 						<label>
 							Signed In: {signedIn ? "Yes" : "No"}
 							<input
@@ -343,9 +349,30 @@ const VendorCard: React.FC<VendorCardProps> = ({
 								}
 								onChange={handleInputChange}
 								className="form-checkbox h-5 w-5 text-blue-600"
+								disabled={isSignInDisabled} // Disable if no room or table
 							/>
 						</label>
-					</div>
+					</div> */}
+					{/* Conditionally render Sign-In option */}
+					{isRoomAndTableSelected && (
+						<div>
+							<label>
+								Signed In:{" "}
+								{signedIn ? "Yes" : "No"}
+								<input
+									type="checkbox"
+									name="signedIn"
+									checked={
+										editableVendor.signedIn
+									}
+									onChange={
+										handleInputChange
+									}
+									className="form-checkbox h-5 w-5 text-blue-600"
+								/>
+							</label>
+						</div>
+					)}
 					<DeleteConfirmationModal
 						message="Are you sure you want to delete this Vendor?"
 						onConfirm={() => deleteVendor(id)}
