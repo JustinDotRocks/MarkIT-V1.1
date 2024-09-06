@@ -84,21 +84,54 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	}, [room, containerSize.width]);
 
+	useEffect(() => {
+		// Load the lock state from local storage on initial load
+		const storedLockState = localStorage.getItem("areAllObjectsLocked");
+		if (storedLockState !== null) {
+			setAreAllObjectsLocked(JSON.parse(storedLockState));
+		}
+	}, []);
+
+	// const lockAllObjects = () => {
+	// 	const allLocked = areAllObjectsLocked;
+	// 	setAreAllObjectsLocked(!allLocked);
+
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) => ({
+	// 			...table,
+	// 			isLocked: !allLocked,
+	// 		}))
+	// 	);
+	// 	setFeatures((prevFeatures) =>
+	// 		prevFeatures.map((feature) => ({
+	// 			...feature,
+	// 			isLocked: !allLocked,
+	// 		}))
+	// 	);
+	// };
 	const lockAllObjects = () => {
 		const allLocked = areAllObjectsLocked;
-		setAreAllObjectsLocked(!allLocked);
+		const newLockState = !allLocked;
+
+		setAreAllObjectsLocked(newLockState);
 
 		setTables((prevTables) =>
 			prevTables.map((table) => ({
 				...table,
-				isLocked: !allLocked,
+				isLocked: newLockState,
 			}))
 		);
 		setFeatures((prevFeatures) =>
 			prevFeatures.map((feature) => ({
 				...feature,
-				isLocked: !allLocked,
+				isLocked: newLockState,
 			}))
+		);
+
+		// Save the new lock state to local storage
+		localStorage.setItem(
+			"areAllObjectsLocked",
+			JSON.stringify(newLockState)
 		);
 	};
 
