@@ -272,6 +272,33 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		stage.batchDraw(); // Update the stage
 	};
 
+	const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newScale = parseFloat(e.target.value);
+		const stage = stageRef.current;
+
+		if (stage) {
+			const oldScale = stage.scaleX();
+			const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
+
+			setScale(newScale);
+
+			const mousePointTo = {
+				x: (pointer.x - stage.x()) / oldScale,
+				y: (pointer.y - stage.y()) / oldScale,
+			};
+
+			const newPos = {
+				x: pointer.x - mousePointTo.x * newScale,
+				y: pointer.y - mousePointTo.y * newScale,
+			};
+
+			setStagePosition(newPos);
+			stage.scale({ x: newScale, y: newScale });
+			stage.position(newPos);
+			stage.batchDraw(); // Update the stage
+		}
+	};
+
 	useEffect(() => {
 		const stage = stageRef.current;
 		if (stage) {
@@ -325,81 +352,63 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			{room &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
-					<Stage
-						ref={stageRef}
-						width={containerSize.width}
-						height={containerSize.height}
-						scaleX={scale}
-						scaleY={scale}
-						draggable // Enable stage dragging
-						x={stagePosition.x}
-						y={stagePosition.y}
-						onMouseDown={handleStageClick}
-						onTouchStart={handleStageClick}
-					>
-						<Layer>
-							<Rect
-								x={0}
-								y={0}
-								width={containerSize.width}
-								height={containerSize.height}
-								stroke="black"
-								strokeWidth={2}
+					<>
+						{/* Zoom Slider */}
+						<div className="zoom-slider mt-4">
+							<label htmlFor="zoom">Zoom: </label>
+							<input
+								id="zoom"
+								type="range"
+								min="0.5"
+								max="2"
+								step="0.01"
+								value={scale}
+								onChange={handleZoomChange}
+								className="w-1/4"
 							/>
-							{tables
-								.filter(
-									(table) =>
-										table.roomId ===
-										selectedRoomId
-								)
-								.map((table) => (
-									<DragAndDropHandler
-										key={table.id}
-										item={table}
-										containerSize={
-											containerSize
-										}
-										feetToPixels={
-											feetToPixels
-										}
-										room={room}
-										tables={tables}
-										features={features}
-										setTables={
-											setTables
-										}
-										setFeatures={
-											setFeatures
-										}
-										onObjectClick={
-											handleObjectClick
-										}
-										Component={
-											TableComponent
-										}
-										vendors={vendors}
-									/>
-								))}
-							{objects
-								.filter(
-									(feature) =>
-										feature.roomId ===
-										selectedRoomId
-								)
-								.map((feature) => {
-									return (
+						</div>
+						<Stage
+							ref={stageRef}
+							width={containerSize.width}
+							height={containerSize.height}
+							scaleX={scale}
+							scaleY={scale}
+							draggable // Enable stage dragging
+							x={stagePosition.x}
+							y={stagePosition.y}
+							onMouseDown={handleStageClick}
+							onTouchStart={handleStageClick}
+						>
+							<Layer>
+								<Rect
+									x={0}
+									y={0}
+									width={
+										containerSize.width
+									}
+									height={
+										containerSize.height
+									}
+									stroke="black"
+									strokeWidth={2}
+								/>
+								{tables
+									.filter(
+										(table) =>
+											table.roomId ===
+											selectedRoomId
+									)
+									.map((table) => (
 										<DragAndDropHandler
-											key={
-												feature.id
+											key={table.id}
+											item={table}
+											containerSize={
+												containerSize
 											}
-											item={feature}
 											feetToPixels={
 												feetToPixels
 											}
 											room={room}
-											containerSize={
-												containerSize
-											}
 											tables={
 												tables
 											}
@@ -416,13 +425,61 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												handleObjectClick
 											}
 											Component={
-												FeatureComponent
+												TableComponent
+											}
+											vendors={
+												vendors
 											}
 										/>
-									);
-								})}
-						</Layer>
-					</Stage>
+									))}
+								{objects
+									.filter(
+										(feature) =>
+											feature.roomId ===
+											selectedRoomId
+									)
+									.map((feature) => {
+										return (
+											<DragAndDropHandler
+												key={
+													feature.id
+												}
+												item={
+													feature
+												}
+												feetToPixels={
+													feetToPixels
+												}
+												room={
+													room
+												}
+												containerSize={
+													containerSize
+												}
+												tables={
+													tables
+												}
+												features={
+													features
+												}
+												setTables={
+													setTables
+												}
+												setFeatures={
+													setFeatures
+												}
+												onObjectClick={
+													handleObjectClick
+												}
+												Component={
+													FeatureComponent
+												}
+											/>
+										);
+									})}
+							</Layer>
+						</Stage>
+					</>
 				)}
 			{/* <div className="relative"> */}
 			{selectedObject && selectedTableOrFeature && (
