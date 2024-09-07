@@ -324,6 +324,7 @@ export interface DragAndDropHandlerProps {
 	Component: React.FC<DragAndDropComponentProps>;
 	// Component: React.FC<DragAndDropComponentProps & { vendors?: Vendor[] }>;
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
+	stageRef: React.RefObject<any>;
 }
 
 export interface RotateHandlerProps {

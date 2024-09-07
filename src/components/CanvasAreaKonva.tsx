@@ -430,6 +430,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											vendors={
 												vendors
 											}
+											stageRef={
+												stageRef
+											}
 										/>
 									))}
 								{objects
@@ -473,6 +476,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												}
 												Component={
 													FeatureComponent
+												}
+												stageRef={
+													stageRef
 												}
 											/>
 										);
