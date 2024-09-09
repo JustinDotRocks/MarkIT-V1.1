@@ -325,6 +325,7 @@ export interface DragAndDropHandlerProps {
 	// Component: React.FC<DragAndDropComponentProps & { vendors?: Vendor[] }>;
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 	stageRef: React.RefObject<any>;
+	setShowGrid: (show: boolean) => void;
 }
 
 export interface RotateHandlerProps {
@@ -435,4 +436,10 @@ export interface ClearAllTablesButtonProps {
 	tables: Table[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedRoomId: string | null;
+}
+
+export interface GridProps {
+	containerSize: { width: number; height: number };
+	gridSize: number;
+	isVisible: boolean;
 }

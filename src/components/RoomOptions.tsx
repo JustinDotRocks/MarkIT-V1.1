@@ -42,7 +42,7 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 				openAddRoomModal={openAddRoomModal}
 				selectedRoomId={selectedRoomId}
 			/> */}
-			<div className="room-details-container w-full p-4 mb-4 bg-blue-200">
+			<div className="room-details-container w-full p-4 mb-4">
 				{selectedRoomId && room && (
 					<>
 						<LockAllObjectsButton

@@ -39,7 +39,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			{selectedRoomId && (
 				<div
 					onClick={() => setIsRoomInfoModalOpen(true)}
-					className="cursor-pointer text-blue-500 inline-block ml-2"
+					className="cursor-pointer text-customBlue inline-block ml-2"
 				>
 					<FiInfo size={24} />
 				</div>

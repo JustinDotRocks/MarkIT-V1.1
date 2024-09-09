@@ -14,11 +14,14 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	Component,
 	vendors,
 	stageRef,
+	setShowGrid,
 }) => {
 	const handleDragMove = (e: any) => {
 		const node = e.target;
 		const id = item.id;
 		const type = item.type;
+
+		setShowGrid(true);
 
 		const foundItem = type.includes("table")
 			? tables.find((table) => table.id === id)
@@ -49,44 +52,44 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		node.y(y);
 	};
 
-	const checkCollision = (currentItem: any, items: any[], type: string) => {
-		const currentItemX = currentItem.x * containerSize.width;
-		const currentItemY = currentItem.y * containerSize.height;
-		const currentItemWidth =
-			currentItem.width || currentItem.radius * 2; // Use radius for circles
-		const currentItemHeight =
-			currentItem.height || currentItem.radius * 2;
+	// const checkCollision = (currentItem: any, items: any[], type: string) => {
+	// 	const currentItemX = currentItem.x * containerSize.width;
+	// 	const currentItemY = currentItem.y * containerSize.height;
+	// 	const currentItemWidth =
+	// 		currentItem.width || currentItem.radius * 2; // Use radius for circles
+	// 	const currentItemHeight =
+	// 		currentItem.height || currentItem.radius * 2;
 
-		return items.some((otherItem) => {
-			if (otherItem.id === currentItem.id) return false; // Skip self
+	// 	return items.some((otherItem) => {
+	// 		if (otherItem.id === currentItem.id) return false; // Skip self
 
-			const otherX = otherItem.x * containerSize.width;
-			const otherY = otherItem.y * containerSize.height;
-			const otherWidth = otherItem.width || otherItem.radius * 2;
-			const otherHeight = otherItem.height || otherItem.radius * 2;
+	// 		const otherX = otherItem.x * containerSize.width;
+	// 		const otherY = otherItem.y * containerSize.height;
+	// 		const otherWidth = otherItem.width || otherItem.radius * 2;
+	// 		const otherHeight = otherItem.height || otherItem.radius * 2;
 
-			// Basic collision detection: checks if bounding boxes overlap
-			const collisionDetected = !(
-				(
-					currentItemX + currentItemWidth <= otherX || // Current right is left of other left
-					currentItemX >= otherX + otherWidth || // Current left is right of other right
-					currentItemY + currentItemHeight <= otherY || // Current bottom is above other top
-					currentItemY >= otherY + otherHeight
-				) // Current top is below other bottom
-			);
+	// 		// Basic collision detection: checks if bounding boxes overlap
+	// 		const collisionDetected = !(
+	// 			(
+	// 				currentItemX + currentItemWidth <= otherX || // Current right is left of other left
+	// 				currentItemX >= otherX + otherWidth || // Current left is right of other right
+	// 				currentItemY + currentItemHeight <= otherY || // Current bottom is above other top
+	// 				currentItemY >= otherY + otherHeight
+	// 			) // Current top is below other bottom
+	// 		);
 
-			// Log for debugging if collision is detected
-			if (collisionDetected) {
-				console.log(
-					"Collision Detected between:",
-					currentItem,
-					otherItem
-				);
-			}
+	// 		// Log for debugging if collision is detected
+	// 		if (collisionDetected) {
+	// 			console.log(
+	// 				"Collision Detected between:",
+	// 				currentItem,
+	// 				otherItem
+	// 			);
+	// 		}
 
-			return collisionDetected;
-		});
-	};
+	// 		return collisionDetected;
+	// 	});
+	// };
 
 	// const handleDragEnd = (e: any) => {
 	// 	const id = item.id;
@@ -120,6 +123,8 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		const node = e.target;
 		const x = node.x() / containerSize.width;
 		const y = node.y() / containerSize.height;
+
+		setShowGrid(false);
 
 		// Ensure stageRef.current is available
 		if (!stageRef.current) {

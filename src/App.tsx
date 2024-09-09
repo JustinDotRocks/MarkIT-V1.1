@@ -265,7 +265,7 @@ const App: React.FC = () => {
 
 	return (
 		<Router>
-			<div className="flex flex-col h-screen">
+			<div className="flex flex-col h-screen bg-customWhite">
 				<NavBar
 					activeMode={activeMode}
 					setActiveMode={setActiveMode}

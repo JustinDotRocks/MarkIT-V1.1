@@ -16,12 +16,19 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 						key={room.id}
 						className={`room border p-4 rounded cursor-pointer hover:bg-gray-200 ${
 							room.id === selectedRoomId
-								? "bg-blue-200"
-								: "bg-white"
+								? "bg-customBlue2"
+								: "bg-customBlue"
 						}`}
 						onClick={() => setSelectedRoomId(room.id)}
 					>
-						<h3 className="flex justify-between items-center">
+						<h3
+							key={room.id}
+							className={`flex justify-between items-center ${
+								room.id === selectedRoomId
+									? "text-white"
+									: "text-white"
+							}`}
+						>
 							<span>{room.name}</span>
 						</h3>
 					</div>
@@ -29,7 +36,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 			</div>
 			<button
 				onClick={openAddRoomModal}
-				className="ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded"
+				className="ml-4 bg-customBlue hover:bg-green-700 text-white font-bold py-1 px-4 rounded"
 			>
 				Add Room
 			</button>

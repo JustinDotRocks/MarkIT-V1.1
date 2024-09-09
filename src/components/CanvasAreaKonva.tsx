@@ -9,6 +9,7 @@ import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
 import AssignVendorModal from "./AssignVendorModal";
 import RoomOptions from "./RoomOptions";
+import Grid from "./Grid";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -36,6 +37,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		width: window.innerWidth * 0.9, // Use 90% of the window width
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
+
+	const [showGrid, setShowGrid] = useState(false); // State to control grid visibility
+	// Grid size can be adjusted as needed
+	const gridSize = 20; // Grid cell size
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -365,6 +370,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								value={scale}
 								onChange={handleZoomChange}
 								className="w-1/4"
+								style={{
+									accentColor: "#1f5160",
+								}}
 							/>
 						</div>
 						<Stage
@@ -380,6 +388,17 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							onTouchStart={handleStageClick}
 						>
 							<Layer>
+								{/* Grid Component */}
+								{showGrid && (
+									<Grid
+										containerSize={
+											containerSize
+										}
+										gridSize={gridSize}
+										isVisible={showGrid}
+									/>
+								)}
+
 								<Rect
 									x={0}
 									y={0}
@@ -433,6 +452,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											stageRef={
 												stageRef
 											}
+											setShowGrid={
+												setShowGrid
+											} // Pass setShowGrid to the handler
 										/>
 									))}
 								{objects
@@ -480,6 +502,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												stageRef={
 													stageRef
 												}
+												setShowGrid={
+													setShowGrid
+												} // Pass setShowGrid to the handler
 											/>
 										);
 									})}

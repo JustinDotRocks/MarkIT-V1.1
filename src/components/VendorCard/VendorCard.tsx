@@ -149,9 +149,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
-	const backgroundColor = signedIn
-		? "bg-customLightGreen"
-		: "bg-customOrange";
+	const backgroundColor = signedIn ? "bg-customGreen" : "bg-customOrange";
 	// Get assigned room and table details
 	// const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
 	// const assignedTable = tables.find(
@@ -230,7 +228,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					</button>
 					<button
 						onClick={() => setIsEditing(false)}
-						className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+						className="mt-2 bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 					>
 						Cancel
 					</button>
@@ -377,7 +375,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						message="Are you sure you want to delete this Vendor?"
 						onConfirm={() => deleteVendor(id)}
 						triggerComponent={
-							<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+							<button className="bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
 								Delete
 							</button>
 						}

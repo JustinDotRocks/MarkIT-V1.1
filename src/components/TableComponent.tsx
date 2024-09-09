@@ -92,9 +92,9 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 
 	const fillColor = associatedVendor
 		? associatedVendor.signedIn
-			? "#6edbb3" // Green color to match "bg-green-500"
-			: "#ffa726" // Red color to match "bg-red-500"
-		: "#a0aec0"; // Grey color if no vendor is associated
+			? "#496f3d" // Green color to match "bg-green-500"
+			: "#de5e46" // Red color to match "bg-red-500"
+		: "#628b98"; // Grey color if no vendor is associated
 
 	return (
 		<React.Fragment>

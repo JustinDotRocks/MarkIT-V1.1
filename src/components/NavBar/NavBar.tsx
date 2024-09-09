@@ -9,7 +9,8 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 		setActiveMode(activeMode === mode ? "" : mode); // Toggle mode or set to empty
 	};
 	return (
-		<nav className="bg-gray-800 text-white p-4">
+		// <nav className="bg-gray-800 text-white p-4">
+		<nav className="bg-customBlue text-white p-4">
 			<div className="flex justify-between items-center">
 				<div className="text-lg font-bold">MarkIT</div>
 				<div>
