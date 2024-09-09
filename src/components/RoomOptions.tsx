@@ -33,18 +33,9 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 
 	return (
 		<div>
-			{/* <RoomDetailsDisplay
-				rooms={rooms}
-				handleRemoveRoom={removeRoom}
-				openEditModal={openEditModal}
-				removeRoom={removeRoom}
-				setSelectedRoomId={setSelectedRoomId}
-				openAddRoomModal={openAddRoomModal}
-				selectedRoomId={selectedRoomId}
-			/> */}
 			<div className="room-details-container w-full p-4 mb-4">
 				{selectedRoomId && room && (
-					<>
+					<div className="flex items-center space-x-2">
 						<LockAllObjectsButton
 							areAllObjectsLocked={
 								areAllObjectsLocked
@@ -65,13 +56,11 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							features={features}
 							selectedRoomId={selectedRoomId}
 						/>
-						<div className="flex items-center justify-start">
-							<ClearAllTablesButton
-								tables={tables}
-								setTables={setTables}
-								selectedRoomId={selectedRoomId}
-							/>
-						</div>
+						<ClearAllTablesButton
+							tables={tables}
+							setTables={setTables}
+							selectedRoomId={selectedRoomId}
+						/>
 						{room && (
 							<InfoModal
 								isOpen={isInfoModalOpen}
@@ -82,7 +71,7 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 								selectedRoomId={selectedRoomId}
 							/>
 						)}
-					</>
+					</div>
 				)}
 			</div>
 		</div>

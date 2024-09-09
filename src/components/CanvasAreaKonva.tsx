@@ -97,23 +97,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	}, []);
 
-	// const lockAllObjects = () => {
-	// 	const allLocked = areAllObjectsLocked;
-	// 	setAreAllObjectsLocked(!allLocked);
-
-	// 	setTables((prevTables) =>
-	// 		prevTables.map((table) => ({
-	// 			...table,
-	// 			isLocked: !allLocked,
-	// 		}))
-	// 	);
-	// 	setFeatures((prevFeatures) =>
-	// 		prevFeatures.map((feature) => ({
-	// 			...feature,
-	// 			isLocked: !allLocked,
-	// 		}))
-	// 	);
-	// };
 	const lockAllObjects = () => {
 		const allLocked = areAllObjectsLocked;
 		const newLockState = !allLocked;
@@ -171,34 +154,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		setIsModalOpen(true);
 	};
 
-	// const handleRemoveVendor = (tableId: string) => {
-	// 	setTables((prevTables) =>
-	// 		prevTables.map((table) =>
-	// 			table.id === tableId
-	// 				? { ...table, vendorId: undefined }
-	// 				: table
-	// 		)
-	// 	);
-
-	// 	// Find the associated vendor and update the signedIn status
-	// 	const associatedVendor = vendors.find((vendor) =>
-	// 		tables.some(
-	// 			(table) =>
-	// 				table.id === tableId &&
-	// 				table.vendorId === vendor.id
-	// 		)
-	// 	);
-
-	// 	if (associatedVendor) {
-	// 		setVendors((prevVendors) =>
-	// 			prevVendors.map((vendor) =>
-	// 				vendor.id === associatedVendor.id
-	// 					? { ...vendor, signedIn: false }
-	// 					: vendor
-	// 			)
-	// 		);
-	// 	}
-	// };
 	const handleRemoveVendor = (tableId: string) => {
 		// First, update tables state to remove the vendorId from the table
 		setTables((prevTables) =>
@@ -312,7 +267,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 			// Force an update to ensure all Konva internals are set up
 			stage.batchDraw();
-			console.log("Zoom event listener attached on stage:", stage);
 
 			return () => {
 				stage.off("wheel", handleWheel);
@@ -357,24 +311,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			{room &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
-					<>
-						{/* Zoom Slider */}
-						<div className="zoom-slider mt-4">
-							<label htmlFor="zoom">Zoom: </label>
-							<input
-								id="zoom"
-								type="range"
-								min="0.5"
-								max="2"
-								step="0.01"
-								value={scale}
-								onChange={handleZoomChange}
-								className="w-1/4"
-								style={{
-									accentColor: "#1f5160",
-								}}
-							/>
-						</div>
+					<div className="flex items-start">
 						<Stage
 							ref={stageRef}
 							width={containerSize.width}
@@ -510,7 +447,32 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									})}
 							</Layer>
 						</Stage>
-					</>
+						{/* Vertical Zoom Slider */}
+						<div className="zoom-slider flex flex-col items-center ml-4">
+							<label
+								htmlFor="zoom"
+								className="mb-2"
+							>
+								Zoom:{" "}
+							</label>
+							<input
+								id="zoom"
+								type="range"
+								min="0.25"
+								max="3"
+								step="0.01"
+								value={scale}
+								onChange={handleZoomChange}
+								// className="w-1/4"
+								className="h-48 w-2 cursor-pointer appearance-none bg-gray-200"
+								style={{
+									writingMode:
+										"vertical-rl", // Change to a valid value for vertical slider
+									accentColor: "#1f5160",
+								}}
+							/>
+						</div>
+					</div>
 				)}
 			{/* <div className="relative"> */}
 			{selectedObject && selectedTableOrFeature && (

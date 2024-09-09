@@ -20,7 +20,7 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
 					i * gridSize,
 					containerSize.height,
 				]}
-				stroke="#ddd"
+				stroke="#1f5160"
 				strokeWidth={1}
 			/>
 		);
@@ -37,7 +37,7 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
 					containerSize.width,
 					j * gridSize,
 				]}
-				stroke="#ddd"
+				stroke="#1f5160"
 				strokeWidth={1}
 			/>
 		);

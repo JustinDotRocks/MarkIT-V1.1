@@ -79,7 +79,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 			{selectedRoomId && (
 				<button
 					onClick={() => setIsAddFeaturesModalOpen(true)}
-					className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded ml-4"
+					className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded ml-2"
 				>
 					Add Features
 				</button>
