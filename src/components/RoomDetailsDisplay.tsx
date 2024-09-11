@@ -36,7 +36,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 			</div>
 			<button
 				onClick={openAddRoomModal}
-				className="ml-4 bg-customBlue hover:bg-green-700 text-white font-bold py-1 px-4 rounded"
+				className="ml-4 bg-customBlue hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
 			>
 				Add Room
 			</button>
