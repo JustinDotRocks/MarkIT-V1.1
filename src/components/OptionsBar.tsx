@@ -150,6 +150,7 @@
 // export default OptionsBar;
 
 import React from "react";
+import { FaLock, FaUnlock, FaUndo, FaRedo } from "react-icons/fa"; // Importing icons
 import { OptionsBarProps } from "../Types";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
@@ -169,8 +170,8 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	// canvasHeight,
 }) => {
 	// Define the width and height of the OptionsBar
-	const optionsBarWidth = 450;
-	const optionsBarHeight = 100;
+	const optionsBarWidth = 400;
+	const optionsBarHeight = 50;
 	const margin = 5; // Margin between the object and the OptionsBar
 
 	// Position directly below the object with the specified margin
@@ -192,7 +193,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 	return (
 		<div
-			className="absolute bg-white border border-black rounded p-2"
+			className="absolute flex items-center bg-gray-800 border border-black rounded p-2"
 			style={{
 				left: adjustedX,
 				top: adjustedY,
@@ -201,55 +202,65 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				height: optionsBarHeight,
 			}}
 		>
-			<p>{vendorName}</p>
-			<div className="flex items-center justify-start">
-				<DeleteConfirmationModal
-					message="Are you sure you want to delete this item?"
-					onConfirm={onDelete}
-					triggerComponent={
-						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-							Delete
-						</button>
-					}
-				/>
-			</div>
+			<p className="text-white">{vendorName}</p>
+			<div className="flex items-center space-x-2"></div>
+			{/* Rotate Counter-Clockwise Button */}
 			<button
 				onClick={onRotateCCW}
-				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 			>
-				Rotate CCW
+				<FaUndo className="mr-1" />
 			</button>
+			{/* Rotate Clockwise Button */}
+
 			<button
 				onClick={onRotateCW}
-				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 			>
-				Rotate CW
+				<FaRedo className="mr-1" />
 			</button>
-			<button
+			{/* <button
 				onClick={onToggleLock}
 				className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded"
 			>
 				{isLocked ? "Unlock" : "Lock"}
+			</button> */}
+			{/* Lock/Unlock Button */}
+			<button
+				onClick={onToggleLock}
+				className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 m-1 rounded flex items-center"
+			>
+				{isLocked ? <FaLock /> : <FaUnlock />}
+				{/* {isLocked ? "Unlock" : "Lock"} */}
 			</button>
 			{objectType === "table" && (
 				<>
 					{vendorName ? (
 						<button
 							onClick={onRemoveVendor}
-							className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 mr-2 rounded"
+							className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
 						>
 							Remove Vendor
 						</button>
 					) : (
 						<button
 							onClick={onAddVendor}
-							className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 mr-2 rounded"
+							className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
 						>
 							Add Vendor
 						</button>
 					)}
 				</>
 			)}
+			<DeleteConfirmationModal
+				message="Are you sure you want to delete this item?"
+				onConfirm={onDelete}
+				triggerComponent={
+					<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+						Delete
+					</button>
+				}
+			/>
 		</div>
 	);
 };

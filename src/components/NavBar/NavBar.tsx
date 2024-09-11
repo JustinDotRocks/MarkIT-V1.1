@@ -29,7 +29,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 							className={`px-4 py-2 rounded ${
 								activeMode === ""
 									? "bg-customLightBlue"
-									: "bg-customBlue2 hover:bg-gray-600"
+									: "bg-customBlue2 hover:bg-customLightBlue"
 							}`}
 							onClick={() => toggleMode("")}
 						>
@@ -41,7 +41,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 							className={`ml-2 px-4 py-2 rounded ${
 								activeMode === "vendor"
 									? "bg-customLightBlue"
-									: "bg-customBlue2 hover:bg-gray-600"
+									: "bg-customBlue2 hover:bg-customLightBlue"
 							}`}
 							onClick={() => toggleMode("vendor")}
 						>

@@ -17,8 +17,8 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 	const featureDimensions: {
 		[key: string]: { width?: number; height?: number; radius?: number };
 	} = {
-		door: { width: 1.5, height: 1 },
-		obstacle: { width: 0.75, height: 0.75 },
+		door: { width: 2.1, height: 1 },
+		obstacle: { width: 1, height: 1 },
 	};
 
 	const isDoor = feature.type === "door";

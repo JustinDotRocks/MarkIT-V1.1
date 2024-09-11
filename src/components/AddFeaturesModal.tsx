@@ -90,7 +90,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 						ref={modalRef}
 						className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
 					>
-						<h2 className="text-xl font-bold mb-4">
+						<h2 className="text-xl text-white font-bold mb-4">
 							Add Feature
 						</h2>
 						<select

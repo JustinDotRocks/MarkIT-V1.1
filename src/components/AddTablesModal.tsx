@@ -76,7 +76,7 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 						ref={modalRef}
 						className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
 					>
-						<h2 className="text-xl font-bold mb-4">
+						<h2 className="text-xl font-bold text-white mb-4">
 							Add Table
 						</h2>
 						<select

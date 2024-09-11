@@ -35,7 +35,7 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 		<div>
 			<div className="room-details-container w-full p-4 mb-4">
 				{selectedRoomId && room && (
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center justify-center space-x-2">
 						<LockAllObjectsButton
 							areAllObjectsLocked={
 								areAllObjectsLocked

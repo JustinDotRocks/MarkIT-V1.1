@@ -63,7 +63,9 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 				ref={modalRef}
 				className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
 			>
-				<h2 className="text-xl font-bold mb-4">Add Room</h2>
+				<h2 className="text-xl text-white font-bold mb-4">
+					Add Room
+				</h2>
 				<input
 					type="text"
 					placeholder="Room Name"

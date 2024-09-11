@@ -9,7 +9,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	selectedRoomId,
 }) => {
 	return (
-		<div className="flex flex-wrap">
+		<div className="flex flex-wrap justify-center">
 			<div className="flex flex-row space-x-4">
 				{rooms.map((room) => (
 					<div
@@ -36,7 +36,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 			</div>
 			<button
 				onClick={openAddRoomModal}
-				className="ml-4 bg-customBlue hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+				className="ml-4 bg-customBlue hover:bg-green-700 text-white py-1 px-2 rounded"
 			>
 				Add Room
 			</button>
