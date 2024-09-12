@@ -22,6 +22,7 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
 				]}
 				stroke="#1f5160"
 				strokeWidth={1}
+				opacity={0.1}
 			/>
 		);
 	}
@@ -39,11 +40,12 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
 				]}
 				stroke="#1f5160"
 				strokeWidth={1}
+				opacity={0.1}
 			/>
 		);
 	}
 
-	return lines; // Return an array of Line components
+	return lines;
 };
 
 export default Grid;
