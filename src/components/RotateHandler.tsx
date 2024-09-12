@@ -122,8 +122,8 @@ const RotateHandler: React.FC<RotateHandlerProps> = ({
 		}
 	};
 
-	const rotateCW = () => rotateObject(45);
-	const rotateCCW = () => rotateObject(-45);
+	const rotateCW = () => rotateObject(15);
+	const rotateCCW = () => rotateObject(-15);
 
 	return <>{children({ rotateCW, rotateCCW })}</>;
 };
