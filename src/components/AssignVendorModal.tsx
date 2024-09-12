@@ -15,13 +15,6 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 }) => {
 	const [selectedVendorId, setSelectedVendorId] = useState<string>("");
 
-	// const handleAssign = () => {
-	// 	if (selectedVendorId) {
-	// 		onAssign(selectedVendorId);
-	// 		onClose();
-	// 	}
-	// };
-
 	useEffect(() => {
 		if (isOpen) {
 			document.body.style.overflow = "hidden"; // Prevent background scrolling
@@ -32,57 +25,6 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 
 	if (!isOpen) return null;
 
-	// const handleAssignVendor = (vendorId: string) => {
-	// 	if (selectedTableId) {
-	// 		setTables((prevTables) =>
-	// 			prevTables.map((table) =>
-	// 				table.id === selectedTableId
-	// 					? { ...table, vendorId }
-	// 					: table
-	// 			)
-	// 		);
-	// 		setSelectedVendorId("");
-	// 		onClose(); // Close the modal after assignment
-	// 	}
-	// };
-	// const handleAssignVendor = (vendorId: string) => {
-	// 	if (selectedTableId) {
-	// 		const selectedTable = tables.find(
-	// 			(table) => table.id === selectedTableId
-	// 		);
-	// 		const room = rooms.find(
-	// 			(room) => room.id === selectedTable?.roomId
-	// 		);
-
-	// 		if (selectedTable && room) {
-	// 			// Update the table with the vendor ID
-	// 			setTables((prevTables) =>
-	// 				prevTables.map((table) =>
-	// 					table.id === selectedTableId
-	// 						? { ...table, vendorId }
-	// 						: table
-	// 				)
-	// 			);
-
-	// 			// Update the vendor with room details
-	// 			setVendors((prevVendors) =>
-	// 				prevVendors.map((vendor) =>
-	// 					vendor.id === vendorId
-	// 						? {
-	// 								...vendor,
-	// 								signedIn: false,
-	// 								roomId: room.id,
-	// 								roomName: room.name,
-	// 						  }
-	// 						: vendor
-	// 				)
-	// 			);
-
-	// 			setSelectedVendorId("");
-	// 			onClose(); // Close the modal after assignment
-	// 		}
-	// 	}
-	// };
 	const handleAssignVendor = (vendorId: string) => {
 		if (selectedTableId) {
 			const selectedTable = tables.find(
@@ -128,16 +70,6 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 		}
 	};
 
-	// const handleRemoveVendor = (tableId: string) => {
-	// 	setTables((prevTables) =>
-	// 		prevTables.map((table) =>
-	// 			table.id === tableId
-	// 				? { ...table, vendorId: undefined }
-	// 				: table
-	// 		)
-	// 	);
-	// };
-
 	// Helper function to determine if a vendor is assigned to any table
 	const isVendorAssigned = (vendorId: string) => {
 		return tables.some((table) => table.vendorId === vendorId);
@@ -162,11 +94,6 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 		};
 	};
 
-	// const handleModalClose = (event: MouseEvent) => {
-	// 	if (event.target === event.currentTarget) {
-	// 		onClose();
-	// 	}
-	// };
 	const handleModalClose: React.MouseEventHandler<HTMLDivElement> = (
 		event
 	) => {

@@ -44,12 +44,12 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 	return (
 		<div>
 			<h2 className="text-lg font-bold">Vendor Setup</h2>
-			<Button
+			{/* <Button
 				onClick={openAddVendorModal}
 				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
 			>
 				Add Vendor
-			</Button>
+			</Button> */}
 
 			<AddVendorModal
 				isOpen={isAddVendorModalOpen}
