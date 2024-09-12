@@ -108,7 +108,7 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 			className="fixed inset-0 flex items-center justify-center  z-50"
 			onClick={handleModalClose}
 		>
-			<div className="bg-gray-800  p-4 rounded-lg w-96 z-60">
+			<div className="bg-gray-800  p-4 rounded-lg w-96 z-60 max-h-[50vh] overflow-y-auto">
 				<h2 className="text-xl text-white font-bold mb-4">
 					Assign Vendor to Table
 				</h2>
