@@ -42,7 +42,7 @@ const VendorModePage: React.FC<VendorModePageProps> = ({
 	};
 	return (
 		<div className="vendor-mode-page p-4">
-			<h2 className="text-lg font-bold mb-4">Vendor Mode</h2>
+			{/* <h2 className="text-lg font-bold mb-4">Vendor Mode</h2> */}
 			<VendorModeComponent
 				vendors={vendors}
 				setVendors={setVendors}

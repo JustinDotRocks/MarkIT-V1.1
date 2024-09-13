@@ -14,7 +14,7 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 				{rooms.map((room) => (
 					<div
 						key={room.id}
-						className={`room border p-2 rounded cursor-pointer hover:bg-gray-600 ${
+						className={`room border p-2 rounded cursor-pointer hover:bg-customBlue2 ${
 							room.id === selectedRoomId
 								? "bg-customBlue2"
 								: "bg-customBlue"

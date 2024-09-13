@@ -43,7 +43,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 
 	return (
 		<div>
-			<h2 className="text-lg font-bold">Vendor Setup</h2>
+			{/* <h2 className="text-lg font-bold">Vendor Setup</h2> */}
 			{/* <Button
 				onClick={openAddVendorModal}
 				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -58,7 +58,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 				selectedRoomId={selectedRoomId}
 			/>
 
-			<div className="mt-4 space-y-4">
+			<div className="flex flex-wrap mt-4 space-y-4">
 				{vendors.map((vendor) => {
 					const associatedTable = tables.find(
 						(table) => table.vendorId === vendor.id
