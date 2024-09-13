@@ -84,7 +84,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			"table-5": "5' Round Table",
 		};
 		const tableTypeLabel = tableTypeLabels[table.type] || table.type;
-		// return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
 		return `Table ${table.tableNumber}: ${tableTypeLabel}`;
 	};
 
@@ -135,27 +134,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		}
 	};
 
-	// // Update current table label whenever the room or table selection changes
-	// useEffect(() => {
-	// 	const currentTable = tables.find(
-	// 		(table) => table.id === editableVendor.tableNumber
-	// 	);
-	// 	setCurrentTableLabel(
-	// 		currentTable ? getTableLabel(currentTable) : ""
-	// 	);
-	// }, [editableVendor.tableNumber, tables]);
-
 	// Check if vendor details are present
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
 	const backgroundColor = signedIn ? "bg-customGreen" : "bg-customOrange";
-	// Get assigned room and table details
-	// const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
-	// const assignedTable = tables.find(
-	// 	(table) => table.vendorId === editableVendor.id
-	// );
-	// const tableLabel = assignedTable ? getTableLabel(assignedTable) : "";
 
 	// Get assigned room and table details
 	const assignedRoom = rooms.find(
@@ -164,14 +147,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const assignedTable = tables.find((table) => table.id === tableNumber);
 
 	// Check if both room and table are selected
-	// const isSignInDisabled = !editableVendor.roomId || !tableNumber;
-
-	// Check if both room and table are selected
 	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
 
 	return (
 		<div
-			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
+			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72 relative`}
 		>
 			{/* Conditional rendering based on isEditing state** */}
 			{isEditing ? (
@@ -274,88 +254,21 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						{electricityRequired ? "Yes" : "No"}
 					</div>
 
-					{/* <div className="mb-2">
-						<label className="block text-white">
-							Select Room:
-						</label>
-						<select
-							name="selectedRoomId"
-							value={selectedRoomId || ""}
-							onChange={handleInputChange}
-							className="w-full p-2 rounded bg-gray-700 text-white"
-						>
-							<option value="">
-								Select a room
-							</option>
-							{rooms.map((room) => (
-								<option
-									key={room.id}
-									value={room.id}
-								>
-									{room.name}
-								</option>
-							))}
-						</select>
-					</div>
-					<div>
-						<label htmlFor={`table-${id}`}>
-							Assign Table:
-						</label>
-						<select
-							id={`table-${id}`}
-							value={tableNumber}
-							onChange={(e) =>
-								updateTableAssignment(
-									e.target.value,
-									id
-								)
-							}
-							className="bg-gray-600 text-white p-2 rounded w-full max-w-full box-border overflow-hidden"
-							disabled={!selectedRoomId}
-						>
-							<option value="">
-								Select a table
-							</option>
-							{validTables.map((table) => (
-								<option
-									key={table.id}
-									value={table.id}
-								>
-									{getTableLabel(table)}
-								</option>
-							))}
-						</select>
-					</div> */}
 					<div className="mt-2 text-white">
-						<strong>Assigned Room:</strong>{" "}
+						<strong>Assigned Room:</strong>
 						{assignedRoom ? assignedRoom.name : "None"}
 					</div>
 					<div className="mt-2 text-white">
-						<strong>Assigned Table:</strong>{" "}
+						<strong>Assigned Table:</strong>
 						{assignedTable
 							? getTableLabel(assignedTable)
 							: "None"}
 					</div>
-					{/* <div>
-						<label>
-							Signed In: {signedIn ? "Yes" : "No"}
-							<input
-								type="checkbox"
-								name="signedIn"
-								checked={
-									editableVendor.signedIn
-								}
-								onChange={handleInputChange}
-								className="form-checkbox h-5 w-5 text-blue-600"
-								disabled={isSignInDisabled} // Disable if no room or table
-							/>
-						</label>
-					</div> */}
 					{/* Conditionally render Sign-In option */}
 					{isRoomAndTableSelected && (
 						<div>
 							<label>
-								Signed In:{" "}
+								Signed In:
 								{signedIn ? "Yes" : "No"}
 								<input
 									type="checkbox"
@@ -366,26 +279,28 @@ const VendorCard: React.FC<VendorCardProps> = ({
 									onChange={
 										handleInputChange
 									}
-									className="form-checkbox h-5 w-5 text-blue-600"
+									className="form-checkbox m-2 h-5 w-5 text-blue-600"
 								/>
 							</label>
 						</div>
 					)}
-					<DeleteConfirmationModal
-						message="Are you sure you want to delete this Vendor?"
-						onConfirm={() => deleteVendor(id)}
-						triggerComponent={
-							<button className="bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-								Delete
-							</button>
-						}
-					/>
-					<button
-						onClick={() => setIsEditing(true)}
-						className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Edit Vendor
-					</button>
+					<div className="flex items-center justify-end mt-6">
+						<button
+							onClick={() => setIsEditing(true)}
+							className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
+						>
+							Edit Vendor
+						</button>
+						<DeleteConfirmationModal
+							message="Are you sure you want to delete this Vendor?"
+							onConfirm={() => deleteVendor(id)}
+							triggerComponent={
+								<button className="bg-customRed hover:bg-red-700 text-white font-bold mt-2 py-1 px-2 rounded">
+									Delete
+								</button>
+							}
+						/>
+					</div>
 				</>
 			)}
 		</div>

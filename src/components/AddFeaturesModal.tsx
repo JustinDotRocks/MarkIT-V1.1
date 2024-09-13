@@ -88,7 +88,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 				<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
+						className="bg-customBlue p-8 rounded shadow-lg w-1/3"
 					>
 						<h2 className="text-xl text-white font-bold mb-4">
 							Add Feature
@@ -102,7 +102,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 										| "obstacle"
 								)
 							}
-							className="w-full p-2 mb-4 rounded bg-gray-700 text-white"
+							className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
 						>
 							<option value="door">Door</option>
 							<option value="obstacle">
@@ -118,13 +118,13 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 								)
 							}
 							min={1}
-							className="w-full p-2 mb-4 rounded bg-gray-700 text-white"
+							className="w-full p-2 mb-4 rounded bg-customBlue2	 text-white"
 							placeholder="Quantity"
 						/>
 						<div className="flex justify-end">
 							<button
 								onClick={handleAddFeatureClick}
-								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+								className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
 							>
 								Add Feature
 							</button>
@@ -134,7 +134,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 										false
 									)
 								}
-								className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+								className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 							>
 								Cancel
 							</button>

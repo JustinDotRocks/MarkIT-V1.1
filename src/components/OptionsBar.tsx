@@ -145,7 +145,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 	return (
 		<div
-			className="absolute flex flex-col bg-gray-800 border border-black rounded p-2"
+			className="absolute flex flex-col justify-center bg-customBlue border border-black rounded p-2"
 			style={{
 				left: adjustedX,
 				top: adjustedY,
@@ -166,14 +166,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Rotate Counter-Clockwise Button */}
 				<button
 					onClick={onRotateCCW}
-					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 				>
 					<FaUndo className="mr-1" />
 				</button>
 				{/* Rotate Clockwise Button */}
 				<button
 					onClick={onRotateCW}
-					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 				>
 					<FaRedo className="mr-1" />
 				</button>
@@ -181,7 +181,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Lock/Unlock Button */}
 				<button
 					onClick={onToggleLock}
-					className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 m-1 rounded flex items-center"
+					className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-1 px-2 m-1 rounded flex items-center"
 				>
 					{isLocked ? <FaUnlock /> : <FaLock />}
 				</button>
@@ -192,14 +192,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 						{vendorName ? (
 							<button
 								onClick={onRemoveVendor}
-								className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
 								Remove Vendor
 							</button>
 						) : (
 							<button
 								onClick={onAddVendor}
-								className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
 								Add Vendor
 							</button>

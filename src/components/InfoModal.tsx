@@ -46,7 +46,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			)}
 			{isRoomInfoModalOpen && (
 				<div
-					className="fixed bg-gray-800 text-white p-4 rounded shadow-lg z-50"
+					className="fixed bg-customBlue text-white p-4 rounded shadow-lg z-50"
 					style={{ top: "200px", right: "250px" }}
 					ref={modalRef}
 				>
@@ -65,7 +65,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 					<div className="flex justify-between mt-4">
 						<button
 							onClick={() => openEditModal(room)}
-							className="bg-blue-500 text-white py-1 px-4 rounded mr-2"
+							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mr-2"
 						>
 							Edit Room
 						</button>
@@ -79,7 +79,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 							message="Are you sure you want to delete this Room?"
 							onConfirm={() => removeRoom(room.id)}
 							triggerComponent={
-								<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+								<button className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
 									Delete
 								</button>
 							}
@@ -89,7 +89,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 						onClick={() =>
 							setIsRoomInfoModalOpen(false)
 						}
-						className="mt-4 text-white"
+						className="mt-4 text-white font-bold"
 					>
 						Close
 					</button>

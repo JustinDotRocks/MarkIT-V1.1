@@ -68,7 +68,7 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 			<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 				<div
 					ref={modalRef}
-					className="bg-gray-800 p-8 rounded shadow-lg w-1/3"
+					className="bg-customBlue p-8 rounded shadow-lg w-1/3"
 				>
 					<h2 className="text-xl font-bold mb-4 text-white">
 						Edit Room
@@ -79,7 +79,7 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-name"
 						value={roomName}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-gray-700 text-white"
+						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
 					/>
 					<input
 						type="text"
@@ -87,7 +87,7 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-width"
 						value={roomWidth}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-gray-700 text-white"
+						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
 					/>
 					<input
 						type="text"
@@ -95,18 +95,18 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-depth"
 						value={roomDepth}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-gray-700 text-white"
+						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
 					/>
 					<div className="flex justify-end">
 						<button
 							onClick={handleUpdateRoom}
-							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
 						>
 							Update Room
 						</button>
 						<button
 							onClick={onClose}
-							className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 						>
 							Cancel
 						</button>

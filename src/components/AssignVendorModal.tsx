@@ -108,11 +108,11 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 			className="fixed inset-0 flex items-center justify-center  z-50"
 			onClick={handleModalClose}
 		>
-			<div className="bg-gray-800  p-4 rounded-lg w-96 z-60 max-h-[50vh] overflow-y-auto">
+			<div className="bg-customBlue  p-4 rounded-lg w-96 z-60 ">
 				<h2 className="text-xl text-white font-bold mb-4">
 					Assign Vendor to Table
 				</h2>
-				<ul>
+				<ul className="max-h-[30vh] overflow-y-auto">
 					{vendors.map((vendor) => {
 						const isAssigned = isVendorAssigned(
 							vendor.id
@@ -136,7 +136,7 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 									className={`py-2 px-4 rounded w-full font-bold ${
 										isAssigned
 											? "bg-gray-300 text-gray-600 cursor-not-allowed"
-											: "bg-blue-500 hover:bg-blue-700 text-white"
+											: "bg-customBlue2 hover:bg-blue-700 text-white"
 									}`}
 								>
 									{vendor.name}
@@ -155,25 +155,13 @@ const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 										</span>
 									)}
 								</button>
-								{/* {isAssigned && (
-									<button
-										onClick={() =>
-											handleRemoveVendor(
-												assignmentDetails?.tableId!
-											)
-										}
-										className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-									>
-										Remove Vendor
-									</button>
-								)} */}
 							</li>
 						);
 					})}
 				</ul>
 				<button
 					onClick={onClose}
-					className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+					className="mt-4 bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 				>
 					Cancel
 				</button>
