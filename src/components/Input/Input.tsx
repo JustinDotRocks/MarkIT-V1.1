@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({
 			value={value}
 			onChange={onChange}
 			placeholder={placeholder}
-			className={`w-1/2 p-2 rounded bg-gray-700 text-white ${className}`}
+			className={`w-1/2 p-2 rounded bg-customBlue2 text-white placeholder-white ${className}`}
 			min={min}
 			max={max}
 		/>

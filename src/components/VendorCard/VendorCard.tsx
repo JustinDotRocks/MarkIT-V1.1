@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { VendorCardProps, Table } from "../../Types";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import {
+	FaChevronUp,
+	FaChevronDown,
+	FaCheckCircle,
+	// FaSignInAlt,
+	// FaUserCheck,
+	// FaToggleOn,
+	// FaToggleOff,
+} from "react-icons/fa";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
 const VendorCard: React.FC<VendorCardProps> = ({
@@ -138,7 +146,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
-	const backgroundColor = signedIn ? "bg-customGreen" : "bg-customOrange";
+	const backgroundColor = signedIn ? "bg-customBlue" : "bg-customBlue";
 
 	// Get assigned room and table details
 	const assignedRoom = rooms.find(
@@ -149,10 +157,64 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	// Check if both room and table are selected
 	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
 
+	const toggleSignedIn = () => {
+		const newSignedInState = !editableVendor.signedIn;
+		setEditableVendor((prev) => ({
+			...prev,
+			signedIn: newSignedInState,
+		}));
+		updateVendorDetails({
+			...editableVendor,
+			signedIn: newSignedInState,
+		});
+	};
+
 	return (
 		<div
 			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72 relative`}
 		>
+			{/* Conditionally render Sign-In option */}
+			{/* {isRoomAndTableSelected && (
+				<div className="flex items-center m-2">
+					<span>Signed In:</span>
+					<button
+						onClick={toggleSignedIn}
+						className="ml-2 focus:outline-none"
+					>
+						{editableVendor.signedIn ? (
+							<FaCheckCircle
+								className="text-green-500"
+								size={32}
+							/>
+						) : (
+							<FaCheckCircle
+								className="text-red-500"
+								size={32}
+							/>
+						)}
+					</button>
+				</div>
+			)} */}
+			{isRoomAndTableSelected && (
+				<div className="absolute top-2 right-2">
+					<button
+						onClick={toggleSignedIn}
+						className="focus:outline-none"
+					>
+						{editableVendor.signedIn ? (
+							<FaCheckCircle
+								className="text-green-500"
+								size={28}
+							/>
+						) : (
+							<FaCheckCircle
+								className="text-red-500"
+								size={28}
+							/>
+						)}
+					</button>
+				</div>
+			)}
 			{/* Conditional rendering based on isEditing state** */}
 			{isEditing ? (
 				<>
@@ -215,9 +277,16 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				</>
 			) : (
 				<>
-					<div>Vendor Name: {vendorName}</div>
-					<div>Products: {vendorProducts}</div>
-					<div className="flex justify-between items-center m-3">
+					<div className="flex m-2">
+						Vendor:
+						<div className="font-bold ml-2">
+							{vendorName}
+						</div>
+					</div>
+					<div className="m-2">
+						Products: {vendorProducts}
+					</div>
+					<div className="flex justify-between items-center m-2">
 						<div className="flex-1">
 							<div className="flex items-center justify-between">
 								<span>Vendor Details:</span>
@@ -249,45 +318,27 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							</div>
 						</div>
 					</div>
-					<div>
-						Electricity Required:{" "}
+					<div className="m-2">
+						Electricity?:{" "}
 						{electricityRequired ? "Yes" : "No"}
 					</div>
 
-					<div className="mt-2 text-white">
-						<strong>Assigned Room:</strong>
-						{assignedRoom ? assignedRoom.name : "None"}
+					<div className="m-2 text-white">
+						<strong>Room:</strong>
+						{assignedRoom
+							? " " + assignedRoom.name
+							: " None"}
 					</div>
-					<div className="mt-2 text-white">
-						<strong>Assigned Table:</strong>
+					<div className="m-2 text-white">
+						<strong>Table:</strong>
 						{assignedTable
-							? getTableLabel(assignedTable)
-							: "None"}
+							? " " + getTableLabel(assignedTable)
+							: " None"}
 					</div>
-					{/* Conditionally render Sign-In option */}
-					{isRoomAndTableSelected && (
-						<div>
-							<label>
-								Signed In:
-								{signedIn ? "Yes" : "No"}
-								<input
-									type="checkbox"
-									name="signedIn"
-									checked={
-										editableVendor.signedIn
-									}
-									onChange={
-										handleInputChange
-									}
-									className="form-checkbox m-2 h-5 w-5 text-blue-600"
-								/>
-							</label>
-						</div>
-					)}
 					<div className="flex items-center justify-end mt-6">
 						<button
 							onClick={() => setIsEditing(true)}
-							className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
+							className="mt-2 bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
 						>
 							Edit Vendor
 						</button>
