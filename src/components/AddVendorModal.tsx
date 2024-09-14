@@ -5,8 +5,6 @@ import Button from "./Button/Button";
 import { v4 as uuidv4 } from "uuid";
 
 const AddVendorModal: React.FC<AddVendorModalProps> = ({
-	isOpen,
-	onClose,
 	addVendor,
 	selectedRoomId,
 }) => {
@@ -114,7 +112,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 		<>
 			<button
 				onClick={() => setIsAddVendorModalOpen(true)}
-				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-1 px-2 ml-4 rounded"
 			>
 				Add Vendor
 			</button>

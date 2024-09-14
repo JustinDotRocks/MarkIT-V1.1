@@ -31,6 +31,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	areAllObjectsLocked,
 	setAreAllObjectsLocked,
 	setVendors,
+	updateVendorDetails,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
@@ -50,6 +51,20 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		y: number;
 	} | null>(null);
 
+	const selectedTable =
+		selectedObject && selectedObject.type === "table"
+			? tables.find((table) => table.id === selectedObject.id)
+			: null;
+
+	const selectedVendor =
+		selectedTable && selectedTable.vendorId
+			? vendors.find(
+					(vendor) => vendor.id === selectedTable.vendorId
+			  )
+			: null;
+
+	// const selectedVendor = vendors.find((vendor) => vendor.id === selectedTable.vendorId);
+
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
 	const feetToPixels = 25; // Scale factor
@@ -61,7 +76,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const [scale, setScale] = useState(1);
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
-	const stageRef = useRef<any>(null); // Reference for the Konva stage
+	const stageRef = useRef<any>(null);
 
 	useEffect(() => {
 		if (room) {
@@ -544,6 +559,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							objectType={selectedObject.type}
 							canvasWidth={containerSize.width}
 							canvasHeight={containerSize.height}
+							signedIn={selectedVendor?.signedIn}
+							vendorId={selectedVendor?.id}
+							updateVendorDetails={
+								updateVendorDetails
+							}
 						/>
 					)}
 				</RotateHandler>

@@ -10,6 +10,7 @@ import {
 	// FaToggleOff,
 } from "react-icons/fa";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
+import VendorSignInComponent from "../VendorSignInComponent";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,
@@ -157,15 +158,42 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	// Check if both room and table are selected
 	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
 
+	// const toggleSignedIn = () => {
+	// 	const newSignedInState = !editableVendor.signedIn;
+	// 	setEditableVendor((prev) => ({
+	// 		...prev,
+	// 		signedIn: newSignedInState,
+	// 	}));
+	// 	updateVendorDetails({
+	// 		...editableVendor,
+	// 		signedIn: newSignedInState,
+	// 	});
+	// };
+	// Function to update the signedIn status
+	// const handleSignedInChange = (newSignedInState: boolean) => {
+	// 	setEditableVendor((prev) => ({
+	// 		...prev,
+	// 		signedIn: newSignedInState,
+	// 	}));
+	// 	updateVendorDetails({
+	// 		...editableVendor,
+	// 		signedIn: newSignedInState,
+	// 	});
+	// };
+
+	// Function to toggle the signedIn state
 	const toggleSignedIn = () => {
-		const newSignedInState = !editableVendor.signedIn;
-		setEditableVendor((prev) => ({
-			...prev,
-			signedIn: newSignedInState,
-		}));
+		const newSignedInState = !signedIn;
+
+		// Update the application state via updateVendorDetails
 		updateVendorDetails({
-			...editableVendor,
+			id,
+			name: vendorName,
+			products: vendorProducts,
+			details: vendorDetails,
 			signedIn: newSignedInState,
+			electricityRequired,
+			roomId,
 		});
 	};
 
@@ -173,30 +201,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		<div
 			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72 relative`}
 		>
-			{/* Conditionally render Sign-In option */}
 			{/* {isRoomAndTableSelected && (
-				<div className="flex items-center m-2">
-					<span>Signed In:</span>
-					<button
-						onClick={toggleSignedIn}
-						className="ml-2 focus:outline-none"
-					>
-						{editableVendor.signedIn ? (
-							<FaCheckCircle
-								className="text-green-500"
-								size={32}
-							/>
-						) : (
-							<FaCheckCircle
-								className="text-red-500"
-								size={32}
-							/>
-						)}
-					</button>
-				</div>
-			)} */}
-			{isRoomAndTableSelected && (
-				<div className="absolute top-2 right-2">
+				<div className="absolute top-4 right-4 ">
 					<button
 						onClick={toggleSignedIn}
 						className="focus:outline-none"
@@ -213,6 +219,15 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							/>
 						)}
 					</button>
+				</div>
+			)} */}
+			{isRoomAndTableSelected && (
+				<div className="absolute top-2 right-2">
+					<VendorSignInComponent
+						signedIn={signedIn}
+						onToggleSignedIn={toggleSignedIn}
+						size={28}
+					/>
 				</div>
 			)}
 			{/* Conditional rendering based on isEditing state** */}

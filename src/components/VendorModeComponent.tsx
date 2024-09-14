@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { VendorModeComponentProps, Vendor } from "../Types";
-import Button from "./Button/Button";
 import VendorCard from "./VendorCard/VendorCard";
 import AddVendorModal from "./AddVendorModal"; // Import the modal
 import {
@@ -43,22 +42,12 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 
 	return (
 		<div>
-			{/* <h2 className="text-lg font-bold">Vendor Setup</h2> */}
-			{/* <Button
-				onClick={openAddVendorModal}
-				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-			>
-				Add Vendor
-			</Button> */}
-
 			<AddVendorModal
 				isOpen={isAddVendorModalOpen}
 				onClose={closeAddVendorModal}
 				addVendor={addVendor}
 				selectedRoomId={selectedRoomId}
 			/>
-
-			{/* <div className="flex flex-wrap mt-4 space-y-4"> */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
 				{vendors.map((vendor) => {
 					const associatedTable = tables.find(

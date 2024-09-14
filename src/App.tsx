@@ -185,10 +185,19 @@ const App: React.FC = () => {
 		);
 	};
 
+	// const updateVendorDetails = (updatedVendor: Vendor) => {
+	// 	setVendors((prevVendors) =>
+	// 		prevVendors.map((vendor) =>
+	// 			vendor.id === updatedVendor.id ? updatedVendor : vendor
+	// 		)
+	// 	);
+	// };
 	const updateVendorDetails = (updatedVendor: Vendor) => {
 		setVendors((prevVendors) =>
 			prevVendors.map((vendor) =>
-				vendor.id === updatedVendor.id ? updatedVendor : vendor
+				vendor.id === updatedVendor.id
+					? { ...vendor, ...updatedVendor }
+					: vendor
 			)
 		);
 	};
@@ -324,6 +333,9 @@ const App: React.FC = () => {
 										}
 										setVendors={
 											setVendors
+										}
+										updateVendorDetails={
+											updateVendorDetails
 										}
 									/>
 								</div>

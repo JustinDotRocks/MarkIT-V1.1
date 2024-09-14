@@ -106,13 +106,11 @@ export type CanvasObject = {
 	type: string;
 	details?: string;
 };
-// export type CanvasObject = Table | Feature;
 
 export interface CanvasAreaProps {
 	objects: Feature[];
 	tables: Table[];
 	rooms: Room[];
-	// removeObject: (id: string) => void;
 	removeRoom: (id: string) => void;
 	selectedRoomId: string | null;
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
@@ -135,11 +133,12 @@ export interface CanvasAreaProps {
 		type: "door" | "obstacle";
 		id: string;
 		details?: string;
-	}) => void; // Add this line
+	}) => void;
 	areAllObjectsLocked: boolean;
 	setAreAllObjectsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 	handleRemoveVendor?: (tableId: string) => void;
 	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
+	updateVendorDetails: (vendorData: Vendor) => void;
 }
 
 export interface VendorDetails {
@@ -239,8 +238,11 @@ export interface OptionsBarProps {
 	onAddVendor: () => void;
 	onRemoveVendor: () => void;
 	objectType: "table" | "feature";
-	canvasWidth: number; // Add this line
-	canvasHeight: number; // Add this line
+	canvasWidth: number;
+	canvasHeight: number;
+	signedIn?: boolean; // Optional, since VendorSignInComponent has a default
+	updateVendorDetails?: (vendorData: any) => void; // Function to update vendor details
+	vendorId?: string;
 }
 
 export interface RoomDetailsDisplayProps {
@@ -442,4 +444,17 @@ export interface GridProps {
 	containerSize: { width: number; height: number };
 	gridSize: number;
 	isVisible: boolean;
+}
+
+// export interface VendorSignInComponentProps {
+// 	initialSignedIn?: boolean;
+// 	onSignedInChange?: (signedIn: boolean) => void;
+// 	size?: number;
+// 	className?: string;
+// }
+export interface VendorSignInComponentProps {
+	signedIn: boolean;
+	onToggleSignedIn: () => void;
+	size?: number;
+	className?: string;
 }
