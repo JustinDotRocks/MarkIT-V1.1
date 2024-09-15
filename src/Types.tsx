@@ -298,7 +298,7 @@ export interface DragAndDropComponentProps {
 	feetToPixels: number;
 	onDragMove: (e: any) => void;
 	onDragEnd: (e: any) => void;
-	// onDragStart: (e: any) => void;
+	onDragStart: (e: any) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
@@ -328,6 +328,11 @@ export interface DragAndDropHandlerProps {
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 	stageRef: React.RefObject<any>;
 	setShowGrid: (show: boolean) => void;
+	// onDragStart: () => void;
+	// onDragEnd: () => void;
+	onGlobalDragStart: () => void;
+	onGlobalDragEnd: () => void;
+	gridSize: number;
 }
 
 export interface RotateHandlerProps {
@@ -424,6 +429,10 @@ export interface RoomOptionsProps {
 	openAddRoomModal: () => void;
 	// setTables: (tables: Table[]) => void;
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
+	// showGrid: boolean;
+	// toggleGridVisibility: () => void;
+	gridMode: GridMode;
+	setGridMode: React.Dispatch<React.SetStateAction<GridMode>>;
 }
 
 export interface DeleteConfirmationModalProps {
@@ -443,7 +452,7 @@ export interface ClearAllTablesButtonProps {
 export interface GridProps {
 	containerSize: { width: number; height: number };
 	gridSize: number;
-	isVisible: boolean;
+	// isVisible: boolean;
 }
 
 // export interface VendorSignInComponentProps {
@@ -458,3 +467,5 @@ export interface VendorSignInComponentProps {
 	size?: number;
 	className?: string;
 }
+
+export type GridMode = "Off" | "On" | "Drag";

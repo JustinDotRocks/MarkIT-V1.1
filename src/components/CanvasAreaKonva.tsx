@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
-import { CanvasAreaProps } from "../Types";
+import { CanvasAreaProps, GridMode } from "../Types";
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
 import TableComponent from "./TableComponent";
@@ -39,9 +39,23 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		height: window.innerHeight * 0.9, // Use 90% of the window height
 	});
 
-	const [showGrid, setShowGrid] = useState(false); // State to control grid visibility
-	// Grid size can be adjusted as needed
-	const gridSize = 20; // Grid cell size
+	const [showGrid, setShowGrid] = useState(false);
+	const gridSize = 20;
+	const [gridMode, setGridMode] = useState<GridMode>("Drag");
+	const [isDragging, setIsDragging] = useState<boolean>(false);
+
+	// Handlers for drag events
+	const handleGlobalDragStart = () => {
+		setIsDragging(true);
+	};
+
+	const handleGlobalDragEnd = () => {
+		setIsDragging(false);
+	};
+
+	const toggleGridVisibility = () => {
+		setShowGrid((prevShowGrid) => !prevShowGrid);
+	};
 
 	// State for selectedObject and OptionsBar position
 	const [selectedObject, setSelectedObject] = useState<{
@@ -321,6 +335,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					setSelectedRoomId={setSelectedRoomId}
 					openAddRoomModal={openAddRoomModal}
 					setTables={setTables}
+					// showGrid={showGrid}
+					// toggleGridVisibility={toggleGridVisibility}
+					gridMode={gridMode}
+					setGridMode={setGridMode}
 				/>
 			)}
 			{room &&
@@ -340,14 +358,25 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							onTouchStart={handleStageClick}
 						>
 							<Layer>
-								{/* Grid Component */}
-								{showGrid && (
+								{/* {showGrid && (
 									<Grid
 										containerSize={
 											containerSize
 										}
 										gridSize={gridSize}
 										isVisible={showGrid}
+									/>
+								)} */}
+								{/* Grid Component */}
+								{(gridMode === "On" ||
+									(gridMode === "Drag" &&
+										isDragging)) && (
+									<Grid
+										containerSize={
+											containerSize
+										}
+										gridSize={gridSize}
+										// isVisible={showGrid}
 									/>
 								)}
 
@@ -406,7 +435,16 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											}
 											setShowGrid={
 												setShowGrid
-											} // Pass setShowGrid to the handler
+											}
+											onGlobalDragStart={
+												handleGlobalDragStart
+											}
+											onGlobalDragEnd={
+												handleGlobalDragEnd
+											}
+											gridSize={
+												gridSize
+											}
 										/>
 									))}
 								{objects
@@ -456,7 +494,16 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												}
 												setShowGrid={
 													setShowGrid
-												} // Pass setShowGrid to the handler
+												}
+												onGlobalDragStart={
+													handleGlobalDragStart
+												}
+												onGlobalDragEnd={
+													handleGlobalDragEnd
+												}
+												gridSize={
+													gridSize
+												}
 											/>
 										);
 									})}

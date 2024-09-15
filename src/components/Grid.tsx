@@ -2,8 +2,9 @@ import React from "react";
 import { Line } from "react-konva";
 import { GridProps } from "../Types";
 
-const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
-	if (!isVisible) return null;
+// const Grid: React.FC<GridProps> = ({ containerSize, gridSize, isVisible }) => {
+const Grid: React.FC<GridProps> = ({ containerSize, gridSize }) => {
+	// if (!isVisible) return null;
 
 	const lines = [];
 	const countX = Math.ceil(containerSize.width / gridSize);

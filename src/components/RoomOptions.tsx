@@ -21,6 +21,10 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	setSelectedRoomId,
 	openAddRoomModal,
 	setTables,
+	// showGrid,
+	// toggleGridVisibility,
+	gridMode,
+	setGridMode,
 }) => {
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
@@ -30,6 +34,35 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	const closeAddTablesModal = () => setIsAddTablesModalOpen(false);
 	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
 	const closeInfoModal = () => setIsInfoModalOpen(false);
+
+	// const cycleGridMode = () => {
+	// 	setGridMode((prevMode) => {
+	// 		switch (prevMode) {
+	// 			case "Off":
+	// 				return "On";
+	// 			case "On":
+	// 				return "Drag";
+	// 			case "Drag":
+	// 				return "Off";
+	// 			default:
+	// 				return "Off";
+	// 		}
+	// 	});
+	// };
+	const cycleGridMode = () => {
+		setGridMode((prevMode) => {
+			switch (prevMode) {
+				case "Off":
+					return "Drag";
+				case "Drag":
+					return "On";
+				case "On":
+					return "Off";
+				default:
+					return "Off";
+			}
+		});
+	};
 
 	return (
 		<div>
@@ -42,6 +75,24 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							}
 							lockAllObjects={lockAllObjects}
 						/>
+						{/* Grid Toggle Button */}
+						{/* <button
+							onClick={toggleGridVisibility}
+							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+						>
+							{showGrid ? "Hide Grid" : "Show Grid"}
+						</button> */}
+						<button
+							onClick={cycleGridMode}
+							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+						>
+							{/* {gridMode === "Off" && "Grid Off"}
+							{gridMode === "On" && "Grid On"}
+							{gridMode === "Drag" && "Grid Drag"} */}
+							{gridMode === "Off" && "Grid Off"}
+							{gridMode === "Drag" && "Grid Drag"}
+							{gridMode === "On" && "Grid On"}
+						</button>
 						<AddTablesModal
 							isOpen={isAddTablesModalOpen}
 							onClose={closeAddTablesModal}
