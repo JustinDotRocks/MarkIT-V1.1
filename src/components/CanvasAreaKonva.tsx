@@ -92,31 +92,83 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
 	const stageRef = useRef<any>(null);
 
+	// useEffect(() => {
+	// 	if (room) {
+	// 		const roomWidthFeet = parseFloat(room.width);
+	// 		const roomHeightFeet = parseFloat(room.depth);
+
+	// 		// Determine the greater dimension and set it to the horizontal axis
+	// 		const greaterDimensionFeet = Math.max(
+	// 			roomWidthFeet,
+	// 			roomHeightFeet
+	// 		);
+	// 		const lesserDimensionFeet = Math.min(
+	// 			roomWidthFeet,
+	// 			roomHeightFeet
+	// 		);
+
+	// 		const roomWidthPixels = greaterDimensionFeet * feetToPixels;
+	// 		const roomHeightPixels = lesserDimensionFeet * feetToPixels;
+	// 		const scaleWidth = containerSize.width / roomWidthPixels;
+
+	// 		setContainerSize({
+	// 			width: roomWidthPixels * scaleWidth,
+	// 			height: roomHeightPixels * scaleWidth,
+	// 		});
+	// 	}
+	// }, [room, containerSize.width]);
 	useEffect(() => {
-		if (room) {
-			const roomWidthFeet = parseFloat(room.width);
-			const roomHeightFeet = parseFloat(room.depth);
+		const updateContainerSize = () => {
+			if (room) {
+				const roomWidthFeet = parseFloat(room.width);
+				const roomHeightFeet = parseFloat(room.depth);
 
-			// Determine the greater dimension and set it to the horizontal axis
-			const greaterDimensionFeet = Math.max(
-				roomWidthFeet,
-				roomHeightFeet
-			);
-			const lesserDimensionFeet = Math.min(
-				roomWidthFeet,
-				roomHeightFeet
-			);
+				// Check if the screen is mobile-sized
+				const isMobile = window.innerWidth < 768;
 
-			const roomWidthPixels = greaterDimensionFeet * feetToPixels;
-			const roomHeightPixels = lesserDimensionFeet * feetToPixels;
-			const scaleWidth = containerSize.width / roomWidthPixels;
+				// Adjust the room dimensions: Longest dimension is vertical on mobile
+				let roomWidthPixels, roomHeightPixels;
 
-			setContainerSize({
-				width: roomWidthPixels * scaleWidth,
-				height: roomHeightPixels * scaleWidth,
-			});
-		}
-	}, [room, containerSize.width]);
+				if (isMobile) {
+					// On mobile, make the longest dimension vertical
+					roomWidthPixels =
+						Math.min(roomWidthFeet, roomHeightFeet) *
+						feetToPixels;
+					roomHeightPixels =
+						Math.max(roomWidthFeet, roomHeightFeet) *
+						feetToPixels;
+				} else {
+					// Default (desktop): longest dimension is horizontal
+					roomWidthPixels =
+						Math.max(roomWidthFeet, roomHeightFeet) *
+						feetToPixels;
+					roomHeightPixels =
+						Math.min(roomWidthFeet, roomHeightFeet) *
+						feetToPixels;
+				}
+
+				// Scale to fit within the container width
+				const scaleWidth =
+					containerSize.width / roomWidthPixels;
+
+				setContainerSize({
+					width: roomWidthPixels * scaleWidth,
+					height: roomHeightPixels * scaleWidth,
+				});
+			}
+		};
+
+		// Initial setup
+		updateContainerSize();
+
+		// Listen for resize events to update on screen size change
+		window.addEventListener("resize", updateContainerSize);
+
+		// Cleanup listener on component unmount
+		return () => {
+			window.removeEventListener("resize", updateContainerSize);
+		};
+	}, [room, containerSize.width, feetToPixels]);
 
 	useEffect(() => {
 		// Load the lock state from local storage on initial load
