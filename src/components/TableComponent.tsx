@@ -11,6 +11,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 	onDragEnd,
 	onObjectClick,
 	vendors = [],
+	onTouchStart,
 }) => {
 	const table = item as Table;
 	const tableDimensions = {
@@ -120,6 +121,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					offsetX={0}
 					offsetY={0}
 					rotation={table.rotation || 0}
+					onTouchStart={onTouchStart}
+					onTap={onTouchStart}
 				/>
 			) : (
 				<Rect
@@ -144,6 +147,8 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 							e.evt.clientY
 						)
 					}
+					onTouchStart={onTouchStart}
+					onTap={onTouchStart}
 				/>
 			)}
 			<Text

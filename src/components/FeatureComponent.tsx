@@ -10,6 +10,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 	containerSize,
 	feetToPixels,
 	room,
+	onTouchStart,
 }) => {
 	const feature = item as Feature;
 
@@ -49,54 +50,6 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 
 	return (
 		<>
-			{/* {isDoor ? (
-				<Rect
-					id={feature.id}
-					type="feature"
-					x={feature.x * containerSize.width}
-					y={feature.y * containerSize.height}
-					width={featureWidthPixels}
-					height={featureHeightPixels}
-					fill="orange"
-					draggable={!feature.isLocked}
-					onDragMove={onDragMove}
-					onDragEnd={onDragEnd}
-					onClick={(e) =>
-						onObjectClick(
-							feature.id,
-							"feature",
-							e.evt.clientX,
-							e.evt.clientY
-						)
-					}
-					rotation={feature.rotation || 0}
-					offsetX={featureWidthPixels / 2}
-					offsetY={featureHeightPixels / 2}
-				/>
-			) : (
-				<Circle
-					id={feature.id}
-					type="feature"
-					x={feature.x * containerSize.width}
-					y={feature.y * containerSize.height}
-					radius={featureRadiusPixels}
-					fill="black"
-					draggable={!feature.isLocked}
-					onDragMove={onDragMove}
-					onDragEnd={onDragEnd}
-					onClick={(e) =>
-						onObjectClick(
-							feature.id,
-							"feature",
-							e.evt.clientX,
-							e.evt.clientY
-						)
-					}
-					rotation={feature.rotation || 0}
-					offsetX={featureWidthPixels / 2}
-					offsetY={featureHeightPixels / 2}
-				/>
-			)} */}
 			{isDoor || isObstacle ? (
 				<Rect
 					id={feature.id}
@@ -120,6 +73,8 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					rotation={feature.rotation || 0}
 					offsetX={featureWidthPixels / 2}
 					offsetY={featureHeightPixels / 2}
+					onTouchStart={onTouchStart}
+					onTap={onTouchStart}
 				/>
 			) : null}
 		</>
