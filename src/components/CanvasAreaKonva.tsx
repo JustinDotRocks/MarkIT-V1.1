@@ -11,556 +11,450 @@ import AssignVendorModal from "./AssignVendorModal";
 import RoomOptions from "./RoomOptions";
 import Grid from "./Grid";
 
+//! This component is pretty big. I would recommend trying to break it down into smaller components if possible. -- sometimes a big component is necessary, but it's always good to try to break it down if possible. Again, something like Redux would be helpful to avoid prop drilling if you want to look into some form of state management in the future.
+
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
-	objects,
-	rooms,
-	tables,
-	setTables,
-	features,
-	setFeatures,
-	removeRoom,
-	selectedRoomId,
-	vendors,
-	openEditModal,
-	removeObjectFromCanvas,
-	toggleLockObject,
-	setSelectedRoomId,
-	openAddRoomModal,
-	addTable,
-	addFeature,
-	areAllObjectsLocked,
-	setAreAllObjectsLocked,
-	setVendors,
+  objects,
+  rooms,
+  tables,
+  setTables,
+  features,
+  setFeatures,
+  removeRoom,
+  selectedRoomId,
+  vendors,
+  openEditModal,
+  removeObjectFromCanvas,
+  toggleLockObject,
+  setSelectedRoomId,
+  openAddRoomModal,
+  addTable,
+  addFeature,
+  areAllObjectsLocked,
+  setAreAllObjectsLocked,
+  setVendors,
 }) => {
-	const containerRef = useRef<HTMLDivElement>(null);
-	const [containerSize, setContainerSize] = useState({
-		width: window.innerWidth * 0.9, // Use 90% of the window width
-		height: window.innerHeight * 0.9, // Use 90% of the window height
-	});
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState({
+    width: window.innerWidth * 0.9, // Use 90% of the window width
+    height: window.innerHeight * 0.9, // Use 90% of the window height
+  });
 
-	const [showGrid, setShowGrid] = useState(false); // State to control grid visibility
-	// Grid size can be adjusted as needed
-	const gridSize = 20; // Grid cell size
+  const [showGrid, setShowGrid] = useState(false); // State to control grid visibility
+  // Grid size can be adjusted as needed
+  const gridSize = 20; // Grid cell size
 
-	// State for selectedObject and OptionsBar position
-	const [selectedObject, setSelectedObject] = useState<{
-		id: string;
-		type: "table" | "feature";
-		x: number;
-		y: number;
-	} | null>(null);
+  // State for selectedObject and OptionsBar position
+  const [selectedObject, setSelectedObject] = useState<{
+    id: string;
+    type: "table" | "feature";
+    x: number;
+    y: number;
+  } | null>(null);
 
-	const room = rooms.find((r) => r.id === selectedRoomId);
+  const room = rooms.find((r) => r.id === selectedRoomId);
 
-	const feetToPixels = 25; // Scale factor
+  //! Generally it's a good idea to keep constants like this outside of the component to avoid re-creating them on every render. You can create a Constants file and export them from there.
+  const feetToPixels = 25; // Scale factor
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedTableId, setSelectedTableId] = useState<string | null>(
-		null
-	);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
 
-	const [scale, setScale] = useState(1);
-	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
-	const stageRef = useRef<any>(null); // Reference for the Konva stage
+  const [scale, setScale] = useState(1);
+  const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
 
-	useEffect(() => {
-		if (room) {
-			const roomWidthFeet = parseFloat(room.width);
-			const roomHeightFeet = parseFloat(room.depth);
+  //! Does Konva have a type system you could use to avoid using any here?
+  const stageRef = useRef<any>(null); // Reference for the Konva stage
 
-			// Determine the greater dimension and set it to the horizontal axis
-			const greaterDimensionFeet = Math.max(
-				roomWidthFeet,
-				roomHeightFeet
-			);
-			const lesserDimensionFeet = Math.min(
-				roomWidthFeet,
-				roomHeightFeet
-			);
+  useEffect(() => {
+    if (room) {
+      const roomWidthFeet = parseFloat(room.width);
+      const roomHeightFeet = parseFloat(room.depth);
 
-			const roomWidthPixels = greaterDimensionFeet * feetToPixels;
-			const roomHeightPixels = lesserDimensionFeet * feetToPixels;
-			const scaleWidth = containerSize.width / roomWidthPixels;
+      // Determine the greater dimension and set it to the horizontal axis
+      const greaterDimensionFeet = Math.max(roomWidthFeet, roomHeightFeet);
+      const lesserDimensionFeet = Math.min(roomWidthFeet, roomHeightFeet);
 
-			setContainerSize({
-				width: roomWidthPixels * scaleWidth,
-				height: roomHeightPixels * scaleWidth,
-			});
-		}
-	}, [room, containerSize.width]);
+      const roomWidthPixels = greaterDimensionFeet * feetToPixels;
+      const roomHeightPixels = lesserDimensionFeet * feetToPixels;
+      const scaleWidth = containerSize.width / roomWidthPixels;
 
-	useEffect(() => {
-		// Load the lock state from local storage on initial load
-		const storedLockState = localStorage.getItem("areAllObjectsLocked");
-		if (storedLockState !== null) {
-			setAreAllObjectsLocked(JSON.parse(storedLockState));
-		}
-	}, []);
+      setContainerSize({
+        width: roomWidthPixels * scaleWidth,
+        height: roomHeightPixels * scaleWidth,
+      });
+    }
+  }, [room, containerSize.width]);
 
-	const lockAllObjects = () => {
-		const allLocked = areAllObjectsLocked;
-		const newLockState = !allLocked;
+  useEffect(() => {
+    // Load the lock state from local storage on initial load
+    const storedLockState = localStorage.getItem("areAllObjectsLocked");
+    if (storedLockState !== null) {
+      setAreAllObjectsLocked(JSON.parse(storedLockState));
+    }
+  }, []);
 
-		setAreAllObjectsLocked(newLockState);
+  const lockAllObjects = () => {
+    const allLocked = areAllObjectsLocked;
+    const newLockState = !allLocked;
 
-		setTables((prevTables) =>
-			prevTables.map((table) => ({
-				...table,
-				isLocked: newLockState,
-			}))
-		);
-		setFeatures((prevFeatures) =>
-			prevFeatures.map((feature) => ({
-				...feature,
-				isLocked: newLockState,
-			}))
-		);
+    setAreAllObjectsLocked(newLockState);
 
-		// Save the new lock state to local storage
-		localStorage.setItem(
-			"areAllObjectsLocked",
-			JSON.stringify(newLockState)
-		);
-	};
+    setTables((prevTables) =>
+      prevTables.map((table) => ({
+        ...table,
+        isLocked: newLockState,
+      }))
+    );
+    setFeatures((prevFeatures) =>
+      prevFeatures.map((feature) => ({
+        ...feature,
+        isLocked: newLockState,
+      }))
+    );
 
-	const handleObjectClick = (
-		id: string,
-		type: "table" | "feature",
-		x: number,
-		y: number
-	) => {
-		setSelectedObject({ id, type, x, y });
-	};
+    // Save the new lock state to local storage
+    localStorage.setItem("areAllObjectsLocked", JSON.stringify(newLockState));
+  };
 
-	const handleStageClick = () => {
-		setSelectedObject(null);
-	};
+  const handleObjectClick = (
+    id: string,
+    type: "table" | "feature",
+    x: number,
+    y: number
+  ) => {
+    setSelectedObject({ id, type, x, y });
+  };
 
-	const handleDelete = () => {
-		if (selectedObject) {
-			removeObjectFromCanvas(selectedObject.id);
-			setSelectedObject(null);
-		}
-	};
+  const handleStageClick = () => {
+    setSelectedObject(null);
+  };
 
-	const selectedTableOrFeature = selectedObject
-		? selectedObject.type === "table"
-			? tables.find((table) => table.id === selectedObject.id)
-			: features.find((feature) => feature.id === selectedObject.id)
-		: null;
+  const handleDelete = () => {
+    if (selectedObject) {
+      removeObjectFromCanvas(selectedObject.id);
+      setSelectedObject(null);
+    }
+  };
 
-	const handleAddVendorClick = (tableId: string) => {
-		setSelectedTableId(tableId);
-		setIsModalOpen(true);
-	};
+  const selectedTableOrFeature = selectedObject
+    ? selectedObject.type === "table"
+      ? tables.find((table) => table.id === selectedObject.id)
+      : features.find((feature) => feature.id === selectedObject.id)
+    : null;
 
-	const handleRemoveVendor = (tableId: string) => {
-		// First, update tables state to remove the vendorId from the table
-		setTables((prevTables) =>
-			prevTables.map((table) =>
-				table.id === tableId
-					? { ...table, vendorId: undefined }
-					: table
-			)
-		);
+  const handleAddVendorClick = (tableId: string) => {
+    setSelectedTableId(tableId);
+    setIsModalOpen(true);
+  };
 
-		// Update vendors after the table state has been modified
-		setVendors((prevVendors) => {
-			// Find the vendor associated with the table
-			const associatedVendor = prevVendors.find((vendor) =>
-				tables.some(
-					(table) =>
-						table.id === tableId &&
-						table.vendorId === vendor.id
-				)
-			);
+  const handleRemoveVendor = (tableId: string) => {
+    // First, update tables state to remove the vendorId from the table
+    setTables((prevTables) =>
+      prevTables.map((table) =>
+        table.id === tableId ? { ...table, vendorId: undefined } : table
+      )
+    );
 
-			if (associatedVendor) {
-				// Remove room and table association from the vendor
-				localStorage.removeItem(
-					`vendor-${associatedVendor.id}-roomId`
-				); // Clear room from localStorage
-				return prevVendors.map((vendor) =>
-					vendor.id === associatedVendor.id
-						? {
-								...vendor,
-								signedIn: false,
-								roomId: "", // Clear room association
-								roomName: "", // Clear room name
-						  }
-						: vendor
-				);
-			}
-			return prevVendors;
-		});
-	};
+    // Update vendors after the table state has been modified
+    setVendors((prevVendors) => {
+      // Find the vendor associated with the table
+      const associatedVendor = prevVendors.find((vendor) =>
+        tables.some(
+          (table) => table.id === tableId && table.vendorId === vendor.id
+        )
+      );
 
-	// Handle zooming with mouse wheel
-	const handleWheel = (e: any) => {
-		e.evt.preventDefault();
+      if (associatedVendor) {
+        // Remove room and table association from the vendor
+        localStorage.removeItem(`vendor-${associatedVendor.id}-roomId`); // Clear room from localStorage
+        return prevVendors.map((vendor) =>
+          vendor.id === associatedVendor.id
+            ? {
+                ...vendor,
+                signedIn: false,
+                roomId: "", // Clear room association
+                roomName: "", // Clear room name
+              }
+            : vendor
+        );
+      }
+      return prevVendors;
+    });
+  };
 
-		const stage = stageRef.current;
-		const oldScale = stage.scaleX();
-		const pointer = stage.getPointerPosition();
+  //! Because this is technically created on every render, I'm curious if it being a part of a useEffect dependency array would cause any issues. I'm not sure if it would, but it's something to consider if you're having render issues. You could also wrp it in useCallback if you wanted to avoid that potential issue. (Bonus concept to look into -- useCallback !)
+  // Handle zooming with mouse wheel
+  const handleWheel = (e: any) => {
+    e.evt.preventDefault();
 
-		const scaleBy = 1.01; // Zoom factor
-		let direction = e.evt.deltaY > 0 ? 1 : -1;
+    const stage = stageRef.current;
+    //! stageRef is initialized as null so it could be null here i think? Might be safe to use optional chaining with nullish coalesence here to avoid a type error and set a default value if stageRef.current is null
+    const oldScale = stage.scaleX();
+    const pointer = stage.getPointerPosition();
 
-		// Revert zoom direction when using ctrlKey (for touchpads)
-		if (e.evt.ctrlKey) {
-			direction = -direction;
-		}
+    const scaleBy = 1.01; // Zoom factor
+    let direction = e.evt.deltaY > 0 ? 1 : -1;
 
-		const newScale =
-			direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    // Revert zoom direction when using ctrlKey (for touchpads)
+    if (e.evt.ctrlKey) {
+      direction = -direction;
+    }
 
-		setScale(newScale);
+    const newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
-		const mousePointTo = {
-			x: (pointer.x - stage.x()) / oldScale,
-			y: (pointer.y - stage.y()) / oldScale,
-		};
+    setScale(newScale);
 
-		const newPos = {
-			x: pointer.x - mousePointTo.x * newScale,
-			y: pointer.y - mousePointTo.y * newScale,
-		};
+    const mousePointTo = {
+      x: (pointer.x - stage.x()) / oldScale,
+      y: (pointer.y - stage.y()) / oldScale,
+    };
 
-		setStagePosition(newPos);
-		stage.scale({ x: newScale, y: newScale });
-		stage.position(newPos);
-		stage.batchDraw(); // Update the stage
-	};
+    const newPos = {
+      x: pointer.x - mousePointTo.x * newScale,
+      y: pointer.y - mousePointTo.y * newScale,
+    };
 
-	const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newScale = parseFloat(e.target.value);
-		const stage = stageRef.current;
+    setStagePosition(newPos);
+    stage.scale({ x: newScale, y: newScale });
+    stage.position(newPos);
+    stage.batchDraw(); // Update the stage
+  };
 
-		if (stage) {
-			const oldScale = stage.scaleX();
-			const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
+  const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newScale = parseFloat(e.target.value);
+    const stage = stageRef.current;
 
-			setScale(newScale);
+    if (stage) {
+      const oldScale = stage.scaleX();
+      const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
 
-			const mousePointTo = {
-				x: (pointer.x - stage.x()) / oldScale,
-				y: (pointer.y - stage.y()) / oldScale,
-			};
+      setScale(newScale);
 
-			const newPos = {
-				x: pointer.x - mousePointTo.x * newScale,
-				y: pointer.y - mousePointTo.y * newScale,
-			};
+      const mousePointTo = {
+        x: (pointer.x - stage.x()) / oldScale,
+        y: (pointer.y - stage.y()) / oldScale,
+      };
 
-			setStagePosition(newPos);
-			stage.scale({ x: newScale, y: newScale });
-			stage.position(newPos);
-			stage.batchDraw(); // Update the stage
-		}
-	};
+      const newPos = {
+        x: pointer.x - mousePointTo.x * newScale,
+        y: pointer.y - mousePointTo.y * newScale,
+      };
 
-	useEffect(() => {
-		const stage = stageRef.current;
-		if (stage) {
-			// Attach the wheel event handler for zooming
-			stage.on("wheel", handleWheel);
+      setStagePosition(newPos);
+      stage.scale({ x: newScale, y: newScale });
+      stage.position(newPos);
+      stage.batchDraw(); // Update the stage
+    }
+  };
 
-			// Force an update to ensure all Konva internals are set up
-			stage.batchDraw();
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (stage) {
+      // Attach the wheel event handler for zooming
+      stage.on("wheel", handleWheel);
 
-			return () => {
-				stage.off("wheel", handleWheel);
-			};
-		}
-	}, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
+      // Force an update to ensure all Konva internals are set up
+      stage.batchDraw();
 
-	return (
-		<div
-			ref={containerRef}
-			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full"
-		>
-			<div className="canvas-area flex flex-col">
-				<RoomDetailsDisplay
-					rooms={rooms}
-					handleRemoveRoom={removeRoom}
-					openEditModal={openEditModal}
-					removeRoom={removeRoom}
-					setSelectedRoomId={setSelectedRoomId}
-					openAddRoomModal={openAddRoomModal}
-					selectedRoomId={selectedRoomId}
-				/>
-			</div>
-			{room !== undefined && (
-				<RoomOptions
-					areAllObjectsLocked={areAllObjectsLocked}
-					lockAllObjects={lockAllObjects}
-					selectedRoomId={selectedRoomId}
-					addTable={addTable}
-					tables={tables}
-					addFeature={addFeature}
-					features={features}
-					room={room}
-					removeRoom={removeRoom}
-					openEditModal={openEditModal}
-					rooms={rooms}
-					setSelectedRoomId={setSelectedRoomId}
-					openAddRoomModal={openAddRoomModal}
-					setTables={setTables}
-				/>
-			)}
-			{room &&
-				containerSize.width > 0 &&
-				containerSize.height > 0 && (
-					<div className="flex items-start">
-						<Stage
-							ref={stageRef}
-							width={containerSize.width}
-							height={containerSize.height}
-							scaleX={scale}
-							scaleY={scale}
-							draggable // Enable stage dragging
-							x={stagePosition.x}
-							y={stagePosition.y}
-							onMouseDown={handleStageClick}
-							onTouchStart={handleStageClick}
-						>
-							<Layer>
-								{/* Grid Component */}
-								{showGrid && (
-									<Grid
-										containerSize={
-											containerSize
-										}
-										gridSize={gridSize}
-										isVisible={showGrid}
-									/>
-								)}
+      return () => {
+        stage.off("wheel", handleWheel);
+      };
+    }
+  }, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
 
-								<Rect
-									x={0}
-									y={0}
-									width={
-										containerSize.width
-									}
-									height={
-										containerSize.height
-									}
-									stroke="black"
-									strokeWidth={2}
-								/>
-								{tables
-									.filter(
-										(table) =>
-											table.roomId ===
-											selectedRoomId
-									)
-									.map((table) => (
-										<DragAndDropHandler
-											key={table.id}
-											item={table}
-											containerSize={
-												containerSize
-											}
-											feetToPixels={
-												feetToPixels
-											}
-											room={room}
-											tables={
-												tables
-											}
-											features={
-												features
-											}
-											setTables={
-												setTables
-											}
-											setFeatures={
-												setFeatures
-											}
-											onObjectClick={
-												handleObjectClick
-											}
-											Component={
-												TableComponent
-											}
-											vendors={
-												vendors
-											}
-											stageRef={
-												stageRef
-											}
-											setShowGrid={
-												setShowGrid
-											} // Pass setShowGrid to the handler
-										/>
-									))}
-								{objects
-									.filter(
-										(feature) =>
-											feature.roomId ===
-											selectedRoomId
-									)
-									.map((feature) => {
-										return (
-											<DragAndDropHandler
-												key={
-													feature.id
-												}
-												item={
-													feature
-												}
-												feetToPixels={
-													feetToPixels
-												}
-												room={
-													room
-												}
-												containerSize={
-													containerSize
-												}
-												tables={
-													tables
-												}
-												features={
-													features
-												}
-												setTables={
-													setTables
-												}
-												setFeatures={
-													setFeatures
-												}
-												onObjectClick={
-													handleObjectClick
-												}
-												Component={
-													FeatureComponent
-												}
-												stageRef={
-													stageRef
-												}
-												setShowGrid={
-													setShowGrid
-												} // Pass setShowGrid to the handler
-											/>
-										);
-									})}
-							</Layer>
-						</Stage>
-						{/* Vertical Zoom Slider */}
-						<div className="zoom-slider flex flex-col items-center ml-4">
-							<label
-								htmlFor="zoom"
-								className="mb-2"
-							>
-								Zoom:{" "}
-							</label>
-							<input
-								id="zoom"
-								type="range"
-								min="0.25"
-								max="3"
-								step="0.01"
-								value={scale}
-								onChange={handleZoomChange}
-								// className="w-1/4"
-								className="h-48 w-2 cursor-pointer appearance-none bg-gray-200"
-								style={{
-									writingMode:
-										"vertical-rl", // Change to a valid value for vertical slider
-									accentColor: "#1f5160",
-								}}
-							/>
-						</div>
-					</div>
-				)}
-			{/* <div className="relative"> */}
-			{selectedObject && selectedTableOrFeature && (
-				<RotateHandler
-					item={selectedTableOrFeature}
-					setTables={setTables}
-					setFeatures={setFeatures}
-				>
-					{({ rotateCW, rotateCCW }) => (
-						<OptionsBar
-							x={selectedObject.x}
-							y={selectedObject.y}
-							onDelete={handleDelete}
-							onRotateCW={rotateCW}
-							onRotateCCW={rotateCCW}
-							onToggleLock={() =>
-								toggleLockObject(
-									selectedObject.id,
-									selectedObject.type
-								)
-							}
-							isLocked={
-								selectedObject.type === "table"
-									? !!tables.find(
-											(table) =>
-												table.id ===
-												selectedObject.id
-									  )?.isLocked
-									: !!features.find(
-											(feature) =>
-												feature.id ===
-												selectedObject.id
-									  )?.isLocked
-							}
-							vendorName={
-								selectedObject.type === "table"
-									? tables.find(
-											(table) =>
-												table.id ===
-												selectedObject.id
-									  )?.vendorId
-										? vendors.find(
-												(
-													vendor
-												) =>
-													vendor.id ===
-													tables.find(
-														(
-															table
-														) =>
-															table.id ===
-															selectedObject.id
-													)
-														?.vendorId
-										  )?.name || ""
-										: ""
-									: ""
-							}
-							onAddVendor={() =>
-								handleAddVendorClick(
-									selectedObject.id
-								)
-							}
-							onRemoveVendor={() =>
-								handleRemoveVendor(
-									selectedObject.id
-								)
-							}
-							objectType={selectedObject.type}
-							canvasWidth={containerSize.width}
-							canvasHeight={containerSize.height}
-						/>
-					)}
-				</RotateHandler>
-			)}
-			{/* </div> */}
-			<AssignVendorModal
-				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-				vendors={vendors}
-				tables={tables}
-				rooms={rooms}
-				setTables={setTables}
-				selectedTableId={selectedObject?.id || null}
-				setVendors={setVendors}
-			/>
-		</div>
-	);
+  return (
+    <div
+      ref={containerRef}
+      className="flex-grow flex-col justify-center items-center overflow-y-auto h-full"
+    >
+      <div className="canvas-area flex flex-col">
+        <RoomDetailsDisplay
+          rooms={rooms}
+          handleRemoveRoom={removeRoom}
+          openEditModal={openEditModal}
+          removeRoom={removeRoom}
+          setSelectedRoomId={setSelectedRoomId}
+          openAddRoomModal={openAddRoomModal}
+          selectedRoomId={selectedRoomId}
+        />
+      </div>
+      {room !== undefined && (
+        <RoomOptions
+          areAllObjectsLocked={areAllObjectsLocked}
+          lockAllObjects={lockAllObjects}
+          selectedRoomId={selectedRoomId}
+          addTable={addTable}
+          tables={tables}
+          addFeature={addFeature}
+          features={features}
+          room={room}
+          removeRoom={removeRoom}
+          openEditModal={openEditModal}
+          rooms={rooms}
+          setSelectedRoomId={setSelectedRoomId}
+          openAddRoomModal={openAddRoomModal}
+          setTables={setTables}
+        />
+      )}
+      {room && containerSize.width > 0 && containerSize.height > 0 && (
+        <div className="flex items-start">
+          <Stage
+            ref={stageRef}
+            width={containerSize.width}
+            height={containerSize.height}
+            scaleX={scale}
+            scaleY={scale}
+            draggable // Enable stage dragging
+            x={stagePosition.x}
+            y={stagePosition.y}
+            onMouseDown={handleStageClick}
+            onTouchStart={handleStageClick}
+          >
+            <Layer>
+              {/* Grid Component */}
+              {showGrid && (
+                <Grid
+                  containerSize={containerSize}
+                  gridSize={gridSize}
+                  isVisible={showGrid}
+                />
+              )}
+
+              <Rect
+                x={0}
+                y={0}
+                width={containerSize.width}
+                height={containerSize.height}
+                stroke="black"
+                strokeWidth={2}
+              />
+              {tables
+                .filter((table) => table.roomId === selectedRoomId)
+                .map((table) => (
+                  <DragAndDropHandler
+                    key={table.id}
+                    item={table}
+                    containerSize={containerSize}
+                    feetToPixels={feetToPixels}
+                    room={room}
+                    tables={tables}
+                    features={features}
+                    setTables={setTables}
+                    setFeatures={setFeatures}
+                    onObjectClick={handleObjectClick}
+                    Component={TableComponent}
+                    vendors={vendors}
+                    stageRef={stageRef}
+                    setShowGrid={setShowGrid} // Pass setShowGrid to the handler
+                  />
+                ))}
+              {objects
+                .filter((feature) => feature.roomId === selectedRoomId)
+                .map((feature) => {
+                  return (
+                    <DragAndDropHandler
+                      key={feature.id}
+                      item={feature}
+                      feetToPixels={feetToPixels}
+                      room={room}
+                      containerSize={containerSize}
+                      tables={tables}
+                      features={features}
+                      setTables={setTables}
+                      setFeatures={setFeatures}
+                      onObjectClick={handleObjectClick}
+                      Component={FeatureComponent}
+                      stageRef={stageRef}
+                      setShowGrid={setShowGrid} // Pass setShowGrid to the handler
+                    />
+                  );
+                })}
+            </Layer>
+          </Stage>
+          {/* Vertical Zoom Slider */}
+          <div className="zoom-slider flex flex-col items-center ml-4">
+            <label htmlFor="zoom" className="mb-2">
+              Zoom:{" "}
+            </label>
+            <input
+              id="zoom"
+              type="range"
+              min="0.25"
+              max="3"
+              step="0.01"
+              value={scale}
+              onChange={handleZoomChange}
+              // className="w-1/4"
+              className="h-48 w-2 cursor-pointer appearance-none bg-gray-200"
+              style={{
+                writingMode: "vertical-rl", // Change to a valid value for vertical slider
+                accentColor: "#1f5160",
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {/* <div className="relative"> */}
+      {selectedObject && selectedTableOrFeature && (
+        <RotateHandler
+          item={selectedTableOrFeature}
+          setTables={setTables}
+          setFeatures={setFeatures}
+        >
+          {({ rotateCW, rotateCCW }) => (
+            <OptionsBar
+              x={selectedObject.x}
+              y={selectedObject.y}
+              onDelete={handleDelete}
+              onRotateCW={rotateCW}
+              onRotateCCW={rotateCCW}
+              onToggleLock={() =>
+                toggleLockObject(selectedObject.id, selectedObject.type)
+              }
+              isLocked={
+                selectedObject.type === "table"
+                  ? !!tables.find((table) => table.id === selectedObject.id)
+                      ?.isLocked
+                  : !!features.find(
+                      (feature) => feature.id === selectedObject.id
+                    )?.isLocked
+              }
+              vendorName={
+                selectedObject.type === "table"
+                  ? tables.find((table) => table.id === selectedObject.id)
+                      ?.vendorId
+                    ? vendors.find(
+                        (vendor) =>
+                          vendor.id ===
+                          tables.find((table) => table.id === selectedObject.id)
+                            ?.vendorId
+                      )?.name || ""
+                    : ""
+                  : ""
+              }
+              onAddVendor={() => handleAddVendorClick(selectedObject.id)}
+              onRemoveVendor={() => handleRemoveVendor(selectedObject.id)}
+              objectType={selectedObject.type}
+              canvasWidth={containerSize.width}
+              canvasHeight={containerSize.height}
+            />
+          )}
+        </RotateHandler>
+      )}
+      {/* </div> */}
+      <AssignVendorModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        vendors={vendors}
+        tables={tables}
+        rooms={rooms}
+        setTables={setTables}
+        selectedTableId={selectedObject?.id || null}
+        setVendors={setVendors}
+      />
+    </div>
+  );
 };
 
 export default CanvasAreaKonva;
