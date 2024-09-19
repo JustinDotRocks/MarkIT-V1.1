@@ -13,7 +13,9 @@ import {
   getStorageKeys,
 } from "./Storage";
 
-//! Generally an App component should be a container component that manages the state of the application and passes it down to the presentational components. State management tools like Redux would be really helpful for managing the state of the application. But for a small application, it's okay to manage the state in the App component itself. I would look into moving as much stuff into the child components as possible to reduce prop drilling. Also, I would recommend extracting the functions that update the state into a separate file to keep the App component clean. This will also make it easier to test the functions in isolation.
+//! Generally an App component should be a container component that manages the state of the application and passes it down to the presentational components. Typically, with state management you could initialize the state in the App component and then use a selector to get state at the component level to avoid prop drilling. This would make the components more reusable and easier to test. If you wanted to reduce prop drilling while still using local storage instead of state management, you could create custom hooks to select each type of data from localStorage and then use those hooks at the component level instead of passing them as props.
+
+//! I would recommend extracting the functions that update the state into a separate file to keep the App component clean.
 
 //! General note to clean up commented out code and unused imports
 
