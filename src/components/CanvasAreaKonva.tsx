@@ -9,6 +9,7 @@ import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
 import AssignVendorModal from "./AssignVendorModal";
 import RoomOptions from "./RoomOptions";
+import RoomOptionsHamburger from "./RoomOptionsHamburger";
 import Grid from "./Grid";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -47,6 +48,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [stageRotation, setStageRotation] = useState(0);
 	const [isPortrait, setIsPortrait] = useState(false);
 
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
+
 	// Handlers for drag events
 	const handleGlobalDragStart = () => {
 		setIsDragging(true);
@@ -54,10 +57,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const handleGlobalDragEnd = () => {
 		setIsDragging(false);
-	};
-
-	const toggleGridVisibility = () => {
-		setShowGrid((prevShowGrid) => !prevShowGrid);
 	};
 
 	// State for selectedObject and OptionsBar position
@@ -351,6 +350,32 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
+	// const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const newScale = parseFloat(e.target.value);
+	// 	const stage = stageRef.current;
+
+	// 	if (stage) {
+	// 		const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
+
+	// 		const mousePointTo = {
+	// 			x: (pointer.x - stage.x()) / scale,
+	// 			y: (pointer.y - stage.y()) / scale,
+	// 		};
+
+	// 		const newPos = {
+	// 			x: pointer.x - mousePointTo.x * newScale,
+	// 			y: pointer.y - mousePointTo.y * newScale,
+	// 		};
+
+	// 		setScale(newScale);
+	// 		setStagePosition(newPos);
+
+	// 		stage.scale({ x: newScale, y: newScale });
+	// 		stage.position(newPos);
+	// 		stage.batchDraw(); // Update the stage
+	// 	}
+	// };
+
 	useEffect(() => {
 		const stage = stageRef.current;
 		if (stage) {
@@ -380,7 +405,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					selectedRoomId={selectedRoomId}
 				/>
 			</div>
-			{room !== undefined && (
+			{/* {room !== undefined && (
 				<RoomOptions
 					areAllObjectsLocked={areAllObjectsLocked}
 					lockAllObjects={lockAllObjects}
@@ -399,7 +424,51 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					gridMode={gridMode}
 					setGridMode={setGridMode}
 				/>
-			)}
+			)} */}
+			{room !== undefined &&
+				(isMobile ? (
+					<div className="fixed top-32 right-8 z-50">
+						<RoomOptionsHamburger
+							areAllObjectsLocked={
+								areAllObjectsLocked
+							}
+							lockAllObjects={lockAllObjects}
+							selectedRoomId={selectedRoomId}
+							addTable={addTable}
+							tables={tables}
+							addFeature={addFeature}
+							features={features}
+							room={room}
+							removeRoom={removeRoom}
+							openEditModal={openEditModal}
+							rooms={rooms}
+							setSelectedRoomId={setSelectedRoomId}
+							openAddRoomModal={openAddRoomModal}
+							setTables={setTables}
+							gridMode={gridMode}
+							setGridMode={setGridMode}
+						/>
+					</div>
+				) : (
+					<RoomOptions
+						areAllObjectsLocked={areAllObjectsLocked}
+						lockAllObjects={lockAllObjects}
+						selectedRoomId={selectedRoomId}
+						addTable={addTable}
+						tables={tables}
+						addFeature={addFeature}
+						features={features}
+						room={room}
+						removeRoom={removeRoom}
+						openEditModal={openEditModal}
+						rooms={rooms}
+						setSelectedRoomId={setSelectedRoomId}
+						openAddRoomModal={openAddRoomModal}
+						setTables={setTables}
+						gridMode={gridMode}
+						setGridMode={setGridMode}
+					/>
+				))}
 			{room &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
