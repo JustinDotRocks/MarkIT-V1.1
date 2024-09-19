@@ -3,278 +3,266 @@ import { VendorCardProps, Table } from "../../Types";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
+//! clean up unused code and commented code
+
+//! Adding some validation to forms is a good idea. for example, preventing someone from entering a only whitespace for a room name or, if you were saving to a database, preventing someone from entering a room name that already exists or a room name that is too long
+
 const VendorCard: React.FC<VendorCardProps> = ({
-	id,
-	vendorName,
-	vendorProducts,
-	vendorDetails,
-	tableNumber,
-	roomId,
-	signedIn,
-	electricityRequired,
-	tables,
-	rooms,
-	updateTableAssignment,
-	deleteVendor,
-	updateVendorDetails,
+  id,
+  vendorName,
+  vendorProducts,
+  vendorDetails,
+  tableNumber,
+  roomId,
+  signedIn,
+  electricityRequired,
+  tables,
+  rooms,
+  updateTableAssignment,
+  deleteVendor,
+  updateVendorDetails,
 }) => {
-	const [isEditing, setIsEditing] = useState(false);
-	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-	const [editableVendor, setEditableVendor] = useState({
-		id,
-		name: vendorName,
-		products: vendorProducts,
-		details: vendorDetails,
-		signedIn,
-		electricityRequired,
-		roomId,
-	});
-	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
-	const [currentRoomName, setCurrentRoomName] = useState<string>("");
-	const [currentTableLabel, setCurrentTableLabel] = useState<string>("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [editableVendor, setEditableVendor] = useState({
+    id,
+    name: vendorName,
+    products: vendorProducts,
+    details: vendorDetails,
+    signedIn,
+    electricityRequired,
+    roomId,
+  });
+  const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
+  const [currentRoomName, setCurrentRoomName] = useState<string>("");
+  const [currentTableLabel, setCurrentTableLabel] = useState<string>("");
 
-	const truncateText = (text: string, maxLength: number) => {
-		if (text.length > maxLength) {
-			return text.substring(0, maxLength) + "...";
-		}
-		return text;
-	};
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
 
-	const toggleAccordion = () => {
-		setIsAccordionOpen(!isAccordionOpen);
-	};
+  const toggleAccordion = () => {
+    setIsAccordionOpen(!isAccordionOpen);
+  };
 
-	useEffect(() => {
-		if (!editableVendor.roomId) return;
+  useEffect(() => {
+    if (!editableVendor.roomId) return;
 
-		const selectedRoom = rooms.find(
-			(room) => room.id === editableVendor.roomId
-		);
-		setEditableVendor((prev) => ({
-			...prev,
-			roomName: selectedRoom ? selectedRoom.name : "",
-		}));
-	}, [editableVendor.roomId, rooms]);
+    const selectedRoom = rooms.find(
+      (room) => room.id === editableVendor.roomId
+    );
+    setEditableVendor((prev) => ({
+      ...prev,
+      roomName: selectedRoom ? selectedRoom.name : "",
+    }));
+  }, [editableVendor.roomId, rooms]);
 
-	useEffect(() => {
-		const savedRoomId = localStorage.getItem(`vendor-${id}-roomId`);
-		if (savedRoomId) {
-			setEditableVendor((prev) => ({
-				...prev,
-				roomId: savedRoomId,
-			}));
-			setSelectedRoomId(savedRoomId); // Ensure selectedRoomId state is also updated
-		}
-	}, [id]);
+  useEffect(() => {
+    const savedRoomId = localStorage.getItem(`vendor-${id}-roomId`);
+    if (savedRoomId) {
+      setEditableVendor((prev) => ({
+        ...prev,
+        roomId: savedRoomId,
+      }));
+      setSelectedRoomId(savedRoomId); // Ensure selectedRoomId state is also updated
+    }
+  }, [id]);
 
-	useEffect(() => {
-		if (editableVendor.roomId) {
-			localStorage.setItem(
-				`vendor-${id}-roomId`,
-				editableVendor.roomId
-			);
-		}
-	}, [editableVendor.roomId, id]);
+  useEffect(() => {
+    if (editableVendor.roomId) {
+      localStorage.setItem(`vendor-${id}-roomId`, editableVendor.roomId);
+    }
+  }, [editableVendor.roomId, id]);
 
-	// Function to provide a display label for a table
-	const getTableLabel = (table: Table): string => {
-		const tableTypeLabels: { [key: string]: string } = {
-			"table-6": "6' Table",
-			"table-8": "8' Table",
-			"table-5": "5' Round Table",
-		};
-		const tableTypeLabel = tableTypeLabels[table.type] || table.type;
-		// return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
-		return `Table ${table.tableNumber}: ${tableTypeLabel}`;
-	};
+  // Function to provide a display label for a table
+  const getTableLabel = (table: Table): string => {
+    const tableTypeLabels: { [key: string]: string } = {
+      "table-6": "6' Table",
+      "table-8": "8' Table",
+      "table-5": "5' Round Table",
+    };
+    const tableTypeLabel = tableTypeLabels[table.type] || table.type;
+    // return `Table Number - ${table.tableNumber} - ${tableTypeLabel} `;
+    return `Table ${table.tableNumber}: ${tableTypeLabel}`;
+  };
 
-	//  Filter out incomplete tables
-	const validTables = tables.filter(
-		(table) =>
-			table.tableNumber !== undefined &&
-			// table.roomName !== undefined &&
-			(!selectedRoomId || table.roomId === selectedRoomId)
-	);
+  //  Filter out incomplete tables
+  const validTables = tables.filter(
+    (table) =>
+      table.tableNumber !== undefined &&
+      // table.roomName !== undefined &&
+      (!selectedRoomId || table.roomId === selectedRoomId)
+  );
 
-	const handleSave = () => {
-		updateVendorDetails(editableVendor);
-		setIsEditing(false);
-	};
+  const handleSave = () => {
+    updateVendorDetails(editableVendor);
+    setIsEditing(false);
+  };
 
-	const handleInputChange = (
-		e: React.ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
-	) => {
-		const { name, value, type } = e.target;
-		const isChecked = (e.target as HTMLInputElement).checked;
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    const isChecked = (e.target as HTMLInputElement).checked;
 
-		if (name === "selectedRoomId") {
-			setSelectedRoomId(value);
-			const selectedRoom = rooms.find((room) => room.id === value);
-			setEditableVendor((prev) => ({
-				...prev,
-				roomId: value,
-				roomName: selectedRoom ? selectedRoom.name : "",
-			}));
-			setCurrentRoomName(selectedRoom ? selectedRoom.name : ""); // Update current room display
-			localStorage.setItem(`vendor-${id}-roomId`, value); // Save to local storage
-			updateTableAssignment("", id); // Reset table selection when room changes
-		} else {
-			setEditableVendor((prev) => ({
-				...prev,
-				[name]: type === "checkbox" ? isChecked : value,
-			}));
-			if (name === "signedIn") {
-				// **Directly update signedIn state**
-				updateVendorDetails({
-					...editableVendor,
-					[name]: isChecked,
-				});
-			}
-		}
-	};
+    if (name === "selectedRoomId") {
+      setSelectedRoomId(value);
+      const selectedRoom = rooms.find((room) => room.id === value);
+      setEditableVendor((prev) => ({
+        ...prev,
+        roomId: value,
+        roomName: selectedRoom ? selectedRoom.name : "",
+      }));
+      setCurrentRoomName(selectedRoom ? selectedRoom.name : ""); // Update current room display
+      localStorage.setItem(`vendor-${id}-roomId`, value); // Save to local storage
+      updateTableAssignment("", id); // Reset table selection when room changes
+    } else {
+      setEditableVendor((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? isChecked : value,
+      }));
+      if (name === "signedIn") {
+        // **Directly update signedIn state**
+        updateVendorDetails({
+          ...editableVendor,
+          [name]: isChecked,
+        });
+      }
+    }
+  };
 
-	// // Update current table label whenever the room or table selection changes
-	// useEffect(() => {
-	// 	const currentTable = tables.find(
-	// 		(table) => table.id === editableVendor.tableNumber
-	// 	);
-	// 	setCurrentTableLabel(
-	// 		currentTable ? getTableLabel(currentTable) : ""
-	// 	);
-	// }, [editableVendor.tableNumber, tables]);
+  // // Update current table label whenever the room or table selection changes
+  // useEffect(() => {
+  // 	const currentTable = tables.find(
+  // 		(table) => table.id === editableVendor.tableNumber
+  // 	);
+  // 	setCurrentTableLabel(
+  // 		currentTable ? getTableLabel(currentTable) : ""
+  // 	);
+  // }, [editableVendor.tableNumber, tables]);
 
-	// Check if vendor details are present
-	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
+  // Check if vendor details are present
+  const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
-	// Define background color based on signedIn state
-	const backgroundColor = signedIn ? "bg-customGreen" : "bg-customOrange";
-	// Get assigned room and table details
-	// const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
-	// const assignedTable = tables.find(
-	// 	(table) => table.vendorId === editableVendor.id
-	// );
-	// const tableLabel = assignedTable ? getTableLabel(assignedTable) : "";
+  // Define background color based on signedIn state
+  const backgroundColor = signedIn ? "bg-customGreen" : "bg-customOrange";
+  // Get assigned room and table details
+  // const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
+  // const assignedTable = tables.find(
+  // 	(table) => table.vendorId === editableVendor.id
+  // );
+  // const tableLabel = assignedTable ? getTableLabel(assignedTable) : "";
 
-	// Get assigned room and table details
-	const assignedRoom = rooms.find(
-		(room) => room.id === editableVendor.roomId
-	);
-	const assignedTable = tables.find((table) => table.id === tableNumber);
+  // Get assigned room and table details
+  const assignedRoom = rooms.find((room) => room.id === editableVendor.roomId);
+  const assignedTable = tables.find((table) => table.id === tableNumber);
 
-	// Check if both room and table are selected
-	// const isSignInDisabled = !editableVendor.roomId || !tableNumber;
+  // Check if both room and table are selected
+  // const isSignInDisabled = !editableVendor.roomId || !tableNumber;
 
-	// Check if both room and table are selected
-	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
+  // Check if both room and table are selected
+  const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
 
-	return (
-		<div
-			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
-		>
-			{/* Conditional rendering based on isEditing state** */}
-			{isEditing ? (
-				<>
-					<div>
-						<label>Vendor Name:</label>
-						<input
-							type="text"
-							name="name"
-							value={editableVendor.name}
-							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
-						/>
-					</div>
-					<div>
-						<label>Products:</label>
-						<input
-							type="text"
-							name="products"
-							value={editableVendor.products}
-							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
-						/>
-					</div>
-					<div>
-						<label>Vendor Details:</label>
-						<textarea
-							name="details"
-							value={editableVendor.details}
-							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
-						/>
-					</div>
-					<div>
-						<label>
-							<input
-								type="checkbox"
-								name="electricityRequired"
-								checked={
-									editableVendor.electricityRequired
-								}
-								onChange={handleInputChange}
-								className="form-checkbox h-5 w-5 text-blue-600"
-							/>
-							Electricity Required
-						</label>
-					</div>
+  return (
+    <div
+      className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72`}
+    >
+      {/* Conditional rendering based on isEditing state** */}
+      {isEditing ? (
+        <>
+          <div>
+            <label>Vendor Name:</label>
+            {/* create a reuseable text input component where you only need to
+            pass in the name, value and onChange function. className can be
+            optional with a default to "bg-gray-600 text-white p-2 rounded
+            w-full" within the component */}
+            <input
+              type="text"
+              name="name"
+              value={editableVendor.name}
+              onChange={handleInputChange}
+              className="bg-gray-600 text-white p-2 rounded w-full"
+            />
+          </div>
+          <div>
+            <label>Products:</label>
+            <input
+              type="text"
+              name="products"
+              value={editableVendor.products}
+              onChange={handleInputChange}
+              className="bg-gray-600 text-white p-2 rounded w-full"
+            />
+          </div>
+          <div>
+            <label>Vendor Details:</label>
+            <textarea
+              name="details"
+              value={editableVendor.details}
+              onChange={handleInputChange}
+              className="bg-gray-600 text-white p-2 rounded w-full"
+            />
+          </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="electricityRequired"
+                checked={editableVendor.electricityRequired}
+                onChange={handleInputChange}
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              Electricity Required
+            </label>
+          </div>
 
-					<button
-						onClick={handleSave}
-						className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Save
-					</button>
-					<button
-						onClick={() => setIsEditing(false)}
-						className="mt-2 bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Cancel
-					</button>
-				</>
-			) : (
-				<>
-					<div>Vendor Name: {vendorName}</div>
-					<div>Products: {vendorProducts}</div>
-					<div className="flex justify-between items-center m-3">
-						<div className="flex-1">
-							<div className="flex items-center justify-between">
-								<span>Vendor Details:</span>
-								{hasDetails && (
-									<button
-										onClick={
-											toggleAccordion
-										}
-										className="focus:outline-none ml-2"
-									>
-										{isAccordionOpen ? (
-											<FaChevronUp />
-										) : (
-											<FaChevronDown />
-										)}
-									</button>
-								)}
-							</div>
-							<div
-								className={`transition-all duration-300 ease-in-out overflow-hidden ${
-									isAccordionOpen
-										? "max-h-full"
-										: "max-h-0"
-								}`}
-							>
-								<span className="block mt-2">
-									{vendorDetails}
-								</span>
-							</div>
-						</div>
-					</div>
-					<div>
-						Electricity Required:{" "}
-						{electricityRequired ? "Yes" : "No"}
-					</div>
+          <button
+            onClick={handleSave}
+            className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+          >
+            Save
+          </button>
+          <button
+            onClick={() => setIsEditing(false)}
+            className="mt-2 bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+          >
+            Cancel
+          </button>
+        </>
+      ) : (
+        <>
+          <div>Vendor Name: {vendorName}</div>
+          <div>Products: {vendorProducts}</div>
+          <div className="flex justify-between items-center m-3">
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <span>Vendor Details:</span>
+                {hasDetails && (
+                  <button
+                    onClick={toggleAccordion}
+                    className="focus:outline-none ml-2"
+                  >
+                    {isAccordionOpen ? <FaChevronUp /> : <FaChevronDown />}
+                  </button>
+                )}
+              </div>
+              <div
+                className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                  isAccordionOpen ? "max-h-full" : "max-h-0"
+                }`}
+              >
+                <span className="block mt-2">{vendorDetails}</span>
+              </div>
+            </div>
+          </div>
+          <div>Electricity Required: {electricityRequired ? "Yes" : "No"}</div>
 
-					{/* <div className="mb-2">
+          {/* <div className="mb-2">
 						<label className="block text-white">
 							Select Room:
 						</label>
@@ -326,17 +314,15 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							))}
 						</select>
 					</div> */}
-					<div className="mt-2 text-white">
-						<strong>Assigned Room:</strong>{" "}
-						{assignedRoom ? assignedRoom.name : "None"}
-					</div>
-					<div className="mt-2 text-white">
-						<strong>Assigned Table:</strong>{" "}
-						{assignedTable
-							? getTableLabel(assignedTable)
-							: "None"}
-					</div>
-					{/* <div>
+          <div className="mt-2 text-white">
+            <strong>Assigned Room:</strong>{" "}
+            {assignedRoom ? assignedRoom.name : "None"}
+          </div>
+          <div className="mt-2 text-white">
+            <strong>Assigned Table:</strong>{" "}
+            {assignedTable ? getTableLabel(assignedTable) : "None"}
+          </div>
+          {/* <div>
 						<label>
 							Signed In: {signedIn ? "Yes" : "No"}
 							<input
@@ -351,45 +337,40 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							/>
 						</label>
 					</div> */}
-					{/* Conditionally render Sign-In option */}
-					{isRoomAndTableSelected && (
-						<div>
-							<label>
-								Signed In:{" "}
-								{signedIn ? "Yes" : "No"}
-								<input
-									type="checkbox"
-									name="signedIn"
-									checked={
-										editableVendor.signedIn
-									}
-									onChange={
-										handleInputChange
-									}
-									className="form-checkbox h-5 w-5 text-blue-600"
-								/>
-							</label>
-						</div>
-					)}
-					<DeleteConfirmationModal
-						message="Are you sure you want to delete this Vendor?"
-						onConfirm={() => deleteVendor(id)}
-						triggerComponent={
-							<button className="bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-								Delete
-							</button>
-						}
-					/>
-					<button
-						onClick={() => setIsEditing(true)}
-						className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Edit Vendor
-					</button>
-				</>
-			)}
-		</div>
-	);
+          {/* Conditionally render Sign-In option */}
+          {isRoomAndTableSelected && (
+            <div>
+              <label>
+                Signed In: {signedIn ? "Yes" : "No"}
+                <input
+                  type="checkbox"
+                  name="signedIn"
+                  checked={editableVendor.signedIn}
+                  onChange={handleInputChange}
+                  className="form-checkbox h-5 w-5 text-blue-600"
+                />
+              </label>
+            </div>
+          )}
+          <DeleteConfirmationModal
+            message="Are you sure you want to delete this Vendor?"
+            onConfirm={() => deleteVendor(id)}
+            triggerComponent={
+              <button className="bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                Delete
+              </button>
+            }
+          />
+          <button
+            onClick={() => setIsEditing(true)}
+            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+          >
+            Edit Vendor
+          </button>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default VendorCard;
