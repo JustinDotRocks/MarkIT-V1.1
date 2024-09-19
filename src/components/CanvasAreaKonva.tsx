@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage, Layer, Rect, Group } from "react-konva";
 import { CanvasAreaProps, GridMode } from "../Types";
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
@@ -35,14 +35,17 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerSize, setContainerSize] = useState({
-		width: window.innerWidth * 0.9, // Use 90% of the window width
-		height: window.innerHeight * 0.9, // Use 90% of the window height
+		width: window.innerWidth,
+		height: window.innerHeight,
 	});
 
 	const [showGrid, setShowGrid] = useState(false);
 	const gridSize = 20;
 	const [gridMode, setGridMode] = useState<GridMode>("Drag");
 	const [isDragging, setIsDragging] = useState<boolean>(false);
+
+	const [stageRotation, setStageRotation] = useState(0);
+	const [isPortrait, setIsPortrait] = useState(false);
 
 	// Handlers for drag events
 	const handleGlobalDragStart = () => {
@@ -92,83 +95,91 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
 	const stageRef = useRef<any>(null);
 
-	// useEffect(() => {
-	// 	if (room) {
-	// 		const roomWidthFeet = parseFloat(room.width);
-	// 		const roomHeightFeet = parseFloat(room.depth);
-
-	// 		// Determine the greater dimension and set it to the horizontal axis
-	// 		const greaterDimensionFeet = Math.max(
-	// 			roomWidthFeet,
-	// 			roomHeightFeet
-	// 		);
-	// 		const lesserDimensionFeet = Math.min(
-	// 			roomWidthFeet,
-	// 			roomHeightFeet
-	// 		);
-
-	// 		const roomWidthPixels = greaterDimensionFeet * feetToPixels;
-	// 		const roomHeightPixels = lesserDimensionFeet * feetToPixels;
-	// 		const scaleWidth = containerSize.width / roomWidthPixels;
-
-	// 		setContainerSize({
-	// 			width: roomWidthPixels * scaleWidth,
-	// 			height: roomHeightPixels * scaleWidth,
-	// 		});
-	// 	}
-	// }, [room, containerSize.width]);
 	useEffect(() => {
 		const updateContainerSize = () => {
-			if (room) {
+			if (containerRef.current && room) {
+				const containerWidth = containerRef.current.clientWidth;
+				const containerHeight =
+					containerRef.current.clientHeight;
+
 				const roomWidthFeet = parseFloat(room.width);
 				const roomHeightFeet = parseFloat(room.depth);
+				const feetToPixels = 25;
 
-				// Check if the screen is mobile-sized
+				let roomWidthPixels = roomWidthFeet * feetToPixels;
+				let roomHeightPixels = roomHeightFeet * feetToPixels;
+
 				const isMobile = window.innerWidth < 768;
+				const isPortraitMode =
+					window.innerHeight > window.innerWidth;
 
-				// Adjust the room dimensions: Longest dimension is vertical on mobile
-				let roomWidthPixels, roomHeightPixels;
+				[roomWidthPixels, roomHeightPixels] = [
+					roomHeightPixels,
+					roomWidthPixels,
+				];
 
-				if (isMobile) {
-					// On mobile, make the longest dimension vertical
-					roomWidthPixels =
-						Math.min(roomWidthFeet, roomHeightFeet) *
-						feetToPixels;
-					roomHeightPixels =
-						Math.max(roomWidthFeet, roomHeightFeet) *
-						feetToPixels;
+				// Rotation logic for mobile and desktop
+				if (isMobile && isPortraitMode) {
+					// In mobile, make sure the greater dimension is aligned with y-axis (portrait mode)
+					if (roomWidthFeet > roomHeightFeet) {
+						setStageRotation(0); // Rotate to fit width along y-axis
+					} else {
+						setStageRotation(90); // No rotation needed
+					}
 				} else {
-					// Default (desktop): longest dimension is horizontal
-					roomWidthPixels =
-						Math.max(roomWidthFeet, roomHeightFeet) *
-						feetToPixels;
-					roomHeightPixels =
-						Math.min(roomWidthFeet, roomHeightFeet) *
-						feetToPixels;
+					// In desktop, make sure the greater dimension is aligned with x-axis (landscape mode)
+					if (roomHeightFeet > roomWidthFeet) {
+						setStageRotation(0); // Rotate to fit height along x-axis
+					} else {
+						setStageRotation(90); // No rotation needed
+					}
 				}
 
-				// Scale to fit within the container width
-				const scaleWidth =
-					containerSize.width / roomWidthPixels;
+				// Compute the scale factor to fit the room within the container
+				const scaleX = containerWidth / roomWidthPixels;
+				const scaleY = containerHeight / roomHeightPixels;
+				const scale = Math.min(scaleX, scaleY);
 
+				setScale(scale);
 				setContainerSize({
-					width: roomWidthPixels * scaleWidth,
-					height: roomHeightPixels * scaleWidth,
+					width: roomWidthPixels,
+					height: roomHeightPixels,
 				});
+
+				// Calculate the center of the room
+				const centerX = roomWidthPixels / 2;
+				const centerY = roomHeightPixels / 2;
+
+				// Set the offset of the stage to rotate around the center
+				const containerCenterX = containerWidth / 2;
+				const containerCenterY = containerHeight / 3;
+
+				// Offset the stage position to keep it centered
+				const offsetX = centerX * scale;
+				const offsetY = centerY * scale;
+
+				// // Position the stage so the room is centered
+				// const centerX =
+				// 	(containerWidth - roomWidthPixels * scale) / 4;
+				// const centerY =
+				// 	(containerHeight - roomHeightPixels * scale) / 4;
+				setStagePosition({
+					x: containerCenterX,
+					y: containerCenterY,
+				});
+				// Set stage offsets to rotate around the center
+				stageRef.current.offsetX(offsetX);
+				stageRef.current.offsetY(offsetY);
 			}
 		};
 
-		// Initial setup
 		updateContainerSize();
-
-		// Listen for resize events to update on screen size change
 		window.addEventListener("resize", updateContainerSize);
 
-		// Cleanup listener on component unmount
 		return () => {
 			window.removeEventListener("resize", updateContainerSize);
 		};
-	}, [room, containerSize.width, feetToPixels]);
+	}, [room, containerRef]);
 
 	useEffect(() => {
 		// Load the lock state from local storage on initial load
@@ -356,11 +367,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	}, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
 
 	return (
-		<div
-			ref={containerRef}
-			className="flex-grow flex-col justify-center items-center overflow-y-auto h-full"
-		>
-			<div className="canvas-area flex flex-col">
+		<div ref={containerRef} className="flex flex-col h-screen">
+			<div className="canvas-area flex flex-col ">
+				{/* <div className="flex-shrink-0"> */}
 				<RoomDetailsDisplay
 					rooms={rooms}
 					handleRemoveRoom={removeRoom}
@@ -387,8 +396,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					setSelectedRoomId={setSelectedRoomId}
 					openAddRoomModal={openAddRoomModal}
 					setTables={setTables}
-					// showGrid={showGrid}
-					// toggleGridVisibility={toggleGridVisibility}
 					gridMode={gridMode}
 					setGridMode={setGridMode}
 				/>
@@ -396,132 +403,72 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			{room &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
-					<div className="flex items-start">
+					// <div className="flex flex-row">
+					<div className="flex-1 flex  ">
 						<Stage
 							ref={stageRef}
 							width={containerSize.width}
 							height={containerSize.height}
 							scaleX={scale}
 							scaleY={scale}
-							draggable // Enable stage dragging
+							draggable
 							x={stagePosition.x}
 							y={stagePosition.y}
 							onMouseDown={handleStageClick}
 							onTouchStart={handleStageClick}
+							rotation={stageRotation}
+							offsetX={containerSize.width / 2}
+							offsetY={containerSize.height / 2}
 						>
 							<Layer>
-								{/* {showGrid && (
-									<Grid
-										containerSize={
-											containerSize
-										}
-										gridSize={gridSize}
-										isVisible={showGrid}
-									/>
-								)} */}
-								{/* Grid Component */}
-								{(gridMode === "On" ||
-									(gridMode === "Drag" &&
-										isDragging)) && (
-									<Grid
-										containerSize={
-											containerSize
-										}
-										gridSize={gridSize}
-										// isVisible={showGrid}
-									/>
-								)}
-
-								<Rect
-									x={0}
-									y={0}
-									width={
-										containerSize.width
-									}
-									height={
-										containerSize.height
-									}
-									stroke="black"
-									strokeWidth={2}
-								/>
-								{tables
-									.filter(
-										(table) =>
-											table.roomId ===
-											selectedRoomId
-									)
-									.map((table) => (
-										<DragAndDropHandler
-											key={table.id}
-											item={table}
+								<Group>
+									{(gridMode === "On" ||
+										(gridMode ===
+											"Drag" &&
+											isDragging)) && (
+										<Grid
 											containerSize={
 												containerSize
-											}
-											feetToPixels={
-												feetToPixels
-											}
-											room={room}
-											tables={
-												tables
-											}
-											features={
-												features
-											}
-											setTables={
-												setTables
-											}
-											setFeatures={
-												setFeatures
-											}
-											onObjectClick={
-												handleObjectClick
-											}
-											Component={
-												TableComponent
-											}
-											vendors={
-												vendors
-											}
-											stageRef={
-												stageRef
-											}
-											setShowGrid={
-												setShowGrid
-											}
-											onGlobalDragStart={
-												handleGlobalDragStart
-											}
-											onGlobalDragEnd={
-												handleGlobalDragEnd
 											}
 											gridSize={
 												gridSize
 											}
 										/>
-									))}
-								{objects
-									.filter(
-										(feature) =>
-											feature.roomId ===
-											selectedRoomId
-									)
-									.map((feature) => {
-										return (
+									)}
+									<Rect
+										// x={0}
+										// y={0}
+										width={
+											containerSize.width
+										}
+										height={
+											containerSize.height
+										}
+										stroke="#1f5160"
+										strokeWidth={3}
+									/>
+									{tables
+										.filter(
+											(table) =>
+												table.roomId ===
+												selectedRoomId
+										)
+										.map((table) => (
 											<DragAndDropHandler
 												key={
-													feature.id
+													table.id
 												}
 												item={
-													feature
+													table
+												}
+												containerSize={
+													containerSize
 												}
 												feetToPixels={
 													feetToPixels
 												}
 												room={
 													room
-												}
-												containerSize={
-													containerSize
 												}
 												tables={
 													tables
@@ -539,7 +486,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													handleObjectClick
 												}
 												Component={
-													FeatureComponent
+													TableComponent
+												}
+												vendors={
+													vendors
 												}
 												stageRef={
 													stageRef
@@ -557,8 +507,68 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													gridSize
 												}
 											/>
-										);
-									})}
+										))}
+									{objects
+										.filter(
+											(feature) =>
+												feature.roomId ===
+												selectedRoomId
+										)
+										.map((feature) => {
+											return (
+												<DragAndDropHandler
+													key={
+														feature.id
+													}
+													item={
+														feature
+													}
+													feetToPixels={
+														feetToPixels
+													}
+													room={
+														room
+													}
+													containerSize={
+														containerSize
+													}
+													tables={
+														tables
+													}
+													features={
+														features
+													}
+													setTables={
+														setTables
+													}
+													setFeatures={
+														setFeatures
+													}
+													onObjectClick={
+														handleObjectClick
+													}
+													Component={
+														FeatureComponent
+													}
+													stageRef={
+														stageRef
+													}
+													setShowGrid={
+														setShowGrid
+													}
+													onGlobalDragStart={
+														handleGlobalDragStart
+													}
+													onGlobalDragEnd={
+														handleGlobalDragEnd
+													}
+													gridSize={
+														gridSize
+													}
+												/>
+											);
+										})}
+								</Group>
 							</Layer>
 						</Stage>
 						{/* Vertical Zoom Slider */}

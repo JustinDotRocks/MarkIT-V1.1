@@ -279,12 +279,12 @@ const App: React.FC = () => {
 					activeMode={activeMode}
 					setActiveMode={setActiveMode}
 				/>
-				<div className="relative flex flex-col flex-grow overflow-scroll">
+				<div className="relative flex flex-col flex-grow ">
 					<Routes>
 						<Route
 							path="/"
 							element={
-								<div className="flex-grow flex-col justify-center m-8 items-center overflow-y-auto h-full">
+								<div className="flex-grow flex-col justify-center m-2 items-center overflow-y-auto h-full">
 									<CanvasAreaKonva
 										objects={features}
 										// removeObject={removeObjectFromCanvas}
