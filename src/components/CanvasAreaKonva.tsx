@@ -49,6 +49,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [isPortrait, setIsPortrait] = useState(false);
 
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
+	const [roomRotation, setRoomRotation] = useState(0);
+
+	const [groupRotation, setGroupRotation] = useState(0);
 
 	// Handlers for drag events
 	const handleGlobalDragStart = () => {
@@ -112,13 +115,17 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				const isPortraitMode =
 					window.innerHeight > window.innerWidth;
 
-				[roomWidthPixels, roomHeightPixels] = [
-					roomHeightPixels,
-					roomWidthPixels,
-				];
+				// [roomWidthPixels, roomHeightPixels] = [
+				// 	roomHeightPixels,
+				// 	roomWidthPixels,
+				// ];
 
 				// Rotation logic for mobile and desktop
 				if (isMobile && isPortraitMode) {
+					[roomWidthPixels, roomHeightPixels] = [
+						roomHeightPixels,
+						roomWidthPixels,
+					];
 					// In mobile, make sure the greater dimension is aligned with y-axis (portrait mode)
 					if (roomWidthFeet > roomHeightFeet) {
 						setStageRotation(0); // Rotate to fit width along y-axis
@@ -128,8 +135,16 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				} else {
 					// In desktop, make sure the greater dimension is aligned with x-axis (landscape mode)
 					if (roomHeightFeet > roomWidthFeet) {
+						[roomWidthPixels, roomHeightPixels] = [
+							roomHeightPixels,
+							roomWidthPixels,
+						];
 						setStageRotation(0); // Rotate to fit height along x-axis
 					} else {
+						[roomWidthPixels, roomHeightPixels] = [
+							roomHeightPixels,
+							roomWidthPixels,
+						];
 						setStageRotation(90); // No rotation needed
 					}
 				}
@@ -149,6 +164,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				const centerX = roomWidthPixels / 2;
 				const centerY = roomHeightPixels / 2;
 
+				// const centerX = (roomWidthPixels * scale) / 2;
+				// const centerY = (roomHeightPixels * scale) / 2;
+
 				// Set the offset of the stage to rotate around the center
 				const containerCenterX = containerWidth / 2;
 				const containerCenterY = containerHeight / 3;
@@ -162,10 +180,17 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				// 	(containerWidth - roomWidthPixels * scale) / 4;
 				// const centerY =
 				// 	(containerHeight - roomHeightPixels * scale) / 4;
+
 				setStagePosition({
 					x: containerCenterX,
 					y: containerCenterY,
 				});
+				// Adjust the stage position to center the room
+				// setStagePosition({
+				// 	x: containerCenterX - centerX,
+				// 	y: containerCenterY - centerY,
+				// });
+
 				// Set stage offsets to rotate around the center
 				stageRef.current.offsetX(offsetX);
 				stageRef.current.offsetY(offsetY);
@@ -469,15 +494,26 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						setGridMode={setGridMode}
 					/>
 				))}
+			{/* {room &&
+				containerSize.width > 0 &&
+				containerSize.height > 0 && ( */}
 			{room &&
+				containerRef.current &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
 					// <div className="flex flex-row">
 					<div className="flex-1 flex  ">
 						<Stage
 							ref={stageRef}
-							width={containerSize.width}
-							height={containerSize.height}
+							// width={containerSize.width}
+							// height={containerSize.height}
+							width={
+								containerRef.current.clientWidth
+							}
+							height={
+								containerRef.current
+									.clientHeight
+							}
 							scaleX={scale}
 							scaleY={scale}
 							draggable
@@ -505,8 +541,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										/>
 									)}
 									<Rect
-										// x={0}
-										// y={0}
+										x={0}
+										y={0}
 										width={
 											containerSize.width
 										}
@@ -641,7 +677,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							</Layer>
 						</Stage>
 						{/* Vertical Zoom Slider */}
-						<div className="zoom-slider flex flex-col items-center ml-4">
+						{/* <div className="zoom-slider flex flex-col items-center ml-4">
 							<label
 								htmlFor="zoom"
 								className="mb-2"
@@ -664,7 +700,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									accentColor: "#1f5160",
 								}}
 							/>
-						</div>
+						</div> */}
 					</div>
 				)}
 			{/* <div className="relative"> */}

@@ -308,6 +308,7 @@ export interface DragAndDropComponentProps {
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 	onTouchStart?: (e: any) => void;
 	onTap?: (e: any) => void;
+	rotation?: number;
 }
 
 export interface DragAndDropHandlerProps {
