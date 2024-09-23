@@ -1,6 +1,7 @@
 import React from "react";
 import { Rect, Circle } from "react-konva";
 import { DragAndDropComponentProps, Feature } from "../Types";
+import { KonvaEventObject } from "konva/lib/Node";
 
 const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 	item,
@@ -48,6 +49,33 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 				? parseFloat(room.width) * (feetToPixels + 50)
 				: 1));
 
+	// Event handler for clicks and taps
+	// const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+	// 	e.cancelBubble = true; // Prevents event bubbling
+
+	// 	const stage = e.target.getStage();
+	// 	if (!stage) return;
+
+	// 	// Get the pointer position relative to the stage
+	// 	const pointerPosition = stage.getPointerPosition();
+	// 	if (!pointerPosition) return;
+
+	// 	// Get the stage's position and scale
+	// 	const stageBox = stage.container().getBoundingClientRect();
+	// 	const scale = stage.scaleX(); // Assuming uniform scaling
+
+	// 	// Calculate the absolute position in the viewport
+	// 	const x = stageBox.left + pointerPosition.x * scale;
+	// 	const y = stageBox.top + pointerPosition.y * scale;
+
+	// 	onObjectClick(feature.id, "feature", x, y, featureHeightPixels);
+	// };
+	const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+		e.cancelBubble = true; // Prevent event bubbling
+
+		onObjectClick(feature.id, "feature", feature.x, feature.y);
+	};
+
 	return (
 		<>
 			{isDoor || isObstacle ? (
@@ -62,19 +90,21 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 					draggable={!feature.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
-					onClick={(e) =>
-						onObjectClick(
-							feature.id,
-							"feature",
-							e.evt.clientX,
-							e.evt.clientY
-						)
-					}
+					// onClick={(e) =>
+					// 	onObjectClick(
+					// 		feature.id,
+					// 		"feature",
+					// 		e.evt.clientX,
+					// 		e.evt.clientY
+					// 	)
+					// }
 					rotation={feature.rotation || 0}
 					offsetX={featureWidthPixels / 2}
 					offsetY={featureHeightPixels / 2}
-					onTouchStart={onTouchStart}
-					onTap={onTouchStart}
+					// onTouchStart={onTouchStart}
+					// onTap={onTouchStart}
+					onClick={handleClick}
+					onTap={handleClick}
 				/>
 			) : null}
 		</>

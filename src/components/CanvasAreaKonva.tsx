@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Group } from "react-konva";
+import { Html } from "react-konva-utils";
 import { CanvasAreaProps, GridMode } from "../Types";
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
@@ -11,6 +12,7 @@ import AssignVendorModal from "./AssignVendorModal";
 import RoomOptions from "./RoomOptions";
 import RoomOptionsHamburger from "./RoomOptionsHamburger";
 import Grid from "./Grid";
+import OptionsBarKonva from "./OptionsBarKonva";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -68,6 +70,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		type: "table" | "feature";
 		x: number;
 		y: number;
+		// height: number;
 	} | null>(null);
 
 	const selectedTable =
@@ -244,6 +247,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		type: "table" | "feature",
 		x: number,
 		y: number
+		// height: number
 	) => {
 		setSelectedObject({ id, type, x, y });
 	};
@@ -673,6 +677,146 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												/>
 											);
 										})}
+									{selectedObject &&
+										selectedTableOrFeature && (
+											<Html
+												groupProps={{
+													x:
+														selectedTableOrFeature.x *
+															containerSize.width +
+														50,
+													y:
+														selectedTableOrFeature.y *
+															containerSize.height +
+														20,
+													rotation: isMobile
+														? -stageRotation
+														: 0,
+												}}
+												divProps={{
+													style: {
+														pointerEvents:
+															"auto", // Ensure the div can receive pointer events
+													},
+												}}
+											>
+												<RotateHandler
+													item={
+														selectedTableOrFeature
+													}
+													setTables={
+														setTables
+													}
+													setFeatures={
+														setFeatures
+													}
+												>
+													{({
+														rotateCW,
+														rotateCCW,
+													}) => (
+														<OptionsBar
+															x={
+																selectedObject.x
+															}
+															y={
+																selectedObject.y
+															}
+															// height={selectedObject.height}
+															onDelete={
+																handleDelete
+															}
+															onRotateCW={
+																rotateCW
+															}
+															onRotateCCW={
+																rotateCCW
+															}
+															onToggleLock={() =>
+																toggleLockObject(
+																	selectedObject.id,
+																	selectedObject.type
+																)
+															}
+															isLocked={
+																selectedObject.type ===
+																"table"
+																	? !!tables.find(
+																			(
+																				table
+																			) =>
+																				table.id ===
+																				selectedObject.id
+																	  )
+																			?.isLocked
+																	: !!features.find(
+																			(
+																				feature
+																			) =>
+																				feature.id ===
+																				selectedObject.id
+																	  )
+																			?.isLocked
+															}
+															vendorName={
+																selectedObject.type ===
+																"table"
+																	? tables.find(
+																			(
+																				table
+																			) =>
+																				table.id ===
+																				selectedObject.id
+																	  )
+																			?.vendorId
+																		? vendors.find(
+																				(
+																					vendor
+																				) =>
+																					vendor.id ===
+																					tables.find(
+																						(
+																							table
+																						) =>
+																							table.id ===
+																							selectedObject.id
+																					)
+																						?.vendorId
+																		  )
+																				?.name ||
+																		  ""
+																		: ""
+																	: ""
+															}
+															onAddVendor={() =>
+																handleAddVendorClick(
+																	selectedObject.id
+																)
+															}
+															onRemoveVendor={() =>
+																handleRemoveVendor(
+																	selectedObject.id
+																)
+															}
+															objectType={
+																selectedObject.type
+															}
+															// canvasWidth={containerSize.width}
+															// canvasHeight={containerSize.height}
+															signedIn={
+																selectedVendor?.signedIn
+															}
+															vendorId={
+																selectedVendor?.id
+															}
+															updateVendorDetails={
+																updateVendorDetails
+															}
+														/>
+													)}
+												</RotateHandler>
+											</Html>
+										)}
 								</Group>
 							</Layer>
 						</Stage>
@@ -704,7 +848,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					</div>
 				)}
 			{/* <div className="relative"> */}
-			{selectedObject && selectedTableOrFeature && (
+			{/* {selectedObject && selectedTableOrFeature && (
 				<RotateHandler
 					item={selectedTableOrFeature}
 					setTables={setTables}
@@ -714,6 +858,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						<OptionsBar
 							x={selectedObject.x}
 							y={selectedObject.y}
+							// height={selectedObject.height}
 							onDelete={handleDelete}
 							onRotateCW={rotateCW}
 							onRotateCCW={rotateCCW}
@@ -781,7 +926,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						/>
 					)}
 				</RotateHandler>
-			)}
+			)} */}
 			{/* </div> */}
 			<AssignVendorModal
 				isOpen={isModalOpen}

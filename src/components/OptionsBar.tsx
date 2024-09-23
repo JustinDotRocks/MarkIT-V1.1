@@ -7,6 +7,7 @@ import VendorSignInComponent from "./VendorSignInComponent";
 const OptionsBar: React.FC<OptionsBarProps> = ({
 	x,
 	y,
+	// height,
 	onDelete,
 	onRotateCW,
 	onRotateCCW,
@@ -28,6 +29,25 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	// Position directly below the object with the specified margin
 	let adjustedX = x - optionsBarWidth / 2; // Center horizontally
 	let adjustedY = y + margin; // Place below the object with a margin
+
+	// Ensure the OptionsBar stays within the viewport
+	const viewportWidth = window.innerWidth;
+	const viewportHeight = window.innerHeight;
+
+	// Adjust X to keep the OptionsBar within the viewport
+	adjustedX = Math.max(
+		0,
+		Math.min(adjustedX, viewportWidth - optionsBarWidth)
+	);
+
+	// Adjust Y if the OptionsBar goes off the bottom of the viewport
+	if (adjustedY + optionsBarHeight > viewportHeight) {
+		// Place the OptionsBar above the object if it would go off-screen
+		adjustedY = y - optionsBarHeight - margin;
+		if (adjustedY < 0) {
+			adjustedY = viewportHeight / 2 - optionsBarHeight / 2; // Center vertically if necessary
+		}
+	}
 
 	// Function to handle signedIn state change
 	// const handleSignedInChange = (newSignedInState: boolean) => {
@@ -55,8 +75,8 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 		<div
 			className="absolute flex flex-col justify-center bg-customBlue border border-black rounded p-2"
 			style={{
-				left: adjustedX,
-				top: adjustedY,
+				// left: adjustedX,
+				// top: adjustedY,
 				zIndex: 50,
 				width: optionsBarWidth,
 				height: optionsBarHeight,

@@ -229,6 +229,7 @@ export interface RoomEditModalProps {
 export interface OptionsBarProps {
 	x: number;
 	y: number;
+	// height: number;
 	onDelete: () => void;
 	onRotateCW: () => void;
 	onRotateCCW: () => void;
@@ -238,8 +239,8 @@ export interface OptionsBarProps {
 	onAddVendor: () => void;
 	onRemoveVendor: () => void;
 	objectType: "table" | "feature";
-	canvasWidth: number;
-	canvasHeight: number;
+	// canvasWidth: number;
+	// canvasHeight: number;
 	signedIn?: boolean; // Optional, since VendorSignInComponent has a default
 	updateVendorDetails?: (vendorData: any) => void; // Function to update vendor details
 	vendorId?: string;
@@ -274,6 +275,7 @@ export interface TableComponentProps {
 		y: number
 	) => void;
 	vendors: Vendor[]; // For Table color change on Vendor Sign In
+	objectHeight: number;
 }
 
 export interface FeatureComponentProps {
@@ -299,12 +301,20 @@ export interface DragAndDropComponentProps {
 	onDragMove: (e: any) => void;
 	onDragEnd: (e: any) => void;
 	onDragStart: (e: any) => void;
+	// onObjectClick: (
+	// 	id: string,
+	// 	type: "table" | "feature",
+	// 	x: number,
+	// 	y: number
+	// ) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
 		x: number,
 		y: number
+		// height: number
 	) => void;
+
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 	onTouchStart?: (e: any) => void;
 	onTap?: (e: any) => void;
@@ -320,12 +330,20 @@ export interface DragAndDropHandlerProps {
 	features: Feature[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
+	// onObjectClick: (
+	// 	id: string,
+	// 	type: "table" | "feature",
+	// 	x: number,
+	// 	y: number
+	// ) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
 		x: number,
 		y: number
+		// height: number
 	) => void;
+
 	Component: React.FC<DragAndDropComponentProps>;
 	// Component: React.FC<DragAndDropComponentProps & { vendors?: Vendor[] }>;
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
