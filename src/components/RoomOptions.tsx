@@ -75,20 +75,10 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							}
 							lockAllObjects={lockAllObjects}
 						/>
-						{/* Grid Toggle Button */}
-						{/* <button
-							onClick={toggleGridVisibility}
-							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
-						>
-							{showGrid ? "Hide Grid" : "Show Grid"}
-						</button> */}
 						<button
 							onClick={cycleGridMode}
 							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 						>
-							{/* {gridMode === "Off" && "Grid Off"}
-							{gridMode === "On" && "Grid On"}
-							{gridMode === "Drag" && "Grid Drag"} */}
 							{gridMode === "Off" && "Grid Off"}
 							{gridMode === "Drag" && "Grid Drag"}
 							{gridMode === "On" && "Grid On"}

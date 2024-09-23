@@ -456,7 +456,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			)} */}
 			{room !== undefined &&
 				(isMobile ? (
-					<div className="fixed top-32 right-8 z-50">
+					<div className="fixed top-20 right-10 z-50">
 						<RoomOptionsHamburger
 							areAllObjectsLocked={
 								areAllObjectsLocked

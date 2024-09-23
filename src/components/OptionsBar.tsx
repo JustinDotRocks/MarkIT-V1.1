@@ -22,8 +22,8 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	signedIn,
 }) => {
 	// Define the width and height of the OptionsBar
-	const optionsBarWidth = 400;
-	const optionsBarHeight = 80; // Adjust height to accommodate vendor name
+	const optionsBarWidth = 700;
+	const optionsBarHeight = 120; // Adjust height to accommodate vendor name
 	const margin = 5; // Margin between the object and the OptionsBar
 
 	// Position directly below the object with the specified margin
@@ -50,15 +50,6 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	}
 
 	// Function to handle signedIn state change
-	// const handleSignedInChange = (newSignedInState: boolean) => {
-	// 	if (!vendorId || !updateVendorDetails) return;
-
-	// 	// Update the vendor's signedIn status
-	// 	updateVendorDetails({
-	// 		id: vendorId,
-	// 		signedIn: newSignedInState,
-	// 	});
-	// };
 	const toggleSignedIn = () => {
 		if (!vendorId || !updateVendorDetails) return;
 
@@ -73,7 +64,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 	return (
 		<div
-			className="absolute flex flex-col justify-center bg-customBlue border border-black rounded p-2"
+			className="absolute flex flex-col justify-center text-3xl bg-customBlue border border-black rounded p-2"
 			style={{
 				// left: adjustedX,
 				// top: adjustedY,
@@ -85,13 +76,15 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 			{/* Vendor Name */}
 			{vendorName && (
 				<div className="relative text-white mb-1">
-					<p className="text-center">{vendorName}</p>
+					<p className="text-center text-3xl text-bold">
+						{vendorName}
+					</p>
 					{/* Sign-In Button */}
 					<div className="absolute right-2 top-0">
 						<VendorSignInComponent
 							signedIn={signedIn || false}
 							onToggleSignedIn={toggleSignedIn}
-							size={24}
+							size={36}
 						/>
 					</div>
 				</div>
@@ -102,14 +95,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Rotate Counter-Clockwise Button */}
 				<button
 					onClick={onRotateCCW}
-					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
 				>
 					<FaUndo className="mr-1" />
 				</button>
 				{/* Rotate Clockwise Button */}
 				<button
 					onClick={onRotateCW}
-					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
 				>
 					<FaRedo className="mr-1" />
 				</button>
@@ -117,7 +110,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Lock/Unlock Button */}
 				<button
 					onClick={onToggleLock}
-					className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-1 px-2 m-1 rounded flex items-center"
+					className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-2 px-4 m-1 rounded flex items-center"
 				>
 					{isLocked ? <FaUnlock /> : <FaLock />}
 				</button>
@@ -128,14 +121,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 						{vendorName ? (
 							<button
 								onClick={onRemoveVendor}
-								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-2 px-4 m-1 rounded"
 							>
 								Remove Vendor
 							</button>
 						) : (
 							<button
 								onClick={onAddVendor}
-								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-2 px-4 m-1 rounded"
 							>
 								Add Vendor
 							</button>
@@ -148,7 +141,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 					message="Are you sure you want to delete this item?"
 					onConfirm={onDelete}
 					triggerComponent={
-						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
 							Delete
 						</button>
 					}

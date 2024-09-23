@@ -47,31 +47,31 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 	const getFontSizes = (roomWidthFeet: number, isCircle: boolean) => {
 		if (roomWidthFeet < 50) {
 			return {
-				tableNumberFontSize: 16,
+				tableNumberFontSize: 28,
 				xOffset: isCircle ? 40 : 38,
 				yOffset: isCircle ? 50 : 0,
 			};
 		} else if (roomWidthFeet < 100) {
 			return {
-				tableNumberFontSize: 10,
+				tableNumberFontSize: 26,
 				xOffset: isCircle ? 20 : 18,
 				yOffset: isCircle ? 25 : 0,
 			};
 		} else if (roomWidthFeet < 150) {
 			return {
-				tableNumberFontSize: 8,
+				tableNumberFontSize: 24,
 				xOffset: isCircle ? 12 : 12,
 				yOffset: isCircle ? 15 : 0,
 			};
 		} else if (roomWidthFeet < 200) {
 			return {
-				tableNumberFontSize: 5,
+				tableNumberFontSize: 22,
 				xOffset: isCircle ? 9 : 8,
 				yOffset: isCircle ? 10 : 0,
 			};
 		} else {
 			return {
-				tableNumberFontSize: 4,
+				tableNumberFontSize: 20,
 				xOffset: isCircle ? 6 : 5,
 				yOffset: isCircle ? 7 : 0,
 			};
