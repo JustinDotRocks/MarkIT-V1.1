@@ -1,6 +1,6 @@
 export type NavBarProps = {
-	activeMode: "setup" | "vendor" | "";
-	setActiveMode: (mode: "setup" | "vendor" | "") => void;
+	activeMode: "setup" | "vendor" | "about" | "";
+	setActiveMode: (mode: "setup" | "vendor" | "about" | "") => void;
 };
 
 export type ButtonProps = {

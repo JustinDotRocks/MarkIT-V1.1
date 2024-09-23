@@ -5,7 +5,7 @@ import Button from "../Button/Button";
 import { NavBarProps } from "../../Types";
 
 const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
-	const toggleMode = (mode: "setup" | "vendor" | "") => {
+	const toggleMode = (mode: "setup" | "vendor" | "about" | "") => {
 		setActiveMode(activeMode === mode ? "" : mode); // Toggle mode or set to empty
 	};
 	return (
@@ -49,9 +49,21 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 						</Button>
 					</Link>
 				</div>
-				<a href="/about" className="hover:underline">
+				<Link to="/about">
+					<Button
+						// className={`ml-2 px-4 py-2 rounded ${
+						// 	activeMode === "vendor"
+						// 		? "bg-customLightBlue"
+						// 		: "bg-customBlue2 hover:bg-customLightBlue"
+						// }`}
+						onClick={() => toggleMode("about")}
+					>
+						About
+					</Button>
+				</Link>
+				{/* <a href="/about" className="hover:underline">
 					About
-				</a>
+				</a> */}
 			</div>
 		</nav>
 	);

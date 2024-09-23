@@ -14,9 +14,9 @@ import {
 } from "./Storage";
 
 const App: React.FC = () => {
-	const [activeMode, setActiveMode] = useState<"setup" | "vendor" | "">(
-		"setup"
-	);
+	const [activeMode, setActiveMode] = useState<
+		"setup" | "vendor" | "about" | ""
+	>("setup");
 	const [features, setFeatures] = useState<Feature[]>(
 		() =>
 			loadFromLocalStorage<Feature[]>(getStorageKeys().FEATURES) ||
@@ -369,6 +369,7 @@ const App: React.FC = () => {
 								/>
 							}
 						/>
+						<Route path="/about" />
 					</Routes>
 
 					{isModalOpen && roomToEdit && (
