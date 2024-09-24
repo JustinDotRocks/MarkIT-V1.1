@@ -47,6 +47,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 				onClose={closeAddVendorModal}
 				addVendor={addVendor}
 				selectedRoomId={selectedRoomId}
+				vendors={vendors}
 			/>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
 				{vendors.map((vendor) => {
@@ -85,6 +86,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 							updateVendorDetails={
 								updateVendorDetails
 							}
+							vendors={vendors}
 						/>
 					);
 				})}

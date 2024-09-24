@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 const AddVendorModal: React.FC<AddVendorModalProps> = ({
 	addVendor,
 	selectedRoomId,
+	vendors,
 }) => {
 	const [vendorName, setVendorName] = useState("");
 	const [vendorProducts, setVendorProducts] = useState("");
@@ -21,6 +22,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 	});
 
 	const [isAddVendorModalOpen, setIsAddVendorModalOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null); // State to hold error message
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +65,17 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 	};
 
 	const handleAddVendor = () => {
+		// Check if a vendor with the same name already exists
+		const existingVendor = vendors.find(
+			(vendor) =>
+				vendor.name.toLowerCase() === vendorName.toLowerCase()
+		);
+
+		if (existingVendor) {
+			// Show an error message if the vendor name already exists
+			setErrorMessage("A vendor with this name already exists.");
+			return;
+		}
 		const newVendor: Vendor = {
 			id: uuidv4(),
 			name: vendorName,
@@ -85,6 +98,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 			electricityRequired: false,
 		});
 		setIsAddVendorModalOpen(false);
+		setErrorMessage(null); // Clear any error messages
 	};
 
 	const handleClickOutside = (event: MouseEvent) => {
@@ -111,7 +125,11 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 	return (
 		<>
 			<button
-				onClick={() => setIsAddVendorModalOpen(true)}
+				// onClick={() => setIsAddVendorModalOpen(true) }
+				onClick={() => {
+					setIsAddVendorModalOpen(true);
+					setErrorMessage(null); // Clear any previous error when opening the modal
+				}}
 				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-1 px-2 ml-4 rounded"
 			>
 				Add Vendor
@@ -125,14 +143,27 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 						<h2 className="text-lg font-bold mb-4">
 							Add Vendor
 						</h2>
-						<Input
-							type="text"
-							name="vendor-name"
-							value={vendorName}
-							onChange={handleInputChange}
-							placeholder="Vendor name"
-							className="w-full p-2 rounded  text-white placeholder-white mb-4"
-						/>
+						<div className="mb-4">
+							<Input
+								type="text"
+								name="vendor-name"
+								value={vendorName}
+								onChange={handleInputChange}
+								placeholder="Vendor name"
+								// className="w-full p-2 rounded  text-white placeholder-white mb-4"
+								className={`w-full p-2 rounded ${
+									errorMessage
+										? "border-2 border-red-500 bg-red-100 placeholder-red-500 text-red-500"
+										: "bg-customBlue2 text-white placeholder-white"
+								}`}
+							/>
+							{errorMessage && (
+								<p className="text-red-500 mb-4">
+									{errorMessage}
+								</p>
+							)}
+						</div>
+
 						<Input
 							type="text"
 							name="vendor-products"

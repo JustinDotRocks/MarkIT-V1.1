@@ -215,6 +215,7 @@ export interface VendorCardProps extends VendorDetails {
 	updateTableAssignment: (tableId: string, vendorId: string) => void;
 	deleteVendor: (vendorId: string) => void;
 	updateVendorDetails: (updatedVendor: Vendor) => void;
+	vendors: Vendor[];
 }
 
 export interface RoomEditModalProps {
@@ -410,6 +411,7 @@ export interface AddVendorModalProps {
 	onClose: () => void;
 	addVendor: (newVendor: Vendor) => void;
 	selectedRoomId: string | null;
+	vendors: Vendor[];
 }
 
 export interface AssignVendorModalProps {

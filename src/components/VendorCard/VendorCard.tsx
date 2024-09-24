@@ -26,6 +26,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	updateTableAssignment,
 	deleteVendor,
 	updateVendorDetails,
+	vendors,
 }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -41,6 +42,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
 	const [currentRoomName, setCurrentRoomName] = useState<string>("");
 	const [currentTableLabel, setCurrentTableLabel] = useState<string>("");
+	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message for duplicate name
 
 	const truncateText = (text: string, maxLength: number) => {
 		if (text.length > maxLength) {
@@ -104,9 +106,29 @@ const VendorCard: React.FC<VendorCardProps> = ({
 			(!selectedRoomId || table.roomId === selectedRoomId)
 	);
 
+	// const handleSave = () => {
+	// 	updateVendorDetails(editableVendor);
+	// 	setIsEditing(false);
+	// };
 	const handleSave = () => {
+		// Check for duplicate vendor name
+		const existingVendor = vendors.find(
+			(vendor) =>
+				vendor.name.toLowerCase() ===
+					editableVendor.name.toLowerCase() &&
+				vendor.id !== editableVendor.id // Exclude the current vendor from the check
+		);
+
+		if (existingVendor) {
+			// Show an error message if the vendor name already exists
+			setErrorMessage("A vendor with this name already exists.");
+			return;
+		}
+
+		// Save changes
 		updateVendorDetails(editableVendor);
 		setIsEditing(false);
+		setErrorMessage(null); // Clear any previous error
 	};
 
 	const handleInputChange = (
@@ -240,8 +262,18 @@ const VendorCard: React.FC<VendorCardProps> = ({
 							name="name"
 							value={editableVendor.name}
 							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
+							// className="bg-gray-600 text-white p-2 rounded w-full"
+							className={`bg-gray-600 text-white p-2 rounded w-full ${
+								errorMessage
+									? "border-2 border-red-500"
+									: ""
+							}`}
 						/>
+						{errorMessage && (
+							<p className="text-red-500 mt-1">
+								{errorMessage}
+							</p>
+						)}
 					</div>
 					<div>
 						<label>Products:</label>
