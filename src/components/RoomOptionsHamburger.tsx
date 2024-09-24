@@ -103,13 +103,13 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 					</button>
 
 					{/* Menu buttons */}
-					<div className="flex flex-col space-y-4 text-white text-lg">
+					<div className="flex flex-col space-y-4 text-white font-bold text-lg">
 						{/* Grid Toggle */}
 						<button
 							onClick={() =>
 								handleButtonClick(cycleGridMode)
 							}
-							className="bg-customBlue2 hover:bg-blue-700 px-4 py-2 rounded"
+							className="bg-customBlue2 hover:bg-blue-700 px-2 py-1 md:px-4 md:py-2 rounded"
 						>
 							{gridMode === "Off" && "Grid Off"}
 							{gridMode === "Drag" && "Grid Drag"}
@@ -135,22 +135,27 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 							selectedRoomId={selectedRoomId}
 						/>
 					</div>
-					{/* Add Tables Modal */}
-					<AddTablesModal
-						isOpen={isAddTablesModalOpen}
-						onClose={closeAddTablesModal}
-						addTable={addTable}
-						tables={tables}
-						selectedRoomId={selectedRoomId}
-					/>
-					{/* Add Features Modal */}
-					<AddFeaturesModal
-						isOpen={isAddFeaturesModalOpen}
-						onClose={closeAddFeaturesModal}
-						addFeature={addFeature}
-						features={features}
-						selectedRoomId={selectedRoomId}
-					/>
+					<div className="mt-4 mb-4 text-lg">
+						{/* Add Tables Modal */}
+						<AddTablesModal
+							isOpen={isAddTablesModalOpen}
+							onClose={closeAddTablesModal}
+							addTable={addTable}
+							tables={tables}
+							selectedRoomId={selectedRoomId}
+						/>
+					</div>
+					<div className="mb-4 text-lg">
+						{/* Add Features Modal */}
+						<AddFeaturesModal
+							isOpen={isAddFeaturesModalOpen}
+							onClose={closeAddFeaturesModal}
+							addFeature={addFeature}
+							features={features}
+							selectedRoomId={selectedRoomId}
+						/>
+					</div>
+
 					{/* Info Modal */}
 					{room && (
 						<InfoModal
