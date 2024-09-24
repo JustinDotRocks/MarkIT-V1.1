@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RoomDetailsDisplayProps } from "../Types";
+import { FaChevronDown } from "react-icons/fa"; // Import the arrow-down icon
 
 const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	rooms,
@@ -35,20 +36,32 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 			{isMobile ? (
 				// Dropdown for mobile view
 				// <div className="flex justify-start items-center ">
-				<select
-					value={selectedRoomId || ""}
-					onChange={handleRoomSelect}
-					className="p-2 border border-customBlue rounded bg-customBlue text-white w-1/2 sm:hidden"
-				>
-					<option value="" disabled>
-						Select a Room
-					</option>
-					{rooms.map((room) => (
-						<option key={room.id} value={room.id}>
-							{room.name}
+				<div className="relative w-1/2">
+					<select
+						value={selectedRoomId || ""}
+						onChange={handleRoomSelect}
+						className="p-2 pr-8 border border-customBlue rounded bg-customBlue text-white w-full sm:hidden appearance-none"
+						style={{
+							WebkitAppearance: "none", // For Safari
+							MozAppearance: "none", // For Firefox
+							appearance: "none", // Standard
+						}}
+					>
+						<option value="" disabled>
+							Select a Room
 						</option>
-					))}
-				</select>
+						{rooms.map((room) => (
+							<option key={room.id} value={room.id}>
+								{room.name}
+							</option>
+						))}
+					</select>
+					{/* Custom arrow-down icon */}
+					<FaChevronDown
+						className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
+						color="white"
+					/>
+				</div>
 			) : (
 				// </div>
 				// Room buttons for desktop view
