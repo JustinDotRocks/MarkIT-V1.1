@@ -11,6 +11,7 @@ import {
 	loadFromLocalStorage,
 	getStorageKeys,
 } from "./Storage";
+import AboutPage from "./components/AboutPage";
 
 const App: React.FC = () => {
 	const [activeMode, setActiveMode] = useState<
@@ -308,7 +309,10 @@ const App: React.FC = () => {
 								/>
 							}
 						/>
-						<Route path="/about" />
+						<Route
+							path="/about"
+							Component={AboutPage}
+						/>
 					</Routes>
 
 					{isModalOpen && roomToEdit && (
