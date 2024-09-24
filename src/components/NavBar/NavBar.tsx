@@ -10,7 +10,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 	return (
 		<nav className="bg-customBlue text-white p-4">
 			<div className="flex justify-between items-center">
-				<div className="text-lg font-bold">
+				<div className="text-md font-bold">
 					<Link to="/">
 						<Button onClick={() => toggleMode("")}>
 							MarkIT

@@ -220,18 +220,10 @@ const AboutPage: React.FC = () => {
 				</li>
 			</ul>
 
-			{/* Need Help */}
-			<h2 className="text-2xl font-bold mb-4">Need Help?</h2>
-			<p className="mb-6">
-				If you have any questions or encounter issues, feel free
-				to reach out to our support team or consult the help
-				documentation within the app.
-			</p>
-
 			{/* Thank You Note */}
 			<p className="text-center font-bold">
 				Thank you for choosing <strong>MarkIT</strong> for your
-				event planning needs. We continually strive to improve
+				market planning needs. We continually strive to improve
 				your experience, so please don't hesitate to provide
 				feedback!
 			</p>
