@@ -74,7 +74,7 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 				<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-customBlue p-8 rounded shadow-lg w-1/3"
+						className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
 					>
 						<h2 className="text-xl font-bold text-white mb-4">
 							Add Table

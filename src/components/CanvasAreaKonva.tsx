@@ -484,7 +484,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
 					// <div className="flex flex-row">
-					<div className="flex-1 flex  ">
+					<div className="flex-1 flex relative ">
 						<Stage
 							ref={stageRef}
 							// width={containerSize.width}
@@ -799,7 +799,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							</Layer>
 						</Stage>
 						{/* Vertical Zoom Slider */}
-						{/* <div className="zoom-slider flex flex-col items-center ml-4">
+						{/* <div className="zoom-slider flex flex-col items-center ml-4"> */}
+						<div className="hidden md:flex zoom-slider flex-col items-center absolute right-0 top-1/2 transform -translate-y-1/2 mr-4">
 							<label
 								htmlFor="zoom"
 								className="mb-2"
@@ -822,7 +823,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									accentColor: "#1f5160",
 								}}
 							/>
-						</div> */}
+						</div>
 					</div>
 				)}
 			{/* <div className="relative"> */}

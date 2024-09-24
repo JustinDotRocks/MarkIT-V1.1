@@ -120,7 +120,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-customBlue text-white p-6 rounded-lg shadow-lg w-96"
+						className="bg-customBlue text-white p-6 rounded-lg shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
 					>
 						<h2 className="text-lg font-bold mb-4">
 							Add Vendor
