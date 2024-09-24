@@ -10,9 +10,15 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 	return (
 		<nav className="bg-customBlue text-white p-4">
 			<div className="flex justify-between items-center">
-				<div className="text-lg font-bold">MarkIT</div>
-				<div>
+				<div className="text-lg font-bold">
 					<Link to="/">
+						<Button onClick={() => toggleMode("")}>
+							MarkIT
+						</Button>
+					</Link>
+				</div>
+				<div>
+					<Link to="/venue">
 						<Button
 							className={`px-4 py-2 rounded ${
 								activeMode === ""

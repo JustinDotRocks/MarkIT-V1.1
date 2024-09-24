@@ -12,6 +12,7 @@ import {
 	getStorageKeys,
 } from "./Storage";
 import AboutPage from "./components/AboutPage";
+import LandingPage from "./components/LandingPage";
 
 const App: React.FC = () => {
 	const [activeMode, setActiveMode] = useState<
@@ -229,8 +230,10 @@ const App: React.FC = () => {
 				/>
 				<div className="relative flex flex-col flex-grow ">
 					<Routes>
+						<Route path="/" Component={LandingPage} />
+
 						<Route
-							path="/"
+							path="/venue"
 							element={
 								<div className="flex-grow flex-col justify-center m-2 items-center overflow-y-auto h-full">
 									<CanvasAreaKonva
