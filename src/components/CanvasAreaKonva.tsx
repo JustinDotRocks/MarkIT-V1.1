@@ -12,7 +12,6 @@ import AssignVendorModal from "./AssignVendorModal";
 import RoomOptions from "./RoomOptions";
 import RoomOptionsHamburger from "./RoomOptionsHamburger";
 import Grid from "./Grid";
-import OptionsBarKonva from "./OptionsBarKonva";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	objects,
@@ -85,8 +84,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			  )
 			: null;
 
-	// const selectedVendor = vendors.find((vendor) => vendor.id === selectedTable.vendorId);
-
 	const room = rooms.find((r) => r.id === selectedRoomId);
 
 	const feetToPixels = 25; // Scale factor
@@ -118,11 +115,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				const isPortraitMode =
 					window.innerHeight > window.innerWidth;
 
-				// [roomWidthPixels, roomHeightPixels] = [
-				// 	roomHeightPixels,
-				// 	roomWidthPixels,
-				// ];
-
 				// Rotation logic for mobile and desktop
 				if (isMobile && isPortraitMode) {
 					[roomWidthPixels, roomHeightPixels] = [
@@ -131,9 +123,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					];
 					// In mobile, make sure the greater dimension is aligned with y-axis (portrait mode)
 					if (roomWidthFeet > roomHeightFeet) {
-						setStageRotation(0); // Rotate to fit width along y-axis
+						setStageRotation(0); // No rotation needed
 					} else {
-						setStageRotation(90); // No rotation needed
+						setStageRotation(90); // Rotate to fit width along y-axis
 					}
 				} else {
 					// In desktop, make sure the greater dimension is aligned with x-axis (landscape mode)
@@ -142,13 +134,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							roomHeightPixels,
 							roomWidthPixels,
 						];
-						setStageRotation(0); // Rotate to fit height along x-axis
+						setStageRotation(0); // No rotation needed
 					} else {
 						[roomWidthPixels, roomHeightPixels] = [
 							roomHeightPixels,
 							roomWidthPixels,
 						];
-						setStageRotation(90); // No rotation needed
+						setStageRotation(90); // Rotate to fit height along x-axis
 					}
 				}
 
@@ -195,8 +187,14 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				// });
 
 				// Set stage offsets to rotate around the center
-				stageRef.current.offsetX(offsetX);
-				stageRef.current.offsetY(offsetY);
+				// stageRef.current.offsetX(offsetX);
+				// stageRef.current.offsetY(offsetY);
+				// **Add the null check here**
+				if (stageRef.current) {
+					// Set stage offsets to rotate around the center
+					stageRef.current.offsetX(offsetX);
+					stageRef.current.offsetY(offsetY);
+				}
 			}
 		};
 
@@ -423,7 +421,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	return (
 		<div ref={containerRef} className="flex flex-col h-screen">
 			<div className="canvas-area flex flex-col ">
-				{/* <div className="flex-shrink-0"> */}
 				<RoomDetailsDisplay
 					rooms={rooms}
 					handleRemoveRoom={removeRoom}
@@ -434,26 +431,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					selectedRoomId={selectedRoomId}
 				/>
 			</div>
-			{/* {room !== undefined && (
-				<RoomOptions
-					areAllObjectsLocked={areAllObjectsLocked}
-					lockAllObjects={lockAllObjects}
-					selectedRoomId={selectedRoomId}
-					addTable={addTable}
-					tables={tables}
-					addFeature={addFeature}
-					features={features}
-					room={room}
-					removeRoom={removeRoom}
-					openEditModal={openEditModal}
-					rooms={rooms}
-					setSelectedRoomId={setSelectedRoomId}
-					openAddRoomModal={openAddRoomModal}
-					setTables={setTables}
-					gridMode={gridMode}
-					setGridMode={setGridMode}
-				/>
-			)} */}
+
 			{room !== undefined &&
 				(isMobile ? (
 					<div className="fixed top-20 right-10 z-50">

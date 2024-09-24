@@ -12,7 +12,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 	onDragEnd,
 	onObjectClick,
 	vendors = [],
-	onTouchStart,
 }) => {
 	const table = item as Table;
 	const tableDimensions = {
@@ -98,69 +97,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 			: "#de5e46" // Red color to match "bg-red-500"
 		: "#628b98"; // Grey color if no vendor is associated
 
-	// Event handler for clicks and taps
-	// const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
-	// 	e.cancelBubble = true; // Prevents event bubbling
-
-	// 	const node = e.target;
-	// 	const stage = node.getStage();
-	// 	if (!stage) return;
-
-	// 	// Get the pointer position relative to the stage
-	// 	const pointerPosition = stage.getPointerPosition();
-	// 	if (!pointerPosition) return;
-
-	// 	// Get the stage's position and scale
-	// 	const stageBox = stage.container().getBoundingClientRect();
-	// 	const scale = stage.scaleX(); // Assuming uniform scaling
-
-	// 	// Calculate the absolute position in the viewport
-	// 	const x = stageBox.left + pointerPosition.x * scale;
-	// 	const y = stageBox.top + pointerPosition.y * scale;
-
-	// 	// Calculate the object's height in DOM coordinates
-	// 	let objectHeight = 0;
-	// 	if (isCircle) {
-	// 		objectHeight = circleRadiusPixels * 2 * scale;
-	// 	} else {
-	// 		objectHeight = tableHeightPixels * scale;
-	// 	}
-
-	// 	onObjectClick(table.id, "table", x, y, objectHeight);
-	// };
-	// Event handler for clicks and taps
-	// const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
-	// 	e.cancelBubble = true; // Prevents event bubbling
-
-	// 	const node = e.target;
-	// 	const stage = node.getStage();
-	// 	if (!stage) return;
-
-	// 	// Get the node's absolute position in the stage coordinate system
-	// 	const absPos = node.getAbsolutePosition();
-
-	// 	// Get the stage's transform (position, scale)
-	// 	const stageScale = stage.scaleX(); // Assuming uniform scaling
-	// 	const stageX = stage.x();
-	// 	const stageY = stage.y();
-
-	// 	// Get the stage's position in the DOM
-	// 	const stageBox = stage.container().getBoundingClientRect();
-
-	// 	// Calculate the object's position in DOM coordinates
-	// 	const x = stageBox.left + absPos.x * stageScale + stageX;
-	// 	const y = stageBox.top + absPos.y * stageScale + stageY;
-
-	// 	// Calculate the object's height in DOM coordinates
-	// 	let objectHeight = 0;
-	// 	if (isCircle) {
-	// 		objectHeight = circleRadiusPixels * 2 * stageScale;
-	// 	} else {
-	// 		objectHeight = tableHeightPixels * stageScale;
-	// 	}
-
-	// 	onObjectClick(table.id, "table", x, y, objectHeight);
-	// };
 	const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
 		e.cancelBubble = true; // Prevent event bubbling
 
@@ -180,19 +116,9 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
-					// onClick={(e) =>
-					// 	onObjectClick(
-					// 		table.id,
-					// 		"table",
-					// 		e.evt.clientX,
-					// 		e.evt.clientY
-					// 	)
-					// }
 					offsetX={0}
 					offsetY={0}
 					rotation={table.rotation || 0}
-					// onTouchStart={onTouchStart}
-					// onTap={onTouchStart}
 					onClick={handleClick}
 					onTap={handleClick}
 				/>
@@ -211,16 +137,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					rotation={table.rotation || 0}
 					offsetX={tableWidthPixels / 2}
 					offsetY={tableHeightPixels / 2}
-					// onClick={(e) =>
-					// 	onObjectClick(
-					// 		table.id,
-					// 		"table",
-					// 		e.evt.clientX,
-					// 		e.evt.clientY
-					// 	)
-					// }
-					// onTouchStart={onTouchStart}
-					// onTap={onTouchStart}
 					onClick={handleClick}
 					onTap={handleClick}
 				/>
@@ -234,14 +150,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 				draggable={!table.isLocked}
 				onDragMove={onDragMove}
 				onDragEnd={onDragEnd}
-				// onClick={(e) =>
-				// 	onObjectClick(
-				// 		table.id,
-				// 		"table",
-				// 		e.evt.clientX,
-				// 		e.evt.clientY
-				// 	)
-				// }
 				onClick={handleClick}
 				onTap={handleClick}
 				rotation={table.rotation || 0}

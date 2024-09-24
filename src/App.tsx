@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Feature, Room, Vendor, Table } from "./Types";
 import NavBar from "./components/NavBar/NavBar";
-import SideBar from "./components/SideBar/SideBar";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import RoomEditModal from "./components/RoomEditModal";
 import AddRoomModal from "./components/AddRoomModal";
@@ -64,22 +63,6 @@ const App: React.FC = () => {
 	const openRoomModal = () => setIsRoomModalOpen(true);
 	const closeRoomModal = () => setIsRoomModalOpen(false);
 
-	// const addTableToCanvas = (tableData: {
-	// 	type: "table-6" | "table-8" | "table-5";
-	// 	id: string;
-	// 	details?: string;
-	// 	tableNumber: number;
-	// }) => {
-	// 	const newTable: Table = {
-	// 		...tableData,
-	// 		roomId: selectedRoomId || "",
-	// 		x: 0,
-	// 		y: 0,
-	// 		isLocked: false,
-	// 	};
-
-	// 	setTables((prevTables: Table[]) => [...prevTables, newTable]);
-	// };
 	const addTableToCanvas = (tableData: {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
@@ -185,13 +168,6 @@ const App: React.FC = () => {
 		);
 	};
 
-	// const updateVendorDetails = (updatedVendor: Vendor) => {
-	// 	setVendors((prevVendors) =>
-	// 		prevVendors.map((vendor) =>
-	// 			vendor.id === updatedVendor.id ? updatedVendor : vendor
-	// 		)
-	// 	);
-	// };
 	const updateVendorDetails = (updatedVendor: Vendor) => {
 		setVendors((prevVendors) =>
 			prevVendors.map((vendor) =>
@@ -243,35 +219,6 @@ const App: React.FC = () => {
 		);
 	};
 
-	// const updateTableAssignment = (tableId: string, vendorId: string) => {
-	// 	// Update the selected table to have the new vendorId
-	// 	setTables((prevTables: Table[]) =>
-	// 		prevTables.map((table: Table) =>
-	// 			table.id === tableId
-	// 				? { ...table, vendorId }
-	// 				: table.vendorId === vendorId
-	// 				? { ...table, vendorId: undefined }
-	// 				: table
-	// 		)
-	// 	);
-	// };
-
-	// const deleteVendor = (vendorId: string) => {
-	// 	// Remove vendor from the list
-	// 	setVendors((prevVendors: Vendor[]) =>
-	// 		prevVendors.filter((vendor: Vendor) => vendor.id !== vendorId)
-	// 	);
-
-	// 	// Unassign any tables associated with this vendor
-	// 	setTables((prevTables: Table[]) =>
-	// 		prevTables.map((table: Table) =>
-	// 			table.vendorId === vendorId
-	// 				? { ...table, vendorId: undefined }
-	// 				: table
-	// 		)
-	// 	);
-	// };
-
 	return (
 		<Router>
 			<div className="flex flex-col h-screen bg-customWhite">
@@ -287,7 +234,6 @@ const App: React.FC = () => {
 								<div className="flex-grow flex-col justify-center m-2 items-center overflow-y-auto h-full">
 									<CanvasAreaKonva
 										objects={features}
-										// removeObject={removeObjectFromCanvas}
 										rooms={rooms}
 										tables={tables}
 										removeRoom={
@@ -343,7 +289,6 @@ const App: React.FC = () => {
 						></Route>
 						<Route
 							path="/vendor-mode"
-							// element={<VendorModePage />}
 							element={
 								<VendorModePage
 									vendors={vendors}
@@ -360,12 +305,6 @@ const App: React.FC = () => {
 									setSelectedRoomId={
 										setSelectedRoomId
 									}
-									// updateTableAssignment={
-									// 	updateTableAssignment
-									// }
-									// deleteVendor={
-									// 	deleteVendor
-									// }
 								/>
 							}
 						/>
