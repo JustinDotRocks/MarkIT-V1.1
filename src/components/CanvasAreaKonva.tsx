@@ -159,9 +159,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				const centerX = roomWidthPixels / 2;
 				const centerY = roomHeightPixels / 2;
 
-				// const centerX = (roomWidthPixels * scale) / 2;
-				// const centerY = (roomHeightPixels * scale) / 2;
-
 				// Set the offset of the stage to rotate around the center
 				const containerCenterX = containerWidth / 2;
 				const containerCenterY = containerHeight / 3;
@@ -171,25 +168,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				const offsetY = centerY * scale;
 
 				// // Position the stage so the room is centered
-				// const centerX =
-				// 	(containerWidth - roomWidthPixels * scale) / 4;
-				// const centerY =
-				// 	(containerHeight - roomHeightPixels * scale) / 4;
-
 				setStagePosition({
 					x: containerCenterX,
 					y: containerCenterY,
 				});
 				// Adjust the stage position to center the room
-				// setStagePosition({
-				// 	x: containerCenterX - centerX,
-				// 	y: containerCenterY - centerY,
-				// });
-
-				// Set stage offsets to rotate around the center
-				// stageRef.current.offsetX(offsetX);
-				// stageRef.current.offsetY(offsetY);
-				// **Add the null check here**
 				if (stageRef.current) {
 					// Set stage offsets to rotate around the center
 					stageRef.current.offsetX(offsetX);
@@ -377,32 +360,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		}
 	};
 
-	// const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const newScale = parseFloat(e.target.value);
-	// 	const stage = stageRef.current;
-
-	// 	if (stage) {
-	// 		const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
-
-	// 		const mousePointTo = {
-	// 			x: (pointer.x - stage.x()) / scale,
-	// 			y: (pointer.y - stage.y()) / scale,
-	// 		};
-
-	// 		const newPos = {
-	// 			x: pointer.x - mousePointTo.x * newScale,
-	// 			y: pointer.y - mousePointTo.y * newScale,
-	// 		};
-
-	// 		setScale(newScale);
-	// 		setStagePosition(newPos);
-
-	// 		stage.scale({ x: newScale, y: newScale });
-	// 		stage.position(newPos);
-	// 		stage.batchDraw(); // Update the stage
-	// 	}
-	// };
-
 	useEffect(() => {
 		const stage = stageRef.current;
 		if (stage) {
@@ -417,6 +374,42 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			};
 		}
 	}, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
+
+	const getOptionsBarPosition = () => {
+		if (!selectedObject) return { x: 0, y: 0 };
+
+		const stage = stageRef.current;
+		const layer = stage.getLayers()[0];
+		const node = layer.findOne(`#${selectedObject.id}`);
+
+		if (node) {
+			const transform = node.getAbsoluteTransform().copy();
+			// Get the center point of the object
+			const objectCenter = {
+				x: node.width() / 2,
+				y: node.height() / 2,
+			};
+			// transform the node position to the screen coordinate system
+			// const position = transform.point({ x: 0, y: 0 });
+			const position = transform.point(objectCenter); // Get position of the center
+
+			// get the position of the stage container on the page
+			const stageContainerRect = stage
+				.container()
+				.getBoundingClientRect();
+
+			// calculate the absolute position on the screen
+			const absoluteX =
+				stageContainerRect.left + position.x * scale;
+			const absoluteY = stageContainerRect.top + position.y * scale;
+
+			return { x: absoluteX, y: absoluteY };
+		}
+
+		return { x: 0, y: 0 };
+	};
+
+	const optionsBarPosition = getOptionsBarPosition();
 
 	return (
 		<div ref={containerRef} className="flex flex-col h-screen">
@@ -655,44 +648,60 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												/>
 											);
 										})}
-									{selectedObject &&
+									{/* {selectedObject &&
 										selectedTableOrFeature && (
-											<Html
-												groupProps={{
-													x:
-														selectedTableOrFeature.x *
-															containerSize.width +
-														50,
-													y:
-														selectedTableOrFeature.y *
-															containerSize.height +
-														20,
-													rotation: isMobile
-														? -stageRotation
-														: 0,
-												}}
-												divProps={{
-													style: {
-														pointerEvents:
-															"auto", // Ensure the div can receive pointer events
-													},
-												}}
+											// <Html
+											// 	groupProps={{
+											// 		x:
+											// 			selectedTableOrFeature.x *
+											// 				containerSize.width +
+											// 			50,
+											// 		y:
+											// 			selectedTableOrFeature.y *
+											// 				containerSize.height +
+											// 			20,
+											// 		rotation: isMobile
+											// 			? stageRotation
+											// 			: 0,
+											// 	}}
+											// 	divProps={{
+											// 		style: {
+											// 			pointerEvents:
+											// 				"auto", // Ensure the div can receive pointer events
+											// 		},
+											// 	}}
+											// >
+											<RotateHandler
+												item={
+													selectedTableOrFeature
+												}
+												setTables={
+													setTables
+												}
+												setFeatures={
+													setFeatures
+												}
 											>
-												<RotateHandler
-													item={
-														selectedTableOrFeature
-													}
-													setTables={
-														setTables
-													}
-													setFeatures={
-														setFeatures
-													}
-												>
-													{({
-														rotateCW,
-														rotateCCW,
-													}) => (
+												{({
+													rotateCW,
+													rotateCCW,
+												}) => (
+													<div
+														style={{
+															position: "absolute",
+															left: isMobile
+																? "50%"
+																: `${optionsBarPosition.x}px`,
+															top: `${optionsBarPosition.y}px`,
+															transform:
+																isMobile
+																	? "translateX(-50%)"
+																	: "none",
+															zIndex: 1000,
+															pointerEvents:
+																"auto",
+														}}
+													>
 														<OptionsBar
 															x={
 																selectedObject.x
@@ -790,16 +799,186 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 															updateVendorDetails={
 																updateVendorDetails
 															}
+															// stageRotation={
+															// 	stageRotation
+															// }
+															// isMobile={
+															// 	isMobile
+															// }
 														/>
-													)}
-												</RotateHandler>
-											</Html>
-										)}
+													</div>
+												)}
+											</RotateHandler>
+											// </Html>
+										)} */}
 								</Group>
 							</Layer>
 						</Stage>
+						{selectedObject &&
+							selectedTableOrFeature && (
+								// <Html
+								// 	groupProps={{
+								// 		x:
+								// 			selectedTableOrFeature.x *
+								// 				containerSize.width +
+								// 			50,
+								// 		y:
+								// 			selectedTableOrFeature.y *
+								// 				containerSize.height +
+								// 			20,
+								// 		rotation: isMobile
+								// 			? stageRotation
+								// 			: 0,
+								// 	}}
+								// 	divProps={{
+								// 		style: {
+								// 			pointerEvents:
+								// 				"auto", // Ensure the div can receive pointer events
+								// 		},
+								// 	}}
+								// >
+								<RotateHandler
+									item={
+										selectedTableOrFeature
+									}
+									setTables={setTables}
+									setFeatures={setFeatures}
+								>
+									{({
+										rotateCW,
+										rotateCCW,
+									}) => (
+										<div
+											style={{
+												position: "absolute",
+												left: isMobile
+													? "50%"
+													: `${optionsBarPosition.x}px`,
+												// top: isMobile
+												// 	? `${optionsBarPosition.y}px`
+												// 	: `${optionsBarPosition.y}px`,
+												top: isMobile
+													? "1%"
+													: `${optionsBarPosition.y}px`,
+												transform:
+													isMobile
+														? "translateX(-50%)"
+														: "none",
+												zIndex: 1000,
+												pointerEvents:
+													"auto",
+											}}
+										>
+											<OptionsBar
+												x={
+													selectedObject.x
+												}
+												y={
+													selectedObject.y
+												}
+												// height={selectedObject.height}
+												onDelete={
+													handleDelete
+												}
+												onRotateCW={
+													rotateCW
+												}
+												onRotateCCW={
+													rotateCCW
+												}
+												onToggleLock={() =>
+													toggleLockObject(
+														selectedObject.id,
+														selectedObject.type
+													)
+												}
+												isLocked={
+													selectedObject.type ===
+													"table"
+														? !!tables.find(
+																(
+																	table
+																) =>
+																	table.id ===
+																	selectedObject.id
+														  )
+																?.isLocked
+														: !!features.find(
+																(
+																	feature
+																) =>
+																	feature.id ===
+																	selectedObject.id
+														  )
+																?.isLocked
+												}
+												vendorName={
+													selectedObject.type ===
+													"table"
+														? tables.find(
+																(
+																	table
+																) =>
+																	table.id ===
+																	selectedObject.id
+														  )
+																?.vendorId
+															? vendors.find(
+																	(
+																		vendor
+																	) =>
+																		vendor.id ===
+																		tables.find(
+																			(
+																				table
+																			) =>
+																				table.id ===
+																				selectedObject.id
+																		)
+																			?.vendorId
+															  )
+																	?.name ||
+															  ""
+															: ""
+														: ""
+												}
+												onAddVendor={() =>
+													handleAddVendorClick(
+														selectedObject.id
+													)
+												}
+												onRemoveVendor={() =>
+													handleRemoveVendor(
+														selectedObject.id
+													)
+												}
+												objectType={
+													selectedObject.type
+												}
+												// canvasWidth={containerSize.width}
+												// canvasHeight={containerSize.height}
+												signedIn={
+													selectedVendor?.signedIn
+												}
+												vendorId={
+													selectedVendor?.id
+												}
+												updateVendorDetails={
+													updateVendorDetails
+												}
+												// stageRotation={
+												// 	stageRotation
+												// }
+												// isMobile={
+												// 	isMobile
+												// }
+											/>
+										</div>
+									)}
+								</RotateHandler>
+								// </Html>
+							)}
 						{/* Vertical Zoom Slider */}
-						{/* <div className="zoom-slider flex flex-col items-center ml-4"> */}
 						<div className="hidden md:flex zoom-slider flex-col items-center absolute right-0 top-1/2 transform -translate-y-1/2 mr-4">
 							<label
 								htmlFor="zoom"
@@ -826,87 +1005,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						</div>
 					</div>
 				)}
-			{/* <div className="relative"> */}
-			{/* {selectedObject && selectedTableOrFeature && (
-				<RotateHandler
-					item={selectedTableOrFeature}
-					setTables={setTables}
-					setFeatures={setFeatures}
-				>
-					{({ rotateCW, rotateCCW }) => (
-						<OptionsBar
-							x={selectedObject.x}
-							y={selectedObject.y}
-							// height={selectedObject.height}
-							onDelete={handleDelete}
-							onRotateCW={rotateCW}
-							onRotateCCW={rotateCCW}
-							onToggleLock={() =>
-								toggleLockObject(
-									selectedObject.id,
-									selectedObject.type
-								)
-							}
-							isLocked={
-								selectedObject.type === "table"
-									? !!tables.find(
-											(table) =>
-												table.id ===
-												selectedObject.id
-									  )?.isLocked
-									: !!features.find(
-											(feature) =>
-												feature.id ===
-												selectedObject.id
-									  )?.isLocked
-							}
-							vendorName={
-								selectedObject.type === "table"
-									? tables.find(
-											(table) =>
-												table.id ===
-												selectedObject.id
-									  )?.vendorId
-										? vendors.find(
-												(
-													vendor
-												) =>
-													vendor.id ===
-													tables.find(
-														(
-															table
-														) =>
-															table.id ===
-															selectedObject.id
-													)
-														?.vendorId
-										  )?.name || ""
-										: ""
-									: ""
-							}
-							onAddVendor={() =>
-								handleAddVendorClick(
-									selectedObject.id
-								)
-							}
-							onRemoveVendor={() =>
-								handleRemoveVendor(
-									selectedObject.id
-								)
-							}
-							objectType={selectedObject.type}
-							canvasWidth={containerSize.width}
-							canvasHeight={containerSize.height}
-							signedIn={selectedVendor?.signedIn}
-							vendorId={selectedVendor?.id}
-							updateVendorDetails={
-								updateVendorDetails
-							}
-						/>
-					)}
-				</RotateHandler>
-			)} */}
-			{/* </div> */}
 			<AssignVendorModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}

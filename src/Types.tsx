@@ -245,6 +245,8 @@ export interface OptionsBarProps {
 	signedIn?: boolean; // Optional, since VendorSignInComponent has a default
 	updateVendorDetails?: (vendorData: any) => void; // Function to update vendor details
 	vendorId?: string;
+	// stageRotation: number;
+	// isMobile: boolean;
 }
 
 export interface RoomDetailsDisplayProps {

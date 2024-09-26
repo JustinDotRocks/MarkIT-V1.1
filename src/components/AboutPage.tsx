@@ -182,8 +182,8 @@ const AboutPage: React.FC = () => {
 			</p>
 			<ul className="list-disc pl-6 mb-4">
 				<li>
-					Select an object (table or feature) and use the{" "}
-					<strong>Rotate Handler</strong> to adjust its
+					Select an object (table, door or obstacle) and use
+					the <strong>Rotate Handler</strong> to adjust its
 					orientation.
 				</li>
 			</ul>
@@ -194,29 +194,6 @@ const AboutPage: React.FC = () => {
 				<li>
 					Use the <strong>Options Bar</strong> to lock
 					objects in place, preventing accidental movement.
-				</li>
-			</ul>
-
-			{/* Additional Features */}
-			<h2 className="text-2xl font-bold mb-4">
-				Additional Features
-			</h2>
-			<ul className="list-disc pl-6 mb-6">
-				<li>
-					<strong>Responsive Design</strong>: While{" "}
-					<strong>MarkIT</strong> is optimized for desktop
-					use, it features responsive design to ensure
-					usability on various screen sizes.
-				</li>
-				<li>
-					<strong>Custom Icons</strong>: The app uses
-					intuitive icons (like the custom arrow in
-					dropdowns) for a better user experience.
-				</li>
-				<li>
-					<strong>Error Handling</strong>: Input fields
-					provide immediate feedback, highlighting errors in
-					red and displaying messages to guide corrections.
 				</li>
 			</ul>
 

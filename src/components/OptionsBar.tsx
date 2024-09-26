@@ -20,10 +20,12 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendorId,
 	updateVendorDetails,
 	signedIn,
+	// stageRotation,
+	// isMobile,
 }) => {
 	// Define the width and height of the OptionsBar
-	const optionsBarWidth = 700;
-	const optionsBarHeight = 120; // Adjust height to accommodate vendor name
+	const optionsBarWidth = 400;
+	const optionsBarHeight = 100; // Adjust height to accommodate vendor name
 	const margin = 5; // Margin between the object and the OptionsBar
 
 	// Position directly below the object with the specified margin
@@ -62,29 +64,32 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 		});
 	};
 
+	// const optionsBarRotation = isMobile ? stageRotation - 90 : 0;
+
 	return (
 		<div
-			className="absolute flex flex-col justify-center text-3xl bg-customBlue border border-black rounded p-2"
+			className=" flex flex-col justify-center text-md bg-customBlue border border-black rounded p-2"
 			style={{
 				// left: adjustedX,
 				// top: adjustedY,
-				zIndex: 50,
+				// zIndex: 50,
 				width: optionsBarWidth,
 				height: optionsBarHeight,
+				// transform: `rotate(${optionsBarRotation}deg)`,
 			}}
 		>
 			{/* Vendor Name */}
 			{vendorName && (
-				<div className="relative text-white mb-1">
-					<p className="text-center text-3xl text-bold">
+				<div className="flex justify-between items-center text-white mb-1">
+					<p className="text-center text-lg flex-grow text-bold">
 						{vendorName}
 					</p>
 					{/* Sign-In Button */}
-					<div className="absolute right-2 top-0">
+					<div className="	 ">
 						<VendorSignInComponent
 							signedIn={signedIn || false}
 							onToggleSignedIn={toggleSignedIn}
-							size={36}
+							size={28}
 						/>
 					</div>
 				</div>
@@ -121,16 +126,16 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 						{vendorName ? (
 							<button
 								onClick={onRemoveVendor}
-								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-2 px-4 m-1 rounded"
+								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
-								Remove Vendor
+								Unasign
 							</button>
 						) : (
 							<button
 								onClick={onAddVendor}
-								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-2 px-4 m-1 rounded"
+								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
-								Add Vendor
+								Asign
 							</button>
 						)}
 					</>
@@ -141,7 +146,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 					message="Are you sure you want to delete this item?"
 					onConfirm={onDelete}
 					triggerComponent={
-						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+						<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
 							Delete
 						</button>
 					}
