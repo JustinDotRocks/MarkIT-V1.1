@@ -39,21 +39,6 @@ const App: React.FC = () => {
 
 	const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false);
 
-	// const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
-	// 	useState<boolean>(false);
-	// const [objectToDelete, setObjectToDelete] = useState<string | null>(null);
-
-	// KEEP IN CASE WE HAVE UNDEFINED TABLES IN THE VENDOR CARD: Cleanup tables state to remove incomplete entries
-	// useEffect(() => {
-	// 	const cleanedTables = tables.filter(
-	// 		(table) =>
-	// 			table.tableNumber !== undefined &&
-	// 			table.roomName !== undefined
-	// 	);
-	// 	setTables(cleanedTables);
-	// 	saveToLocalStorage(getStorageKeys().TABLES, cleanedTables);
-	// }, [tables]);
-
 	useEffect(() => {
 		// Save all state to localStorage in one effect
 		saveToLocalStorage(getStorageKeys().FEATURES, features);
