@@ -1,210 +1,250 @@
 import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Feature, Room, Vendor, Table } from "./Types";
+import { useRooms } from "./hooks/useRooms";
+import { useTablesAndFeatures } from "./hooks/useTablesAndFeatures";
+import { useVendors } from "./hooks/useVendors";
+import { useActiveMode } from "./hooks/useActiveMode";
+import { useAutoSave } from "./hooks/useAutoSave";
 import NavBar from "./components/NavBar/NavBar";
 import CanvasAreaKonva from "./components/CanvasAreaKonva";
 import RoomEditModal from "./components/RoomEditModal";
 import AddRoomModal from "./components/AddRoomModal";
 import VendorModePage from "./components/VendorModePage";
-import {
-	saveToLocalStorage,
-	loadFromLocalStorage,
-	getStorageKeys,
-} from "./Storage";
+// import {
+// 	saveToLocalStorage,
+// 	loadFromLocalStorage,
+// 	getStorageKeys,
+// } from "./Storage";
 import AboutPage from "./components/AboutPage";
 import LandingPage from "./components/LandingPage";
 
 const App: React.FC = () => {
-	const [activeMode, setActiveMode] = useState<
-		"setup" | "vendor" | "about" | ""
-	>("setup");
-	const [features, setFeatures] = useState<Feature[]>(
-		() =>
-			loadFromLocalStorage<Feature[]>(getStorageKeys().FEATURES) ||
-			[]
-	);
-	const [rooms, setRooms] = useState<Room[]>(
-		() => loadFromLocalStorage<Room[]>(getStorageKeys().ROOMS) || []
-	);
-	const [vendors, setVendors] = useState<Vendor[]>(
-		() => loadFromLocalStorage<Vendor[]>(getStorageKeys().VENDORS) || []
-	);
-	const [tables, setTables] = useState<Table[]>(
-		() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
-	);
-	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
-	const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [isRoomModalOpen, setIsRoomModalOpen] = useState<boolean>(false);
+	const { activeMode, setActiveMode } = useActiveMode();
 
-	const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false);
+	const {
+		rooms,
+		selectedRoomId,
+		setSelectedRoomId,
+		roomToEdit,
+		isRoomModalOpen,
+		isModalOpen,
+		addRoom,
+		updateRoom,
+		removeRoom,
+		openRoomModal,
+		closeRoomModal,
+		openEditModal,
+		closeEditModal,
+	} = useRooms();
+	const {
+		features,
+		tables,
+		setFeatures,
+		setTables,
+		addTableToCanvas,
+		addFeatureToCanvas,
+		toggleLockObject,
+		removeObjectFromCanvas,
+		areAllObjectsLocked,
+		setAreAllObjectsLocked,
+	} = useTablesAndFeatures(selectedRoomId);
 
-	useEffect(() => {
-		// Save all state to localStorage in one effect
-		saveToLocalStorage(getStorageKeys().FEATURES, features);
-		saveToLocalStorage(getStorageKeys().ROOMS, rooms);
-		saveToLocalStorage(getStorageKeys().VENDORS, vendors);
-		saveToLocalStorage(getStorageKeys().TABLES, tables);
-	}, [features, rooms, vendors, tables]);
+	const { vendors, setVendors, updateVendorDetails } = useVendors();
 
-	const openRoomModal = () => setIsRoomModalOpen(true);
-	const closeRoomModal = () => setIsRoomModalOpen(false);
+	// Automatically save state to localStorage
+	useAutoSave(features, rooms, vendors, tables);
 
-	const addTableToCanvas = (tableData: {
-		type: "table-6" | "table-8" | "table-5";
-		id: string;
-		details?: string;
-		tableNumber: number;
-	}) => {
-		setTables((prevTables: Table[]) => {
-			// Filter tables to include only those in the selected room
-			const roomTables = prevTables.filter(
-				(table) => table.roomId === selectedRoomId
-			);
+	// const [activeMode, setActiveMode] = useState<
+	// 	"setup" | "vendor" | "about" | ""
+	// >("setup");
+	// const [features, setFeatures] = useState<Feature[]>(
+	// 	() =>
+	// 		loadFromLocalStorage<Feature[]>(getStorageKeys().FEATURES) ||
+	// 		[]
+	// );
+	// const [rooms, setRooms] = useState<Room[]>(
+	// 	() => loadFromLocalStorage<Room[]>(getStorageKeys().ROOMS) || []
+	// );
+	// const [vendors, setVendors] = useState<Vendor[]>(
+	// 	() => loadFromLocalStorage<Vendor[]>(getStorageKeys().VENDORS) || []
+	// );
+	// const [tables, setTables] = useState<Table[]>(
+	// 	() => loadFromLocalStorage<Table[]>(getStorageKeys().TABLES) || []
+	// );
+	// const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null); // Updated to allow null
+	// const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
+	// const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	// const [isRoomModalOpen, setIsRoomModalOpen] = useState<boolean>(false);
 
-			// Get the highest table number from the tables in the selected room
-			const maxTableNumber = roomTables.reduce((max, table) => {
-				return table.tableNumber > max
-					? table.tableNumber
-					: max;
-			}, 0);
+	// const [areAllObjectsLocked, setAreAllObjectsLocked] = useState(false);
 
-			// Assign the next table number by incrementing the highest number
-			const nextTableNumber = maxTableNumber + 1;
+	// useEffect(() => {
+	// 	// Save all state to localStorage in one effect
+	// 	saveToLocalStorage(getStorageKeys().FEATURES, features);
+	// 	saveToLocalStorage(getStorageKeys().ROOMS, rooms);
+	// 	saveToLocalStorage(getStorageKeys().VENDORS, vendors);
+	// 	saveToLocalStorage(getStorageKeys().TABLES, tables);
+	// }, [features, rooms, vendors, tables]);
 
-			const newTable: Table = {
-				...tableData,
-				tableNumber: nextTableNumber,
-				roomId: selectedRoomId || "",
-				x: 0,
-				y: 0,
-				isLocked: false,
-			};
+	// const openRoomModal = () => setIsRoomModalOpen(true);
+	// const closeRoomModal = () => setIsRoomModalOpen(false);
 
-			return [...prevTables, newTable];
-		});
-	};
+	// const addTableToCanvas = (tableData: {
+	// 	type: "table-6" | "table-8" | "table-5";
+	// 	id: string;
+	// 	details?: string;
+	// 	tableNumber: number;
+	// }) => {
+	// 	setTables((prevTables: Table[]) => {
+	// 		// Filter tables to include only those in the selected room
+	// 		const roomTables = prevTables.filter(
+	// 			(table) => table.roomId === selectedRoomId
+	// 		);
 
-	const addFeatureToCanvas = (featureData: {
-		type: "door" | "obstacle";
-		id: string;
-		details?: string;
-	}) => {
-		const newFeature: Feature = {
-			...featureData,
-			roomId: selectedRoomId || "",
-			x: 0,
-			y: 0,
-			isLocked: false,
-		};
+	// 		// Get the highest table number from the tables in the selected room
+	// 		const maxTableNumber = roomTables.reduce((max, table) => {
+	// 			return table.tableNumber > max
+	// 				? table.tableNumber
+	// 				: max;
+	// 		}, 0);
 
-		setFeatures((prevFeatures: Feature[]) => [
-			...prevFeatures,
-			newFeature,
-		]);
-	};
+	// 		// Assign the next table number by incrementing the highest number
+	// 		const nextTableNumber = maxTableNumber + 1;
 
-	const toggleLockObject = (id: string, type: "table" | "feature") => {
-		if (type === "table") {
-			setTables((prevTables: Table[]) => {
-				const updatedTables = prevTables.map((table) =>
-					table.id === id
-						? { ...table, isLocked: !table.isLocked }
-						: table
-				);
-				// Check if any table is unlocked after toggling
-				const allLocked = updatedTables.every(
-					(table) => table.isLocked
-				);
-				setAreAllObjectsLocked(allLocked);
-				saveToLocalStorage(
-					getStorageKeys().TABLES,
-					updatedTables
-				);
-				return updatedTables;
-			});
-		} else {
-			setFeatures((prevFeatures: Feature[]) => {
-				const updatedFeatures = prevFeatures.map((feature) =>
-					feature.id === id
-						? {
-								...feature,
-								isLocked: !feature.isLocked,
-						  }
-						: feature
-				);
-				const allLocked = updatedFeatures.every(
-					(feature) => feature.isLocked
-				);
-				setAreAllObjectsLocked(allLocked);
-				saveToLocalStorage(
-					getStorageKeys().FEATURES,
-					updatedFeatures
-				);
-				return updatedFeatures;
-			});
-		}
-	};
+	// 		const newTable: Table = {
+	// 			...tableData,
+	// 			tableNumber: nextTableNumber,
+	// 			roomId: selectedRoomId || "",
+	// 			x: 0,
+	// 			y: 0,
+	// 			isLocked: false,
+	// 		};
 
-	const removeObjectFromCanvas = (id: string) => {
-		setFeatures((prevFeatures: Feature[]) =>
-			prevFeatures.filter((feature) => feature.id !== id)
-		);
-		setTables((prevTables: Table[]) =>
-			prevTables.filter((table) => table.id !== id)
-		);
-	};
+	// 		return [...prevTables, newTable];
+	// 	});
+	// };
 
-	const updateVendorDetails = (updatedVendor: Vendor) => {
-		setVendors((prevVendors) =>
-			prevVendors.map((vendor) =>
-				vendor.id === updatedVendor.id
-					? { ...vendor, ...updatedVendor }
-					: vendor
-			)
-		);
-	};
+	// const addFeatureToCanvas = (featureData: {
+	// 	type: "door" | "obstacle";
+	// 	id: string;
+	// 	details?: string;
+	// }) => {
+	// 	const newFeature: Feature = {
+	// 		...featureData,
+	// 		roomId: selectedRoomId || "",
+	// 		x: 0,
+	// 		y: 0,
+	// 		isLocked: false,
+	// 	};
 
-	const removeRoom = (roomId: string) => {
-		setRooms((prevRooms) =>
-			prevRooms.filter((room) => room.id !== roomId)
-		);
-		setFeatures((prevFeatures) =>
-			prevFeatures.filter((feature) => feature.roomId !== roomId)
-		);
-		setTables((prevTables) =>
-			prevTables.filter((table) => table.roomId !== roomId)
-		);
-	};
+	// 	setFeatures((prevFeatures: Feature[]) => [
+	// 		...prevFeatures,
+	// 		newFeature,
+	// 	]);
+	// };
 
-	const openEditModal = (room: Room) => {
-		setRoomToEdit(room);
-		setIsModalOpen(true);
-	};
+	// const toggleLockObject = (id: string, type: "table" | "feature") => {
+	// 	if (type === "table") {
+	// 		setTables((prevTables: Table[]) => {
+	// 			const updatedTables = prevTables.map((table) =>
+	// 				table.id === id
+	// 					? { ...table, isLocked: !table.isLocked }
+	// 					: table
+	// 			);
+	// 			// Check if any table is unlocked after toggling
+	// 			const allLocked = updatedTables.every(
+	// 				(table) => table.isLocked
+	// 			);
+	// 			setAreAllObjectsLocked(allLocked);
+	// 			saveToLocalStorage(
+	// 				getStorageKeys().TABLES,
+	// 				updatedTables
+	// 			);
+	// 			return updatedTables;
+	// 		});
+	// 	} else {
+	// 		setFeatures((prevFeatures: Feature[]) => {
+	// 			const updatedFeatures = prevFeatures.map((feature) =>
+	// 				feature.id === id
+	// 					? {
+	// 							...feature,
+	// 							isLocked: !feature.isLocked,
+	// 					  }
+	// 					: feature
+	// 			);
+	// 			const allLocked = updatedFeatures.every(
+	// 				(feature) => feature.isLocked
+	// 			);
+	// 			setAreAllObjectsLocked(allLocked);
+	// 			saveToLocalStorage(
+	// 				getStorageKeys().FEATURES,
+	// 				updatedFeatures
+	// 			);
+	// 			return updatedFeatures;
+	// 		});
+	// 	}
+	// };
 
-	const closeEditModal = () => {
-		setIsModalOpen(false);
-		setRoomToEdit(null);
-	};
+	// const removeObjectFromCanvas = (id: string) => {
+	// 	setFeatures((prevFeatures: Feature[]) =>
+	// 		prevFeatures.filter((feature) => feature.id !== id)
+	// 	);
+	// 	setTables((prevTables: Table[]) =>
+	// 		prevTables.filter((table) => table.id !== id)
+	// 	);
+	// };
 
-	const addRoom = (name: string, width: string, depth: string) => {
-		const newRoom: Room = {
-			id: Date.now().toString(),
-			name,
-			width,
-			depth,
-			tables: [],
-		};
-		setRooms((prevRooms) => [...prevRooms, newRoom]);
-	};
+	// const updateVendorDetails = (updatedVendor: Vendor) => {
+	// 	setVendors((prevVendors) =>
+	// 		prevVendors.map((vendor) =>
+	// 			vendor.id === updatedVendor.id
+	// 				? { ...vendor, ...updatedVendor }
+	// 				: vendor
+	// 		)
+	// 	);
+	// };
 
-	const updateRoom = (updatedRoom: Room) => {
-		setRooms((prevRooms) =>
-			prevRooms.map((room) =>
-				room.id === updatedRoom.id ? updatedRoom : room
-			)
-		);
-	};
+	// const removeRoom = (roomId: string) => {
+	// 	setRooms((prevRooms) =>
+	// 		prevRooms.filter((room) => room.id !== roomId)
+	// 	);
+	// 	setFeatures((prevFeatures) =>
+	// 		prevFeatures.filter((feature) => feature.roomId !== roomId)
+	// 	);
+	// 	setTables((prevTables) =>
+	// 		prevTables.filter((table) => table.roomId !== roomId)
+	// 	);
+	// };
+
+	// const openEditModal = (room: Room) => {
+	// 	setRoomToEdit(room);
+	// 	setIsModalOpen(true);
+	// };
+
+	// const closeEditModal = () => {
+	// 	setIsModalOpen(false);
+	// 	setRoomToEdit(null);
+	// };
+
+	// const addRoom = (name: string, width: string, depth: string) => {
+	// 	const newRoom: Room = {
+	// 		id: Date.now().toString(),
+	// 		name,
+	// 		width,
+	// 		depth,
+	// 		tables: [],
+	// 	};
+	// 	setRooms((prevRooms) => [...prevRooms, newRoom]);
+	// };
+
+	// const updateRoom = (updatedRoom: Room) => {
+	// 	setRooms((prevRooms) =>
+	// 		prevRooms.map((room) =>
+	// 			room.id === updatedRoom.id ? updatedRoom : room
+	// 		)
+	// 	);
+	// };
 
 	return (
 		<Router>
