@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { VendorModeComponentProps, Vendor } from "../Types";
-import VendorCard from "./VendorCard/VendorCard";
+import VendorCard from "./VendorCard";
 import AddVendorModal from "./AddVendorModal"; // Import the modal
 import {
 	saveToLocalStorage,

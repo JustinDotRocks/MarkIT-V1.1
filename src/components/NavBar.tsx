@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Button from "../Button/Button";
-import { NavBarProps } from "../../Types";
+import Button from "./Button/Button";
+import { NavBarProps } from "../Types";
 
 const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 	const toggleMode = (mode: "setup" | "vendor" | "about" | "") => {

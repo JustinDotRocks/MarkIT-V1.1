@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { VendorCardProps, Table } from "../../Types";
+import { VendorCardProps, Table } from "../Types";
 import {
 	FaChevronUp,
 	FaChevronDown,
@@ -9,9 +9,9 @@ import {
 	// FaToggleOn,
 	// FaToggleOff,
 } from "react-icons/fa";
-import DeleteConfirmationModal from "../DeleteConfirmationModal";
-import VendorSignInComponent from "../VendorSignInComponent";
-import EditVendorModal from "../EditVendorModal";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import VendorSignInComponent from "./VendorSignInComponent";
+import EditVendorModal from "./EditVendorModal";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,

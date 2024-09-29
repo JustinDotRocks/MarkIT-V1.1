@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Vendor, AddVendorModalProps } from "../Types";
-import Input from "./Input/Input";
 import Button from "./Button/Button";
 import { v4 as uuidv4 } from "uuid";
 
@@ -144,7 +143,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 							Add Vendor
 						</h2>
 						<div className="mb-4">
-							<Input
+							<input
 								type="text"
 								name="vendor-name"
 								value={vendorName}
@@ -164,7 +163,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 							)}
 						</div>
 
-						<Input
+						<input
 							type="text"
 							name="vendor-products"
 							value={vendorProducts}

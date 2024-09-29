@@ -1,7 +1,16 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Group } from "react-konva";
-import { CanvasAreaProps, GridMode } from "../Types";
+import { CanvasAreaProps } from "../Types";
+
 import { useCanvasSize } from "../hooks/useCanvasSize";
+import { useObjectSelection } from "../hooks/useObjectSelection";
+import { useLockState } from "../hooks/useLockState";
+import { useVendorManagement } from "../hooks/useVendorManagement";
+import { useGridToggle } from "../hooks/useGridToggle";
+import { useStageInteraction } from "../hooks/useStageInteraction";
+import { useOptionsBarPosition } from "../hooks/useOptionsBarPosition";
+import { useVendorSelection } from "../hooks/useVendorSelection";
+
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
 import TableComponent from "./TableComponent";
@@ -30,7 +39,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	openAddRoomModal,
 	addTable,
 	addFeature,
-	areAllObjectsLocked,
+	// areAllObjectsLocked,
 	setAreAllObjectsLocked,
 	setVendors,
 	updateVendorDetails,
@@ -47,206 +56,141 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		handleWheel,
 		handleZoomChange,
 	} = useCanvasSize(room, containerRef, stageRef);
-	// const containerRef = useRef<HTMLDivElement>(null);
-	// const [containerSize, setContainerSize] = useState({
-	// 	width: window.innerWidth,
-	// 	height: window.innerHeight,
-	// });
+	const {
+		selectedObject,
+		selectedTable,
+		selectedFeature,
+		handleObjectClick,
+		handleStageClick,
+		handleDelete,
+	} = useObjectSelection(tables, features, removeObjectFromCanvas);
+	const { areAllObjectsLocked, lockAllObjects } = useLockState(
+		tables,
+		features,
+		setTables,
+		setFeatures
+	);
+	const {
+		isModalOpen,
+		selectedTableId,
+		setIsModalOpen,
+		handleAddVendorClick,
+		handleRemoveVendor,
+	} = useVendorManagement(tables, setTables, vendors, setVendors);
+	const {
+		showGrid,
+		gridMode,
+		isDragging,
+		toggleGrid,
+		setGridMode,
+		handleGlobalDragStart,
+		handleGlobalDragEnd,
+	} = useGridToggle();
+	useStageInteraction(stageRef, handleWheel);
+	const getOptionsBarPosition = useOptionsBarPosition(
+		selectedObject,
+		stageRef,
+		scale
+	);
+	const { selectedVendor } = useVendorSelection(
+		selectedTable || null,
+		vendors
+	);
 
 	const [, setShowGrid] = useState(false);
 	const gridSize = 20;
-	const [gridMode, setGridMode] = useState<GridMode>("Drag");
-	const [isDragging, setIsDragging] = useState<boolean>(false);
-
-	// const [stageRotation, setStageRotation] = useState(0);
+	// const [gridMode, setGridMode] = useState<GridMode>("Drag");
+	// const [isDragging, setIsDragging] = useState<boolean>(false);
 
 	const [isMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
 
 	// Handlers for drag events
-	const handleGlobalDragStart = () => {
-		setIsDragging(true);
-	};
+	// const handleGlobalDragStart = () => {
+	// 	setIsDragging(true);
+	// };
 
-	const handleGlobalDragEnd = () => {
-		setIsDragging(false);
-	};
+	// const handleGlobalDragEnd = () => {
+	// 	setIsDragging(false);
+	// };
 
-	// State for selectedObject and OptionsBar position
-	const [selectedObject, setSelectedObject] = useState<{
-		id: string;
-		type: "table" | "feature";
-		x: number;
-		y: number;
-	} | null>(null);
+	// // State for selectedObject and OptionsBar position
+	// const [selectedObject, setSelectedObject] = useState<{
+	// 	id: string;
+	// 	type: "table" | "feature";
+	// 	x: number;
+	// 	y: number;
+	// } | null>(null);
 
-	const selectedTable =
-		selectedObject && selectedObject.type === "table"
-			? tables.find((table) => table.id === selectedObject.id)
-			: null;
+	// const selectedTable =
+	// 	selectedObject && selectedObject.type === "table"
+	// 		? tables.find((table) => table.id === selectedObject.id)
+	// 		: null;
 
-	const selectedVendor =
-		selectedTable && selectedTable.vendorId
-			? vendors.find(
-					(vendor) => vendor.id === selectedTable.vendorId
-			  )
-			: null;
-
-	// const room = rooms.find((r) => r.id === selectedRoomId);
+	// const selectedVendor =
+	// 	selectedTable && selectedTable.vendorId
+	// 		? vendors.find(
+	// 				(vendor) => vendor.id === selectedTable.vendorId
+	// 		  )
+	// 		: null;
 
 	const feetToPixels = 25; // Scale factor
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [, setSelectedTableId] = useState<string | null>(null);
-
-	// const [scale, setScale] = useState(1);
-	// const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
-	// const stageRef = useRef<any>(null);
+	// const [isModalOpen, setIsModalOpen] = useState(false);
+	// const [, setSelectedTableId] = useState<string | null>(null);
 
 	// useEffect(() => {
-	// 	const updateContainerSize = () => {
-	// 		if (containerRef.current && room) {
-	// 			const containerWidth = containerRef.current.clientWidth;
-	// 			const containerHeight =
-	// 				containerRef.current.clientHeight;
+	// 	// Load the lock state from local storage on initial load
+	// 	const storedLockState = localStorage.getItem("areAllObjectsLocked");
+	// 	if (storedLockState !== null) {
+	// 		setAreAllObjectsLocked(JSON.parse(storedLockState));
+	// 	}
+	// }, []);
 
-	// 			const roomWidthFeet = parseFloat(room.width);
-	// 			const roomHeightFeet = parseFloat(room.depth);
-	// 			const feetToPixels = 25;
+	// const lockAllObjects = () => {
+	// 	const allLocked = areAllObjectsLocked;
+	// 	const newLockState = !allLocked;
 
-	// 			let roomWidthPixels = roomWidthFeet * feetToPixels;
-	// 			let roomHeightPixels = roomHeightFeet * feetToPixels;
+	// 	setAreAllObjectsLocked(newLockState);
 
-	// 			const isMobile = window.innerWidth < 768;
-	// 			const isPortraitMode =
-	// 				window.innerHeight > window.innerWidth;
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) => ({
+	// 			...table,
+	// 			isLocked: newLockState,
+	// 		}))
+	// 	);
+	// 	setFeatures((prevFeatures) =>
+	// 		prevFeatures.map((feature) => ({
+	// 			...feature,
+	// 			isLocked: newLockState,
+	// 		}))
+	// 	);
 
-	// 			// Rotation logic for mobile and desktop
-	// 			if (isMobile && isPortraitMode) {
-	// 				[roomWidthPixels, roomHeightPixels] = [
-	// 					roomHeightPixels,
-	// 					roomWidthPixels,
-	// 				];
-	// 				// In mobile, make sure the greater dimension is aligned with y-axis (portrait mode)
-	// 				if (roomWidthFeet > roomHeightFeet) {
-	// 					setStageRotation(0); // No rotation needed
-	// 				} else {
-	// 					setStageRotation(90); // Rotate to fit width along y-axis
-	// 				}
-	// 			} else {
-	// 				// In desktop, make sure the greater dimension is aligned with x-axis (landscape mode)
-	// 				if (roomHeightFeet > roomWidthFeet) {
-	// 					[roomWidthPixels, roomHeightPixels] = [
-	// 						roomHeightPixels,
-	// 						roomWidthPixels,
-	// 					];
-	// 					setStageRotation(0); // No rotation needed
-	// 				} else {
-	// 					[roomWidthPixels, roomHeightPixels] = [
-	// 						roomHeightPixels,
-	// 						roomWidthPixels,
-	// 					];
-	// 					setStageRotation(90); // Rotate to fit height along x-axis
-	// 				}
-	// 			}
+	// 	// Save the new lock state to local storage
+	// 	localStorage.setItem(
+	// 		"areAllObjectsLocked",
+	// 		JSON.stringify(newLockState)
+	// 	);
+	// };
 
-	// 			// Compute the scale factor to fit the room within the container
-	// 			const scaleX = containerWidth / roomWidthPixels;
-	// 			const scaleY = containerHeight / roomHeightPixels;
-	// 			const scale = Math.min(scaleX, scaleY);
+	// const handleObjectClick = (
+	// 	id: string,
+	// 	type: "table" | "feature",
+	// 	x: number,
+	// 	y: number
+	// ) => {
+	// 	setSelectedObject({ id, type, x, y });
+	// };
 
-	// 			setScale(scale);
-	// 			setContainerSize({
-	// 				width: roomWidthPixels,
-	// 				height: roomHeightPixels,
-	// 			});
+	// const handleStageClick = () => {
+	// 	setSelectedObject(null);
+	// };
 
-	// 			// Calculate the center of the room
-	// 			const centerX = roomWidthPixels / 2;
-	// 			const centerY = roomHeightPixels / 2;
-
-	// 			// Set the offset of the stage to rotate around the center
-	// 			const containerCenterX = containerWidth / 2;
-	// 			const containerCenterY = containerHeight / 3;
-
-	// 			// Offset the stage position to keep it centered
-	// 			const offsetX = centerX * scale;
-	// 			const offsetY = centerY * scale;
-
-	// 			// // Position the stage so the room is centered
-	// 			setStagePosition({
-	// 				x: containerCenterX,
-	// 				y: containerCenterY,
-	// 			});
-	// 			// Adjust the stage position to center the room
-	// 			if (stageRef.current) {
-	// 				// Set stage offsets to rotate around the center
-	// 				stageRef.current.offsetX(offsetX);
-	// 				stageRef.current.offsetY(offsetY);
-	// 			}
-	// 		}
-	// 	};
-
-	// 	updateContainerSize();
-	// 	window.addEventListener("resize", updateContainerSize);
-
-	// 	return () => {
-	// 		window.removeEventListener("resize", updateContainerSize);
-	// 	};
-	// }, [room, containerRef]);
-
-	useEffect(() => {
-		// Load the lock state from local storage on initial load
-		const storedLockState = localStorage.getItem("areAllObjectsLocked");
-		if (storedLockState !== null) {
-			setAreAllObjectsLocked(JSON.parse(storedLockState));
-		}
-	}, []);
-
-	const lockAllObjects = () => {
-		const allLocked = areAllObjectsLocked;
-		const newLockState = !allLocked;
-
-		setAreAllObjectsLocked(newLockState);
-
-		setTables((prevTables) =>
-			prevTables.map((table) => ({
-				...table,
-				isLocked: newLockState,
-			}))
-		);
-		setFeatures((prevFeatures) =>
-			prevFeatures.map((feature) => ({
-				...feature,
-				isLocked: newLockState,
-			}))
-		);
-
-		// Save the new lock state to local storage
-		localStorage.setItem(
-			"areAllObjectsLocked",
-			JSON.stringify(newLockState)
-		);
-	};
-
-	const handleObjectClick = (
-		id: string,
-		type: "table" | "feature",
-		x: number,
-		y: number
-	) => {
-		setSelectedObject({ id, type, x, y });
-	};
-
-	const handleStageClick = () => {
-		setSelectedObject(null);
-	};
-
-	const handleDelete = () => {
-		if (selectedObject) {
-			removeObjectFromCanvas(selectedObject.id);
-			setSelectedObject(null);
-		}
-	};
+	// const handleDelete = () => {
+	// 	if (selectedObject) {
+	// 		removeObjectFromCanvas(selectedObject.id);
+	// 		setSelectedObject(null);
+	// 	}
+	// };
 
 	const selectedTableOrFeature = selectedObject
 		? selectedObject.type === "table"
@@ -254,163 +198,99 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			: features.find((feature) => feature.id === selectedObject.id)
 		: null;
 
-	const handleAddVendorClick = (tableId: string) => {
-		setSelectedTableId(tableId);
-		setIsModalOpen(true);
-	};
-
-	const handleRemoveVendor = (tableId: string) => {
-		// First, update tables state to remove the vendorId from the table
-		setTables((prevTables) =>
-			prevTables.map((table) =>
-				table.id === tableId
-					? { ...table, vendorId: undefined }
-					: table
-			)
-		);
-
-		// Update vendors after the table state has been modified
-		setVendors((prevVendors) => {
-			// Find the vendor associated with the table
-			const associatedVendor = prevVendors.find((vendor) =>
-				tables.some(
-					(table) =>
-						table.id === tableId &&
-						table.vendorId === vendor.id
-				)
-			);
-
-			if (associatedVendor) {
-				// Remove room and table association from the vendor
-				localStorage.removeItem(
-					`vendor-${associatedVendor.id}-roomId`
-				); // Clear room from localStorage
-				return prevVendors.map((vendor) =>
-					vendor.id === associatedVendor.id
-						? {
-								...vendor,
-								signedIn: false,
-								roomId: "", // Clear room association
-								roomName: "", // Clear room name
-						  }
-						: vendor
-				);
-			}
-			return prevVendors;
-		});
-	};
-
-	// Handle zooming with mouse wheel
-	// const handleWheel = (e: any) => {
-	// 	e.evt.preventDefault();
-
-	// 	const stage = stageRef.current;
-	// 	const oldScale = stage.scaleX();
-	// 	const pointer = stage.getPointerPosition();
-
-	// 	const scaleBy = 1.01; // Zoom factor
-	// 	let direction = e.evt.deltaY > 0 ? 1 : -1;
-
-	// 	// Revert zoom direction when using ctrlKey (for touchpads)
-	// 	if (e.evt.ctrlKey) {
-	// 		direction = -direction;
-	// 	}
-
-	// 	const newScale =
-	// 		direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-
-	// 	setScale(newScale);
-
-	// 	const mousePointTo = {
-	// 		x: (pointer.x - stage.x()) / oldScale,
-	// 		y: (pointer.y - stage.y()) / oldScale,
-	// 	};
-
-	// 	const newPos = {
-	// 		x: pointer.x - mousePointTo.x * newScale,
-	// 		y: pointer.y - mousePointTo.y * newScale,
-	// 	};
-
-	// 	setStagePosition(newPos);
-	// 	stage.scale({ x: newScale, y: newScale });
-	// 	stage.position(newPos);
-	// 	stage.batchDraw(); // Update the stage
+	// const handleAddVendorClick = (tableId: string) => {
+	// 	setSelectedTableId(tableId);
+	// 	setIsModalOpen(true);
 	// };
 
-	// const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const newScale = parseFloat(e.target.value);
-	// 	const stage = stageRef.current;
+	// const handleRemoveVendor = (tableId: string) => {
+	// 	// First, update tables state to remove the vendorId from the table
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.id === tableId
+	// 				? { ...table, vendorId: undefined }
+	// 				: table
+	// 		)
+	// 	);
 
+	// 	// Update vendors after the table state has been modified
+	// 	setVendors((prevVendors) => {
+	// 		// Find the vendor associated with the table
+	// 		const associatedVendor = prevVendors.find((vendor) =>
+	// 			tables.some(
+	// 				(table) =>
+	// 					table.id === tableId &&
+	// 					table.vendorId === vendor.id
+	// 			)
+	// 		);
+
+	// 		if (associatedVendor) {
+	// 			// Remove room and table association from the vendor
+	// 			localStorage.removeItem(
+	// 				`vendor-${associatedVendor.id}-roomId`
+	// 			); // Clear room from localStorage
+	// 			return prevVendors.map((vendor) =>
+	// 				vendor.id === associatedVendor.id
+	// 					? {
+	// 							...vendor,
+	// 							signedIn: false,
+	// 							roomId: "", // Clear room association
+	// 							roomName: "", // Clear room name
+	// 					  }
+	// 					: vendor
+	// 			);
+	// 		}
+	// 		return prevVendors;
+	// 	});
+	// };
+
+	// useEffect(() => {
+	// 	const stage = stageRef.current;
 	// 	if (stage) {
-	// 		const oldScale = stage.scaleX();
-	// 		const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
+	// 		// Attach the wheel event handler for zooming
+	// 		stage.on("wheel", handleWheel);
 
-	// 		setScale(newScale);
+	// 		// Force an update to ensure all Konva internals are set up
+	// 		stage.batchDraw();
 
-	// 		const mousePointTo = {
-	// 			x: (pointer.x - stage.x()) / oldScale,
-	// 			y: (pointer.y - stage.y()) / oldScale,
+	// 		return () => {
+	// 			stage.off("wheel", handleWheel);
 	// 		};
-
-	// 		const newPos = {
-	// 			x: pointer.x - mousePointTo.x * newScale,
-	// 			y: pointer.y - mousePointTo.y * newScale,
-	// 		};
-
-	// 		setStagePosition(newPos);
-	// 		stage.scale({ x: newScale, y: newScale });
-	// 		stage.position(newPos);
-	// 		stage.batchDraw(); // Update the stage
 	// 	}
+	// }, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
+
+	// const getOptionsBarPosition = () => {
+	// 	if (!selectedObject) return { x: 0, y: 0 };
+
+	// 	const stage = stageRef.current;
+	// 	const layer = stage.getLayers()[0];
+	// 	const node = layer.findOne(`#${selectedObject.id}`);
+
+	// 	if (node) {
+	// 		const transform = node.getAbsoluteTransform().copy();
+	// 		// Get the center point of the object
+	// 		const objectCenter = {
+	// 			x: node.width() / 2,
+	// 			y: node.height() / 2,
+	// 		};
+	// 		// transform the node position to the screen coordinate system
+	// 		const position = transform.point(objectCenter); // Get position of the center
+
+	// 		// get the position of the stage container on the page
+	// 		const stageContainerRect = stage
+	// 			.container()
+	// 			.getBoundingClientRect();
+
+	// 		// calculate the absolute position on the screen
+	// 		const absoluteX =
+	// 			stageContainerRect.left + position.x * scale;
+	// 		const absoluteY = stageContainerRect.top + position.y * scale;
+
+	// 		return { x: absoluteX, y: absoluteY };
+	// 	}
+
+	// 	return { x: 0, y: 0 };
 	// };
-
-	useEffect(() => {
-		const stage = stageRef.current;
-		if (stage) {
-			// Attach the wheel event handler for zooming
-			stage.on("wheel", handleWheel);
-
-			// Force an update to ensure all Konva internals are set up
-			stage.batchDraw();
-
-			return () => {
-				stage.off("wheel", handleWheel);
-			};
-		}
-	}, [handleWheel]); // Adding handleWheel as a dependency ensures it captures the latest state
-
-	const getOptionsBarPosition = () => {
-		if (!selectedObject) return { x: 0, y: 0 };
-
-		const stage = stageRef.current;
-		const layer = stage.getLayers()[0];
-		const node = layer.findOne(`#${selectedObject.id}`);
-
-		if (node) {
-			const transform = node.getAbsoluteTransform().copy();
-			// Get the center point of the object
-			const objectCenter = {
-				x: node.width() / 2,
-				y: node.height() / 2,
-			};
-			// transform the node position to the screen coordinate system
-			const position = transform.point(objectCenter); // Get position of the center
-
-			// get the position of the stage container on the page
-			const stageContainerRect = stage
-				.container()
-				.getBoundingClientRect();
-
-			// calculate the absolute position on the screen
-			const absoluteX =
-				stageContainerRect.left + position.x * scale;
-			const absoluteY = stageContainerRect.top + position.y * scale;
-
-			return { x: absoluteX, y: absoluteY };
-		}
-
-		return { x: 0, y: 0 };
-	};
 
 	const optionsBarPosition = getOptionsBarPosition();
 
@@ -793,7 +673,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								max="3"
 								step="0.01"
 								value={scale}
-								// onChange={handleZoomChange}
 								onChange={(e) =>
 									handleZoomChange(
 										parseFloat(
