@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Room } from "../Types"; // Adjust the path based on your project structure
+import { Room } from "../Types";
 
 export const useCanvasSize = (
 	room: Room | undefined,
@@ -13,6 +13,7 @@ export const useCanvasSize = (
 	const [stageRotation, setStageRotation] = useState(0);
 	const [scale, setScale] = useState(1);
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
+	const feetToPixels = 25;
 
 	useEffect(() => {
 		const updateContainerSize = () => {
@@ -23,7 +24,6 @@ export const useCanvasSize = (
 
 				const roomWidthFeet = parseFloat(room.width);
 				const roomHeightFeet = parseFloat(room.depth);
-				const feetToPixels = 25;
 
 				let roomWidthPixels = roomWidthFeet * feetToPixels;
 				let roomHeightPixels = roomHeightFeet * feetToPixels;
@@ -66,31 +66,41 @@ export const useCanvasSize = (
 				const scale = Math.min(scaleX, scaleY);
 
 				setScale(scale);
-				setContainerSize({
-					width: roomWidthPixels,
-					height: roomHeightPixels,
-				});
 
 				// Calculate the center of the room
 				const centerX = roomWidthPixels / 2;
 				const centerY = roomHeightPixels / 2;
-
 				// Set the offset of the stage to rotate around the center
 				const containerCenterX = containerWidth / 2;
-				const containerCenterY = containerHeight / 3;
+				const containerCenterY = containerHeight / 2;
 
 				// Offset the stage position to keep it centered
 				const offsetX = centerX * scale;
 				const offsetY = centerY * scale;
+
+				setContainerSize({
+					width: roomWidthPixels,
+					height: roomHeightPixels,
+				});
 
 				setStagePosition({
 					x: containerCenterX,
 					y: containerCenterY,
 				});
 
+				// if (stageRef.current) {
+				// 	stageRef.current.offsetX(offsetX);
+				// 	stageRef.current.offsetY(offsetY);
+				// }
 				if (stageRef.current) {
-					stageRef.current.offsetX(offsetX);
-					stageRef.current.offsetY(offsetY);
+					stageRef.current.offsetX(roomWidthPixels / 2);
+					stageRef.current.offsetY(roomHeightPixels / 2);
+					stageRef.current.scale({ x: scale, y: scale });
+					stageRef.current.position({
+						x: containerCenterX,
+						y: containerCenterY,
+					});
+					stageRef.current.batchDraw(); // Update the stage
 				}
 			}
 		};
