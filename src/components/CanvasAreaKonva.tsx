@@ -674,7 +674,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													isMobile
 														? "translateX(-50%)"
 														: "none",
-												zIndex: 1000,
+												zIndex: 1,
 												pointerEvents:
 													"auto",
 											}}

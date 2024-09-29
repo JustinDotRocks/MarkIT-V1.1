@@ -494,3 +494,10 @@ export interface VendorSignInComponentProps {
 }
 
 export type GridMode = "Off" | "On" | "Drag";
+
+export interface EditVendorModalProps {
+	vendorToEdit: Vendor;
+	onSave: (updatedVendor: Vendor) => void;
+	onClose: () => void;
+	vendors: Vendor[]; // To check for duplicate names
+}

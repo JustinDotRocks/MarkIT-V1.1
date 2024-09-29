@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import VendorSignInComponent from "../VendorSignInComponent";
+import EditVendorModal from "../EditVendorModal";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,
@@ -28,8 +29,9 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	updateVendorDetails,
 	vendors,
 }) => {
-	const [isEditing, setIsEditing] = useState(false);
+	// const [isEditing, setIsEditing] = useState(false);
 	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false); // Control modal visibility
 	const [editableVendor, setEditableVendor] = useState({
 		id,
 		name: vendorName,
@@ -110,7 +112,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	// 	updateVendorDetails(editableVendor);
 	// 	setIsEditing(false);
 	// };
-	const handleSave = () => {
+	const handleSave = (updatedVendor: any) => {
 		// Check for duplicate vendor name
 		const existingVendor = vendors.find(
 			(vendor) =>
@@ -126,8 +128,12 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		}
 
 		// Save changes
-		updateVendorDetails(editableVendor);
-		setIsEditing(false);
+		// updateVendorDetails(editableVendor);
+		updateVendorDetails(updatedVendor);
+		// Update editableVendor with the new details
+		setEditableVendor(updatedVendor);
+		// setIsEditing(false);
+		setIsModalOpen(false); // Close the modal
 		setErrorMessage(null); // Clear any previous error
 	};
 
@@ -180,29 +186,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	// Check if both room and table are selected
 	const isRoomAndTableSelected = editableVendor.roomId && tableNumber;
 
-	// const toggleSignedIn = () => {
-	// 	const newSignedInState = !editableVendor.signedIn;
-	// 	setEditableVendor((prev) => ({
-	// 		...prev,
-	// 		signedIn: newSignedInState,
-	// 	}));
-	// 	updateVendorDetails({
-	// 		...editableVendor,
-	// 		signedIn: newSignedInState,
-	// 	});
-	// };
-	// Function to update the signedIn status
-	// const handleSignedInChange = (newSignedInState: boolean) => {
-	// 	setEditableVendor((prev) => ({
-	// 		...prev,
-	// 		signedIn: newSignedInState,
-	// 	}));
-	// 	updateVendorDetails({
-	// 		...editableVendor,
-	// 		signedIn: newSignedInState,
-	// 	});
-	// };
-
 	// Function to toggle the signedIn state
 	const toggleSignedIn = () => {
 		const newSignedInState = !signedIn;
@@ -223,26 +206,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		<div
 			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72 relative`}
 		>
-			{/* {isRoomAndTableSelected && (
-				<div className="absolute top-4 right-4 ">
-					<button
-						onClick={toggleSignedIn}
-						className="focus:outline-none"
-					>
-						{editableVendor.signedIn ? (
-							<FaCheckCircle
-								className="text-green-500"
-								size={28}
-							/>
-						) : (
-							<FaCheckCircle
-								className="text-red-500"
-								size={28}
-							/>
-						)}
-					</button>
-				</div>
-			)} */}
 			{isRoomAndTableSelected && (
 				<div className="absolute top-2 right-2">
 					<VendorSignInComponent
@@ -253,7 +216,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				</div>
 			)}
 			{/* Conditional rendering based on isEditing state** */}
-			{isEditing ? (
+			{/* {isEditing ? (
 				<>
 					<div>
 						<label>Vendor Name:</label>
@@ -322,84 +285,85 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						Cancel
 					</button>
 				</>
-			) : (
-				<>
-					<div className="flex m-2">
-						Vendor:
-						<div className="font-bold ml-2">
-							{vendorName}
-						</div>
-					</div>
-					<div className="m-2">
-						Products: {vendorProducts}
-					</div>
-					<div className="flex justify-between items-center m-2">
-						<div className="flex-1">
-							<div className="flex items-center justify-between">
-								<span>Vendor Details:</span>
-								{hasDetails && (
-									<button
-										onClick={
-											toggleAccordion
-										}
-										className="focus:outline-none ml-2"
-									>
-										{isAccordionOpen ? (
-											<FaChevronUp />
-										) : (
-											<FaChevronDown />
-										)}
-									</button>
-								)}
-							</div>
-							<div
-								className={`transition-all duration-300 ease-in-out overflow-hidden ${
-									isAccordionOpen
-										? "max-h-full"
-										: "max-h-0"
-								}`}
-							>
-								<span className="block mt-2">
-									{vendorDetails}
-								</span>
-							</div>
-						</div>
-					</div>
-					<div className="m-2">
-						Electricity?:{" "}
-						{electricityRequired ? "Yes" : "No"}
-					</div>
-
-					<div className="m-2 text-white">
-						<strong>Room:</strong>
-						{assignedRoom
-							? " " + assignedRoom.name
-							: " None"}
-					</div>
-					<div className="m-2 text-white">
-						<strong>Table:</strong>
-						{assignedTable
-							? " " + getTableLabel(assignedTable)
-							: " None"}
-					</div>
-					<div className="flex items-center justify-end mt-6">
-						<button
-							onClick={() => setIsEditing(true)}
-							className="mt-2 bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
-						>
-							Edit Vendor
-						</button>
-						<DeleteConfirmationModal
-							message="Are you sure you want to delete this Vendor?"
-							onConfirm={() => deleteVendor(id)}
-							triggerComponent={
-								<button className="bg-customRed hover:bg-red-700 text-white font-bold mt-2 py-1 px-2 rounded">
-									Delete
+			) : ( */}
+			<>
+				<div className="flex m-2">
+					Vendor:
+					<div className="font-bold ml-2">{vendorName}</div>
+				</div>
+				<div className="m-2">Products: {vendorProducts}</div>
+				<div className="flex justify-between items-center m-2">
+					<div className="flex-1">
+						<div className="flex items-center justify-between">
+							<span>Vendor Details:</span>
+							{hasDetails && (
+								<button
+									onClick={toggleAccordion}
+									className="focus:outline-none ml-2"
+								>
+									{isAccordionOpen ? (
+										<FaChevronUp />
+									) : (
+										<FaChevronDown />
+									)}
 								</button>
-							}
-						/>
+							)}
+						</div>
+						<div
+							className={`transition-all duration-300 ease-in-out overflow-hidden ${
+								isAccordionOpen
+									? "max-h-full"
+									: "max-h-0"
+							}`}
+						>
+							<span className="block mt-2">
+								{vendorDetails}
+							</span>
+						</div>
 					</div>
-				</>
+				</div>
+				<div className="m-2">
+					Electricity?: {electricityRequired ? "Yes" : "No"}
+				</div>
+
+				<div className="m-2 text-white">
+					<strong>Room:</strong>
+					{assignedRoom ? " " + assignedRoom.name : " None"}
+				</div>
+				<div className="m-2 text-white">
+					<strong>Table:</strong>
+					{assignedTable
+						? " " + getTableLabel(assignedTable)
+						: " None"}
+				</div>
+				<div className="flex items-center justify-end mt-6">
+					<button
+						// onClick={() => setIsEditing(true)}
+						onClick={() => setIsModalOpen(true)} // Open the modal
+						className="mt-2 bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
+					>
+						Edit Vendor
+					</button>
+					<DeleteConfirmationModal
+						message="Are you sure you want to delete this Vendor?"
+						onConfirm={() => deleteVendor(id)}
+						triggerComponent={
+							<button className="bg-customRed hover:bg-red-700 text-white font-bold mt-2 py-1 px-2 rounded">
+								Delete
+							</button>
+						}
+					/>
+				</div>
+			</>
+			{/* )} */}
+			{/* Render the VendorEditModal when isModalOpen is true */}
+			{isModalOpen && (
+				<EditVendorModal
+					vendorToEdit={editableVendor}
+					onSave={handleSave}
+					onClose={() => setIsModalOpen(false)}
+					vendors={vendors} // Pass vendors for duplicate name checking
+				/>
 			)}
 		</div>
 	);
