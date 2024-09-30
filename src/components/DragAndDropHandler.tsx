@@ -15,11 +15,8 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	vendors,
 	stageRef,
 	setShowGrid,
-	// onDragStart,
-	// onDragEnd,
 	onGlobalDragStart,
 	onGlobalDragEnd,
-	gridSize,
 }) => {
 	const handleDragMove = (e: any) => {
 		const node = e.target;
@@ -65,7 +62,6 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		if (onGlobalDragStart) {
 			onGlobalDragStart();
 		}
-		// Additional internal logic if needed
 	};
 
 	const handleDragEnd = (e: any) => {
@@ -146,7 +142,6 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	};
 
 	const handleTouchStart = (e: any) => {
-		// e.preventDefault(); // Prevent default touch behaviors like scrolling
 		// Check if the event is a Konva event and has an evt property
 		const event = e.evt || e;
 

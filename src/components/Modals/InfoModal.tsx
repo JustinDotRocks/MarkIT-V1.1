@@ -1,6 +1,7 @@
 // InfoModal.tsx
 import React, { useState, useRef, useEffect } from "react";
-import { InfoModalProps } from "../Types";
+import { InfoModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions";
 import { FiInfo } from "react-icons/fi";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
@@ -13,26 +14,20 @@ const InfoModal: React.FC<InfoModalProps> = ({
 	const [isRoomInfoModalOpen, setIsRoomInfoModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			setIsRoomInfoModalOpen(false);
-		}
-	};
-
 	useEffect(() => {
 		if (isRoomInfoModalOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
+			const outsideClickHandler = handleClickOutside(modalRef, () =>
+				setIsRoomInfoModalOpen(false)
+			);
+			document.addEventListener("mousedown", outsideClickHandler);
+			return () => {
+				document.removeEventListener(
+					"mousedown",
+					outsideClickHandler
+				);
+			};
 		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isRoomInfoModalOpen]);
+	}, [isRoomInfoModalOpen, modalRef]);
 
 	return (
 		<>
@@ -47,7 +42,6 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			{isRoomInfoModalOpen && (
 				<div
 					className="fixed bg-customBlue text-white p-4 rounded shadow-lg z-50 top-48 right-60"
-					// style={{ top: "200px", right: "250px" }}
 					ref={modalRef}
 				>
 					<h2 className="text-xl font-bold mb-2">
@@ -69,12 +63,6 @@ const InfoModal: React.FC<InfoModalProps> = ({
 						>
 							Edit Room
 						</button>
-						{/* <button
-							onClick={() => removeRoom(room.id)}
-							className="bg-red-500 text-white py-1 px-4 rounded"
-						>
-							Delete Room
-						</button> */}
 						<DeleteConfirmationModal
 							message="Are you sure you want to delete this Room?"
 							onConfirm={() => removeRoom(room.id)}

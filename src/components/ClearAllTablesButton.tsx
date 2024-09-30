@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ClearAllTablesButtonProps, Table } from "../Types";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { ClearAllTablesButtonProps } from "../Types";
+import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 
 const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,

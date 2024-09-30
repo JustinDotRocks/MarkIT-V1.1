@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Vendor, EditVendorModalProps } from "../Types";
+import { Vendor, EditVendorModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions"; // Import the utility functions
 
 const EditVendorModal: React.FC<EditVendorModalProps> = ({
 	vendorToEdit,
@@ -53,21 +54,17 @@ const EditVendorModal: React.FC<EditVendorModalProps> = ({
 		setErrorMessage(null); // Clear any previous error
 	};
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			if (onClose) onClose();
-		}
-	};
-
 	useEffect(() => {
-		document.addEventListener("mousedown", handleClickOutside);
+		// Use the extracted handleClickOutside function
+		const outsideClickHandler = handleClickOutside(modalRef, onClose);
+		document.addEventListener("mousedown", outsideClickHandler);
 		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener(
+				"mousedown",
+				outsideClickHandler
+			);
 		};
-	}, []);
+	}, [modalRef, onClose]);
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">

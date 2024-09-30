@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AddFeaturesModalProps } from "../Types";
+import { AddFeaturesModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions";
 
 const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 	addFeature,
-	features,
 	selectedRoomId,
 }) => {
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
@@ -15,26 +15,6 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 	);
 	const [quantity, setQuantity] = useState<number>(1);
 
-	// const handleAddFeatureClick = () => {
-	// 	if (!selectedRoomId) return;
-
-	// 	const baseId = Date.now().toString(); // Base ID for unique identification
-	// 	const details = ""; // Optional: Add any details if needed
-
-	// 	// Get the existing features for the selected room
-	// 	const existingFeatures = features.filter(
-	// 		(feature) => feature.roomId === selectedRoomId
-	// 	);
-
-	// 	const id = `${baseId}-feature`;
-	// 	addFeature({
-	// 		type: featureType,
-	// 		id,
-	// 		details,
-	// 	});
-
-	// 	onClose(); // Close the modal after adding the feature
-	// };
 	const handleAddFeatureClick = () => {
 		if (!selectedRoomId) return;
 
@@ -53,26 +33,20 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 		setIsAddFeaturesModalOpen(false);
 	};
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			setIsAddFeaturesModalOpen(false);
-		}
-	};
-
 	useEffect(() => {
 		if (isAddFeaturesModalOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
+			const outsideClickHandler = handleClickOutside(modalRef, () =>
+				setIsAddFeaturesModalOpen(false)
+			);
+			document.addEventListener("mousedown", outsideClickHandler);
+			return () => {
+				document.removeEventListener(
+					"mousedown",
+					outsideClickHandler
+				);
+			};
 		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isAddFeaturesModalOpen]);
+	}, [isAddFeaturesModalOpen, modalRef]);
 
 	return (
 		<>

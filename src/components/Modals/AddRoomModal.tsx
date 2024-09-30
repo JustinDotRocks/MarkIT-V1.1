@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { RoomSetupModalProps } from "../Types"; // Updated import
+import { RoomSetupModalProps } from "../../Types";
+import {
+	handleRoomInputChange,
+	handleClickOutside,
+} from "../../utils/functions";
 
 const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 	isOpen,
@@ -12,21 +16,9 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 	const [roomWidth, setRoomWidth] = useState("");
 	const [roomDepth, setRoomDepth] = useState("");
 
+	// Use the utility function for input changes
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		switch (name) {
-			case "room-name":
-				setRoomName(value);
-				break;
-			case "room-width":
-				setRoomWidth(value);
-				break;
-			case "room-depth":
-				setRoomDepth(value);
-				break;
-			default:
-				break;
-		}
+		handleRoomInputChange(e, setRoomName, setRoomWidth, setRoomDepth);
 	};
 
 	const handleAddRoom = () => {
@@ -37,23 +29,17 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 		onClose();
 	};
 
-	// if (!isOpen) return null;
-
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			if (onClose) onClose();
-		}
-	};
-
 	useEffect(() => {
-		document.addEventListener("mousedown", handleClickOutside);
+		// Use the extracted handleClickOutside function
+		const outsideClickHandler = handleClickOutside(modalRef, onClose);
+		document.addEventListener("mousedown", outsideClickHandler);
 		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener(
+				"mousedown",
+				outsideClickHandler
+			);
 		};
-	}, []);
+	}, [modalRef, onClose]);
 
 	if (!isOpen) return null;
 

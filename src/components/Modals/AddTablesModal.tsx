@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AddTablesModalProps } from "../Types";
+import { AddTablesModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions";
 
 const AddTablesModal: React.FC<AddTablesModalProps> = ({
 	addTable,
@@ -39,26 +40,20 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 		setIsAddTablesModalOpen(false); // Close the modal after adding tables
 	};
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			setIsAddTablesModalOpen(false);
-		}
-	};
-
 	useEffect(() => {
 		if (isAddTablesModalOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
+			const outsideClickHandler = handleClickOutside(modalRef, () =>
+				setIsAddTablesModalOpen(false)
+			);
+			document.addEventListener("mousedown", outsideClickHandler);
+			return () => {
+				document.removeEventListener(
+					"mousedown",
+					outsideClickHandler
+				);
+			};
 		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isAddTablesModalOpen]);
+	}, [isAddTablesModalOpen, modalRef]);
 
 	return (
 		<>

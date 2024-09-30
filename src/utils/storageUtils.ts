@@ -1,3 +1,12 @@
+export const STORAGE_KEYS = {
+	ROOMS: "rooms",
+	VENDORS: "vendors",
+	FEATURES: "features",
+	TABLES: "tables",
+	ROOM_FEATURES: "roomFeatures",
+	ROOM_TABLES: "roomTables",
+};
+
 // Utility to save data to localStorage
 export const saveToLocalStorage = <T>(key: string, data: T): void => {
 	try {

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Vendor, AddVendorModalProps } from "../Types";
-import Button from "./Button/Button";
+import { Vendor, AddVendorModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions";
+import Button from "../Button/Button";
 import { v4 as uuidv4 } from "uuid";
 
 const AddVendorModal: React.FC<AddVendorModalProps> = ({
@@ -100,31 +101,24 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 		setErrorMessage(null); // Clear any error messages
 	};
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			setIsAddVendorModalOpen(false);
-		}
-	};
-
 	useEffect(() => {
 		if (isAddVendorModalOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
+			const outsideClickHandler = handleClickOutside(modalRef, () =>
+				setIsAddVendorModalOpen(false)
+			);
+			document.addEventListener("mousedown", outsideClickHandler);
+			return () => {
+				document.removeEventListener(
+					"mousedown",
+					outsideClickHandler
+				);
+			};
 		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isAddVendorModalOpen]);
+	}, [isAddVendorModalOpen, modalRef]);
 
 	return (
 		<>
 			<button
-				// onClick={() => setIsAddVendorModalOpen(true) }
 				onClick={() => {
 					setIsAddVendorModalOpen(true);
 					setErrorMessage(null); // Clear any previous error when opening the modal
@@ -149,7 +143,6 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 								value={vendorName}
 								onChange={handleInputChange}
 								placeholder="Vendor name"
-								// className="w-full p-2 rounded  text-white placeholder-white mb-4"
 								className={`w-full p-2 rounded ${
 									errorMessage
 										? "border-2 border-red-500 bg-red-100 placeholder-red-500 text-red-500"

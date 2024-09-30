@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RoomDetailsDisplayProps } from "../Types";
-import { FaChevronDown } from "react-icons/fa"; // Import the arrow-down icon
+import { FaChevronDown } from "react-icons/fa";
 
 const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 	rooms,
@@ -35,7 +35,6 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 		<div className="flex  sm:justify-start md:justify-center lg:justify-center items-center w-full">
 			{isMobile ? (
 				// Dropdown for mobile view
-				// <div className="flex justify-start items-center ">
 				<div className="relative w-1/2">
 					<select
 						value={selectedRoomId || ""}
@@ -63,7 +62,6 @@ const RoomDetailsDisplay: React.FC<RoomDetailsDisplayProps> = ({
 					/>
 				</div>
 			) : (
-				// </div>
 				// Room buttons for desktop view
 				<div className="flex flex-row space-x-4">
 					{rooms.map((room) => (

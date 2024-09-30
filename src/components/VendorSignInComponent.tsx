@@ -1,5 +1,4 @@
-// VendorSignInComponent.tsx
-import React, { useState } from "react";
+import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { VendorSignInComponentProps } from "../Types";
 
@@ -9,21 +8,8 @@ const VendorSignInComponent: React.FC<VendorSignInComponentProps> = ({
 	size = 32,
 	className = "",
 }) => {
-	// const [signedIn, setSignedIn] = useState(initialSignedIn);
-
-	// const toggleSignedIn = () => {
-	// 	const newSignedInState = !signedIn;
-	// 	setSignedIn(newSignedInState);
-
-	// 	// Communicate the change back to the parent component
-	// 	if (onSignedInChange) {
-	// 		onSignedInChange(newSignedInState);
-	// 	}
-	// };
-
 	return (
 		<button
-			// onClick={toggleSignedIn}
 			onClick={onToggleSignedIn}
 			className={`focus:outline-none ${className}`}
 			title={

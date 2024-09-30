@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DeleteConfirmationModalProps } from "../Types";
+import { DeleteConfirmationModalProps } from "../../Types";
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
 	onConfirm,

@@ -40,7 +40,6 @@ export interface RoomSetupModalProps {
 }
 
 export interface RoomDetailsComponentProps {
-	// addRoom: (name: string, width: string, depth: string) => void;
 	openModal: () => void;
 	openEditModal: (room: Room) => void;
 	rooms: Room[];
@@ -48,11 +47,6 @@ export interface RoomDetailsComponentProps {
 
 export interface SideBarProps {
 	activeMode: "setup" | "vendor" | "";
-	// addObject: (
-	// 	type: "door" | "obstacle",
-	// 	id: string,
-	// 	details?: string
-	// ) => void;
 	rooms: Room[];
 	setRooms: React.Dispatch<React.SetStateAction<Room[]>>;
 	vendors: Vendor[];
@@ -98,7 +92,6 @@ export interface VendorModePageProps {
 	updateVendorDetails: (updatedVendor: Vendor) => void;
 	selectedRoomId: string | null;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
-	// No updateTableAssignment and deleteVendor here
 }
 
 export type CanvasObject = {
@@ -122,7 +115,6 @@ export interface CanvasAreaProps {
 	toggleLockObject: (id: string, type: "table" | "feature") => void;
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 	openAddRoomModal: () => void;
-	// addTable: (type: "table-6" | "table-8" | "table-5") => void;
 	addTable: (tableData: {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
@@ -176,8 +168,6 @@ export interface Vendor {
 	name: string;
 	products: string;
 	details: string;
-	// tableId: string;
-	// roomName: string;
 	roomId: string;
 	signedIn: boolean;
 	electricityRequired: boolean;
@@ -201,7 +191,6 @@ export interface Table {
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
 	tableNumber: number;
-	// roomName: string;
 	x: number;
 	y: number;
 	rotation?: number;
@@ -219,7 +208,6 @@ export interface VendorCardProps extends VendorDetails {
 }
 
 export interface RoomEditModalProps {
-	// room: Room;
 	onClose: () => void;
 	onSave: (updatedRoom: Room) => void;
 	isOpen: boolean;
@@ -230,7 +218,6 @@ export interface RoomEditModalProps {
 export interface OptionsBarProps {
 	x: number;
 	y: number;
-	// height: number;
 	onDelete: () => void;
 	onRotateCW: () => void;
 	onRotateCCW: () => void;
@@ -240,13 +227,9 @@ export interface OptionsBarProps {
 	onAddVendor: () => void;
 	onRemoveVendor: () => void;
 	objectType: "table" | "feature";
-	// canvasWidth: number;
-	// canvasHeight: number;
 	signedIn?: boolean; // Optional, since VendorSignInComponent has a default
 	updateVendorDetails?: (vendorData: any) => void; // Function to update vendor details
 	vendorId?: string;
-	// stageRotation: number;
-	// isMobile: boolean;
 }
 
 export interface RoomDetailsDisplayProps {
@@ -304,18 +287,11 @@ export interface DragAndDropComponentProps {
 	onDragMove: (e: any) => void;
 	onDragEnd: (e: any) => void;
 	onDragStart: (e: any) => void;
-	// onObjectClick: (
-	// 	id: string,
-	// 	type: "table" | "feature",
-	// 	x: number,
-	// 	y: number
-	// ) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
 		x: number,
 		y: number
-		// height: number
 	) => void;
 
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
@@ -333,27 +309,17 @@ export interface DragAndDropHandlerProps {
 	features: Feature[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
-	// onObjectClick: (
-	// 	id: string,
-	// 	type: "table" | "feature",
-	// 	x: number,
-	// 	y: number
-	// ) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
 		x: number,
 		y: number
-		// height: number
 	) => void;
 
 	Component: React.FC<DragAndDropComponentProps>;
-	// Component: React.FC<DragAndDropComponentProps & { vendors?: Vendor[] }>;
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
 	stageRef: React.RefObject<any>;
 	setShowGrid: (show: boolean) => void;
-	// onDragStart: () => void;
-	// onDragEnd: () => void;
 	onGlobalDragStart: () => void;
 	onGlobalDragEnd: () => void;
 	gridSize: number;
@@ -401,11 +367,6 @@ export interface InfoModalProps {
 	openEditModal: (room: Room) => void;
 	removeRoom: (roomId: string) => void;
 	selectedRoomId: string | null;
-
-	// roomToEdit: Room | null;
-	// isRoomEditModalOpen: boolean;
-	// setIsRoomEditModalOpen: (isOpen: boolean) => void;
-	// updateRoom: (updatedRoom: Room) => void;
 }
 
 export interface AddVendorModalProps {
@@ -420,7 +381,6 @@ export interface AssignVendorModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	vendors: Vendor[];
-	// onAssign: (vendorId: string) => void;
 	tables: Table[];
 	rooms: Room[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
@@ -432,7 +392,6 @@ export interface RoomOptionsProps {
 	areAllObjectsLocked: boolean;
 	lockAllObjects: () => void;
 	selectedRoomId: string | null;
-	// toggleRoomInfoModal: () => void;
 	addTable: (tableData: {
 		type: "table-6" | "table-8" | "table-5";
 		id: string;
@@ -452,17 +411,12 @@ export interface RoomOptionsProps {
 	rooms: Room[];
 	setSelectedRoomId: React.Dispatch<React.SetStateAction<string | null>>;
 	openAddRoomModal: () => void;
-	// setTables: (tables: Table[]) => void;
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
-	// showGrid: boolean;
-	// toggleGridVisibility: () => void;
 	gridMode: GridMode;
 	setGridMode: React.Dispatch<React.SetStateAction<GridMode>>;
 }
 
 export interface DeleteConfirmationModalProps {
-	// isOpen: boolean;
-	// onClose: () => void;
 	onConfirm: () => void;
 	message?: string;
 	triggerComponent: React.ReactNode; // A button or any element that triggers the modal
@@ -477,15 +431,8 @@ export interface ClearAllTablesButtonProps {
 export interface GridProps {
 	containerSize: { width: number; height: number };
 	gridSize: number;
-	// isVisible: boolean;
 }
 
-// export interface VendorSignInComponentProps {
-// 	initialSignedIn?: boolean;
-// 	onSignedInChange?: (signedIn: boolean) => void;
-// 	size?: number;
-// 	className?: string;
-// }
 export interface VendorSignInComponentProps {
 	signedIn: boolean;
 	onToggleSignedIn: () => void;

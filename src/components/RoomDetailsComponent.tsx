@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button/Button";
-import { RoomDetailsComponentProps, Room } from "../Types";
+import { RoomDetailsComponentProps } from "../Types";
 
 const RoomDetailsComponent: React.FC<RoomDetailsComponentProps> = ({
 	openModal,

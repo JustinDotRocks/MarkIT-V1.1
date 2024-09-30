@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import LockAllObjectsButton from "./LockAllObjectsButton";
-import AddTablesModal from "./AddTablesModal";
-import AddFeaturesModal from "./AddFeaturesModal";
-import InfoModal from "./InfoModal";
+import AddTablesModal from "./Modals/AddTablesModal";
+import AddFeaturesModal from "./Modals/AddFeaturesModal";
+import InfoModal from "./Modals/InfoModal";
 import ClearAllTablesButton from "./ClearAllTablesButton";
 import { RoomOptionsProps } from "../Types";
 

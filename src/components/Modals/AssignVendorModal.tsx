@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Button from "./Button/Button";
-import { AssignVendorModalProps } from "../Types";
+import { AssignVendorModalProps } from "../../Types";
 
 const AssignVendorModal: React.FC<AssignVendorModalProps> = ({
 	isOpen,
 	onClose,
 	vendors,
-	// onAssign,
 	tables,
 	rooms,
 	setTables,
 	selectedTableId,
 	setVendors,
 }) => {
-	const [selectedVendorId, setSelectedVendorId] = useState<string>("");
+	const [, setSelectedVendorId] = useState<string>("");
 
 	useEffect(() => {
 		if (isOpen) {

@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { VendorCardProps, Table } from "../Types";
-import {
-	FaChevronUp,
-	FaChevronDown,
-	FaCheckCircle,
-	// FaSignInAlt,
-	// FaUserCheck,
-	// FaToggleOn,
-	// FaToggleOff,
-} from "react-icons/fa";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 import VendorSignInComponent from "./VendorSignInComponent";
-import EditVendorModal from "./EditVendorModal";
+import EditVendorModal from "./Modals/EditVendorModal";
 
 const VendorCard: React.FC<VendorCardProps> = ({
 	id,
@@ -24,12 +16,10 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	electricityRequired,
 	tables,
 	rooms,
-	updateTableAssignment,
 	deleteVendor,
 	updateVendorDetails,
 	vendors,
 }) => {
-	// const [isEditing, setIsEditing] = useState(false);
 	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false); // Control modal visibility
 	const [editableVendor, setEditableVendor] = useState({
@@ -41,17 +31,8 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		electricityRequired,
 		roomId,
 	});
-	const [selectedRoomId, setSelectedRoomId] = useState<string | "">(roomId);
-	const [currentRoomName, setCurrentRoomName] = useState<string>("");
-	const [currentTableLabel, setCurrentTableLabel] = useState<string>("");
-	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message for duplicate name
-
-	const truncateText = (text: string, maxLength: number) => {
-		if (text.length > maxLength) {
-			return text.substring(0, maxLength) + "...";
-		}
-		return text;
-	};
+	const [, setSelectedRoomId] = useState<string | "">(roomId);
+	const [, setErrorMessage] = useState<string | null>(null); // Error message for duplicate name
 
 	const toggleAccordion = () => {
 		setIsAccordionOpen(!isAccordionOpen);
@@ -100,18 +81,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		return `Table ${table.tableNumber}: ${tableTypeLabel}`;
 	};
 
-	//  Filter out incomplete tables
-	const validTables = tables.filter(
-		(table) =>
-			table.tableNumber !== undefined &&
-			// table.roomName !== undefined &&
-			(!selectedRoomId || table.roomId === selectedRoomId)
-	);
-
-	// const handleSave = () => {
-	// 	updateVendorDetails(editableVendor);
-	// 	setIsEditing(false);
-	// };
 	const handleSave = (updatedVendor: any) => {
 		// Check for duplicate vendor name
 		const existingVendor = vendors.find(
@@ -128,47 +97,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		}
 
 		// Save changes
-		// updateVendorDetails(editableVendor);
 		updateVendorDetails(updatedVendor);
 		// Update editableVendor with the new details
 		setEditableVendor(updatedVendor);
-		// setIsEditing(false);
 		setIsModalOpen(false); // Close the modal
 		setErrorMessage(null); // Clear any previous error
-	};
-
-	const handleInputChange = (
-		e: React.ChangeEvent<
-			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		>
-	) => {
-		const { name, value, type } = e.target;
-		const isChecked = (e.target as HTMLInputElement).checked;
-
-		if (name === "selectedRoomId") {
-			setSelectedRoomId(value);
-			const selectedRoom = rooms.find((room) => room.id === value);
-			setEditableVendor((prev) => ({
-				...prev,
-				roomId: value,
-				roomName: selectedRoom ? selectedRoom.name : "",
-			}));
-			setCurrentRoomName(selectedRoom ? selectedRoom.name : ""); // Update current room display
-			localStorage.setItem(`vendor-${id}-roomId`, value); // Save to local storage
-			updateTableAssignment("", id); // Reset table selection when room changes
-		} else {
-			setEditableVendor((prev) => ({
-				...prev,
-				[name]: type === "checkbox" ? isChecked : value,
-			}));
-			if (name === "signedIn") {
-				// **Directly update signedIn state**
-				updateVendorDetails({
-					...editableVendor,
-					[name]: isChecked,
-				});
-			}
-		}
 	};
 
 	// Check if vendor details are present
@@ -215,77 +148,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					/>
 				</div>
 			)}
-			{/* Conditional rendering based on isEditing state** */}
-			{/* {isEditing ? (
-				<>
-					<div>
-						<label>Vendor Name:</label>
-						<input
-							type="text"
-							name="name"
-							value={editableVendor.name}
-							onChange={handleInputChange}
-							// className="bg-gray-600 text-white p-2 rounded w-full"
-							className={`bg-gray-600 text-white p-2 rounded w-full ${
-								errorMessage
-									? "border-2 border-red-500"
-									: ""
-							}`}
-						/>
-						{errorMessage && (
-							<p className="text-red-500 mt-1">
-								{errorMessage}
-							</p>
-						)}
-					</div>
-					<div>
-						<label>Products:</label>
-						<input
-							type="text"
-							name="products"
-							value={editableVendor.products}
-							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
-						/>
-					</div>
-					<div>
-						<label>Vendor Details:</label>
-						<textarea
-							name="details"
-							value={editableVendor.details}
-							onChange={handleInputChange}
-							className="bg-gray-600 text-white p-2 rounded w-full"
-						/>
-					</div>
-					<div>
-						<label>
-							<input
-								type="checkbox"
-								name="electricityRequired"
-								checked={
-									editableVendor.electricityRequired
-								}
-								onChange={handleInputChange}
-								className="form-checkbox h-5 w-5 text-blue-600"
-							/>
-							Electricity Required
-						</label>
-					</div>
-
-					<button
-						onClick={handleSave}
-						className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Save
-					</button>
-					<button
-						onClick={() => setIsEditing(false)}
-						className="mt-2 bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-					>
-						Cancel
-					</button>
-				</>
-			) : ( */}
 			<>
 				<div className="flex m-2">
 					Vendor:
@@ -338,8 +200,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				</div>
 				<div className="flex items-center justify-end mt-6">
 					<button
-						// onClick={() => setIsEditing(true)}
-						onClick={() => setIsModalOpen(true)} // Open the modal
+						onClick={() => setIsModalOpen(true)}
 						className="mt-2 bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
 					>
 						Edit Vendor
@@ -355,7 +216,6 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					/>
 				</div>
 			</>
-			{/* )} */}
 			{/* Render the VendorEditModal when isModalOpen is true */}
 			{isModalOpen && (
 				<EditVendorModal

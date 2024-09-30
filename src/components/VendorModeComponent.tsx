@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { VendorModeComponentProps, Vendor } from "../Types";
 import VendorCard from "./VendorCard";
-import AddVendorModal from "./AddVendorModal"; // Import the modal
+import AddVendorModal from "./Modals/AddVendorModal"; // Import the modal
 import {
 	saveToLocalStorage,
 	loadFromLocalStorage,
 	STORAGE_KEYS,
-} from "../Storage";
+} from "../utils/storageUtils";
 
 const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 	setVendors,

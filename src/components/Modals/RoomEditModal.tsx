@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { RoomEditModalProps } from "../Types";
+import { RoomEditModalProps } from "../../Types";
+import { handleClickOutside } from "../../utils/functions";
+import { handleRoomInputChange } from "../../utils/functions";
 
 const RoomEditModal: React.FC<RoomEditModalProps> = ({
 	roomToEdit,
@@ -13,29 +15,17 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 	const [roomWidth, setRoomWidth] = useState(roomToEdit.width);
 	const [roomDepth, setRoomDepth] = useState(roomToEdit.depth);
 
+	// Use the utility function for input changes
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		handleRoomInputChange(e, setRoomName, setRoomWidth, setRoomDepth);
+	};
+
 	// Sync state with prop changes
 	useEffect(() => {
 		setRoomName(roomToEdit.name);
 		setRoomWidth(roomToEdit.width);
 		setRoomDepth(roomToEdit.depth);
 	}, [roomToEdit]);
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		switch (name) {
-			case "room-name":
-				setRoomName(value);
-				break;
-			case "room-width":
-				setRoomWidth(value);
-				break;
-			case "room-depth":
-				setRoomDepth(value);
-				break;
-			default:
-				break;
-		}
-	};
 
 	const handleUpdateRoom = () => {
 		onSave({
@@ -47,21 +37,17 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 		if (onClose) onClose();
 	};
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (
-			modalRef.current &&
-			!modalRef.current.contains(event.target as Node)
-		) {
-			if (onClose) onClose();
-		}
-	};
-
 	useEffect(() => {
-		document.addEventListener("mousedown", handleClickOutside);
+		// Use the extracted handleClickOutside function
+		const outsideClickHandler = handleClickOutside(modalRef, onClose);
+		document.addEventListener("mousedown", outsideClickHandler);
 		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
+			document.removeEventListener(
+				"mousedown",
+				outsideClickHandler
+			);
 		};
-	}, []);
+	}, [modalRef, onClose]);
 
 	return (
 		<>

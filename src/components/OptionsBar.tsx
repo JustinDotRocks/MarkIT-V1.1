@@ -1,13 +1,12 @@
 import React from "react";
-import { FaLock, FaUnlock, FaUndo, FaRedo } from "react-icons/fa"; // Importing icons
+import { FaLock, FaUnlock, FaUndo, FaRedo } from "react-icons/fa";
 import { OptionsBarProps } from "../Types";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 import VendorSignInComponent from "./VendorSignInComponent";
 
 const OptionsBar: React.FC<OptionsBarProps> = ({
 	x,
 	y,
-	// height,
 	onDelete,
 	onRotateCW,
 	onRotateCCW,
@@ -20,8 +19,6 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendorId,
 	updateVendorDetails,
 	signedIn,
-	// stageRotation,
-	// isMobile,
 }) => {
 	// Define the width and height of the OptionsBar
 	const optionsBarWidth = 400;
@@ -64,18 +61,12 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 		});
 	};
 
-	// const optionsBarRotation = isMobile ? stageRotation - 90 : 0;
-
 	return (
 		<div
 			className=" flex flex-col justify-center text-md bg-customBlue border border-black rounded p-2"
 			style={{
-				// left: adjustedX,
-				// top: adjustedY,
-				// zIndex: 50,
 				width: optionsBarWidth,
 				height: optionsBarHeight,
-				// transform: `rotate(${optionsBarRotation}deg)`,
 			}}
 		>
 			{/* Vendor Name */}
