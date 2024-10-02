@@ -1,5 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { TableData, FeatureData } from "./Types";
 import { useRooms } from "./hooks/useRooms";
 import { useTablesAndFeatures } from "./hooks/useTablesAndFeatures";
 import { useVendors } from "./hooks/useVendors";
@@ -45,6 +46,16 @@ const App: React.FC = () => {
 	const { vendors, setVendors, updateVendorDetails } = useVendors();
 	// Automatically save state to localStorage
 	useAutoSave(features, rooms, vendors, tables);
+
+	// Wrapper function for addTable
+	const handleAddTable = (tableData: TableData) => {
+		addTableToCanvas(tableData, selectedRoomId, setTables);
+	};
+
+	// Similarly for addFeature
+	const handleAddFeature = (featureData: FeatureData) => {
+		addFeatureToCanvas(featureData, selectedRoomId, setFeatures);
+	};
 
 	return (
 		<Router>
@@ -95,10 +106,10 @@ const App: React.FC = () => {
 											openRoomModal
 										}
 										addTable={
-											addTableToCanvas
+											handleAddTable
 										}
 										addFeature={
-											addFeatureToCanvas
+											handleAddFeature
 										}
 										areAllObjectsLocked={
 											areAllObjectsLocked

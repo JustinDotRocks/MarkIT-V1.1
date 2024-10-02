@@ -6,7 +6,8 @@ export const useGridToggle = () => {
 	const [gridMode, setGridMode] = useState<GridMode>("Drag");
 	const [isDragging, setIsDragging] = useState(false);
 
-	const toggleGrid = () => setShowGrid(!showGrid);
+	// const toggleGrid = () => setShowGrid(!showGrid);
+	const toggleGrid = () => setShowGrid((prevShowGrid) => !prevShowGrid);
 
 	const handleGlobalDragStart = () => {
 		setIsDragging(true);

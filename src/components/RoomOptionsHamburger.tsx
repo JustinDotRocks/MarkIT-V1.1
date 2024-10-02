@@ -5,6 +5,7 @@ import AddFeaturesModal from "./Modals/AddFeaturesModal";
 import InfoModal from "./Modals/InfoModal";
 import ClearAllTablesButton from "./ClearAllTablesButton";
 import { RoomOptionsProps } from "../Types";
+import { cycleGridMode } from "../utils/functions";
 
 const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 	areAllObjectsLocked,
@@ -17,9 +18,6 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 	room,
 	removeRoom,
 	openEditModal,
-	rooms,
-	setSelectedRoomId,
-	openAddRoomModal,
 	setTables,
 	gridMode,
 	setGridMode,
@@ -43,20 +41,9 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 		setIsMenuOpen(false); // Close the menu after a button click
 	};
 
-	// Function to cycle grid modes
-	const cycleGridMode = () => {
-		setGridMode((prevMode) => {
-			switch (prevMode) {
-				case "Off":
-					return "Drag";
-				case "Drag":
-					return "On";
-				case "On":
-					return "Off";
-				default:
-					return "Off";
-			}
-		});
+	const handleCycleGridMode = () => {
+		// Call the extracted cycleGridMode function and pass setGridMode
+		cycleGridMode(setGridMode);
 	};
 
 	useEffect(() => {
@@ -107,7 +94,9 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 						{/* Grid Toggle */}
 						<button
 							onClick={() =>
-								handleButtonClick(cycleGridMode)
+								handleButtonClick(
+									handleCycleGridMode
+								)
 							}
 							className="bg-customBlue2 hover:bg-blue-700 px-2 py-1 md:px-4 md:py-2 rounded"
 						>

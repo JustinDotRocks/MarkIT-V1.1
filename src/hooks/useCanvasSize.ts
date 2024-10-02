@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Room } from "../Types";
+import Konva from "konva";
+import { KonvaEventObject } from "konva/lib/Node";
+import { feetToPixels } from "../utils/constants";
 
 export const useCanvasSize = (
 	room: Room | undefined,
 	containerRef: React.RefObject<HTMLDivElement>,
-	stageRef: React.RefObject<any>
+	stageRef: React.RefObject<Konva.Stage>
 ) => {
 	const [containerSize, setContainerSize] = useState({
 		width: window.innerWidth,
@@ -13,7 +16,7 @@ export const useCanvasSize = (
 	const [stageRotation, setStageRotation] = useState(0);
 	const [scale, setScale] = useState(1);
 	const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
-	const feetToPixels = 25;
+	// const feetToPixels = 25;
 
 	useEffect(() => {
 		const updateContainerSize = () => {
@@ -68,15 +71,15 @@ export const useCanvasSize = (
 				setScale(scale);
 
 				// Calculate the center of the room
-				const centerX = roomWidthPixels / 2;
-				const centerY = roomHeightPixels / 2;
+				// const centerX = roomWidthPixels / 2;
+				// const centerY = roomHeightPixels / 2;
 				// Set the offset of the stage to rotate around the center
 				const containerCenterX = containerWidth / 2;
 				const containerCenterY = containerHeight / 2;
 
 				// Offset the stage position to keep it centered
-				const offsetX = centerX * scale;
-				const offsetY = centerY * scale;
+				// const offsetX = centerX * scale;
+				// const offsetY = centerY * scale;
 
 				setContainerSize({
 					width: roomWidthPixels,
@@ -88,10 +91,6 @@ export const useCanvasSize = (
 					y: containerCenterY,
 				});
 
-				// if (stageRef.current) {
-				// 	stageRef.current.offsetX(offsetX);
-				// 	stageRef.current.offsetY(offsetY);
-				// }
 				if (stageRef.current) {
 					stageRef.current.offsetX(roomWidthPixels / 2);
 					stageRef.current.offsetY(roomHeightPixels / 2);
@@ -111,15 +110,19 @@ export const useCanvasSize = (
 		return () => {
 			window.removeEventListener("resize", updateContainerSize);
 		};
-	}, [room, containerRef]);
+	}, [room]);
 
 	// Handle zooming with mouse wheel
-	const handleWheel = (e: any) => {
+	const handleWheel = (e: KonvaEventObject<WheelEvent>) => {
 		e.evt.preventDefault();
 
 		const stage = stageRef.current;
+		if (!stage) return;
 		const oldScale = stage.scaleX();
-		const pointer = stage.getPointerPosition();
+		const pointer = stage.getPointerPosition() || { x: 0, y: 0 };
+		// if (!pointer) {
+		// 	return; // Exit if pointer position is unavailable
+		// }
 
 		const scaleBy = 1.01; // Zoom factor
 		let direction = e.evt.deltaY > 0 ? 1 : -1;

@@ -22,22 +22,6 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 
 	const dimensions = tableDimensions[table.type];
 
-	// Determine the dominant dimension (whether width or height is longer)
-	// const dominantRoomDimension =
-	// 	parseFloat(room?.width || "0") >= parseFloat(room?.depth || "0")
-	// 		? "width"
-	// 		: "depth";
-
-	// const scalingAdjustment = 1; // Increase this value to scale down the tables
-
-	// const scaleFactor =
-	// 	(dominantRoomDimension === "width"
-	// 		? containerSize.width /
-	// 		  (parseFloat(room?.depth || "1") * feetToPixels)
-	// 		: containerSize.width /
-	// 		  (parseFloat(room?.depth || "1") * feetToPixels)) *
-	// 	scalingAdjustment;
-
 	const scaleFactor =
 		containerSize.width /
 		(parseFloat(room?.depth || "1") * feetToPixels);
@@ -101,7 +85,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 			: "#de5e46" // Red color to match "bg-red-500"
 		: "#628b98"; // Grey color if no vendor is associated
 
-	const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+	const handleClick = (e: KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true; // Prevent event bubbling
 
 		onObjectClick(table.id, "table", table.x, table.y);

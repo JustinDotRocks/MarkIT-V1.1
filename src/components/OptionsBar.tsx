@@ -19,6 +19,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendorId,
 	updateVendorDetails,
 	signedIn,
+	vendors,
 }) => {
 	// Define the width and height of the OptionsBar
 	const optionsBarWidth = 400;
@@ -54,9 +55,18 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 		const newSignedInState = !signedIn;
 
+		// Find the vendor with the given id
+		const vendor = vendors.find((v) => v.id === vendorId);
+
+		if (!vendor) {
+			console.error(`Vendor with id ${vendorId} not found`);
+			return;
+		}
+
 		// Update the vendor's signedIn status
 		updateVendorDetails({
-			id: vendorId,
+			// id: vendorId,
+			...vendor, // Spread the existing vendor properties
 			signedIn: newSignedInState,
 		});
 	};

@@ -40,7 +40,7 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 		(containerSize.width /
 			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
 
-	const handleClick = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+	const handleClick = (e: KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true; // Prevent event bubbling
 
 		onObjectClick(feature.id, "feature", feature.x, feature.y);

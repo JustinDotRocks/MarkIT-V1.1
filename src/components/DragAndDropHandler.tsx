@@ -1,5 +1,7 @@
 import React from "react";
-import { DragAndDropHandlerProps } from "../Types";
+import { DragAndDropHandlerProps, Table, Feature } from "../Types";
+import { KonvaEventObject } from "konva/lib/Node";
+import Konva from "konva";
 
 const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	item,
@@ -18,7 +20,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 	onGlobalDragStart,
 	onGlobalDragEnd,
 }) => {
-	const handleDragMove = (e: any) => {
+	const handleDragMove = (e: KonvaEventObject<DragEvent>) => {
 		const node = e.target;
 		const id = item.id;
 		const type = item.type;
@@ -58,13 +60,13 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		node.y(y);
 	};
 
-	const handleDragStart = (e: any) => {
+	const handleDragStart = (e: KonvaEventObject<DragEvent>) => {
 		if (onGlobalDragStart) {
 			onGlobalDragStart();
 		}
 	};
 
-	const handleDragEnd = (e: any) => {
+	const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
 		const id = item.id;
 		const node = e.target;
 		const x = node.x() / containerSize.width;
@@ -83,7 +85,10 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		}
 
 		// Define a helper function to check for collisions
-		const isColliding = (otherItem: any, otherNode: any) => {
+		const isColliding = (
+			otherItem: Table | Feature,
+			otherNode: Konva.Node
+		) => {
 			if (otherItem.id === id) return false; // Skip self
 			const otherRect = otherNode.getClientRect();
 			const currentItemRect = node.getClientRect();
@@ -101,13 +106,13 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 
 		// Check collisions with other tables
 		const collidesWithTable = tables.some((table) => {
-			const tableNode = stageRef.current.findOne(`#${table.id}`);
+			const tableNode = stageRef.current?.findOne(`#${table.id}`);
 			return tableNode && isColliding(table, tableNode);
 		});
 
 		// Check collisions with other features
 		const collidesWithFeature = features.some((feature) => {
-			const featureNode = stageRef.current.findOne(
+			const featureNode = stageRef.current?.findOne(
 				`#${feature.id}`
 			);
 			return featureNode && isColliding(feature, featureNode);
@@ -141,7 +146,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		}
 	};
 
-	const handleTouchStart = (e: any) => {
+	const handleTouchStart = (e: KonvaEventObject<MouseEvent>) => {
 		// Check if the event is a Konva event and has an evt property
 		const event = e.evt || e;
 

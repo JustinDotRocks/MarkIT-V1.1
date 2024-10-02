@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { VendorCardProps, Table } from "../Types";
+import { VendorCardProps, Table, Vendor } from "../Types";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 import VendorSignInComponent from "./VendorSignInComponent";
@@ -81,7 +81,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 		return `Table ${table.tableNumber}: ${tableTypeLabel}`;
 	};
 
-	const handleSave = (updatedVendor: any) => {
+	const handleSave = (updatedVendor: Vendor) => {
 		// Check for duplicate vendor name
 		const existingVendor = vendors.find(
 			(vendor) =>

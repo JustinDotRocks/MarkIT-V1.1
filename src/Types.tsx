@@ -1,3 +1,6 @@
+import Konva from "konva";
+import { KonvaEventObject } from "konva/lib/Node";
+
 export type NavBarProps = {
 	activeMode: "setup" | "vendor" | "about" | "";
 	setActiveMode: (mode: "setup" | "vendor" | "about" | "") => void;
@@ -186,7 +189,8 @@ export type Feature = {
 
 export interface Table {
 	id: string;
-	type: "table-6" | "table-8" | "table-5";
+	// type: "table-6" | "table-8" | "table-5";
+	type: TableType;
 	details?: string;
 	roomId: string;
 	vendorId?: string; // If a vendor is assigned to the table
@@ -228,8 +232,9 @@ export interface OptionsBarProps {
 	onRemoveVendor: () => void;
 	objectType: "table" | "feature";
 	signedIn?: boolean; // Optional, since VendorSignInComponent has a default
-	updateVendorDetails?: (vendorData: any) => void; // Function to update vendor details
+	updateVendorDetails?: (vendorData: Vendor) => void; // Function to update vendor details
 	vendorId?: string;
+	vendors: Vendor[];
 }
 
 export interface RoomDetailsDisplayProps {
@@ -252,8 +257,12 @@ export interface TableComponentProps {
 	containerSize: { width: number; height: number };
 	room: Room | undefined;
 	feetToPixels: number;
-	handleDragMove: (e: any) => void;
-	handleDragEnd: (id: string, type: "table" | "feature", e: any) => void;
+	handleDragMove: (e: KonvaEventObject<Konva.Node>) => void;
+	handleDragEnd: (
+		id: string,
+		type: "table" | "feature",
+		e: KonvaEventObject<Konva.Node>
+	) => void;
 	handleObjectClick: (
 		id: string,
 		type: "table" | "feature",
@@ -269,8 +278,12 @@ export interface FeatureComponentProps {
 	containerSize: { width: number; height: number };
 	room: Room | undefined;
 	feetToPixels: number;
-	handleDragMove: (e: any) => void;
-	handleDragEnd: (id: string, type: "table" | "feature", e: any) => void;
+	handleDragMove: (e: KonvaEventObject<Konva.Node>) => void;
+	handleDragEnd: (
+		id: string,
+		type: "table" | "feature",
+		e: KonvaEventObject<Konva.Node>
+	) => void;
 	handleObjectClick: (
 		id: string,
 		type: "table" | "feature",
@@ -284,9 +297,9 @@ export interface DragAndDropComponentProps {
 	containerSize: { width: number; height: number };
 	room: Room | undefined;
 	feetToPixels: number;
-	onDragMove: (e: any) => void;
-	onDragEnd: (e: any) => void;
-	onDragStart: (e: any) => void;
+	onDragMove: (e: KonvaEventObject<DragEvent>) => void;
+	onDragEnd: (e: KonvaEventObject<DragEvent>) => void;
+	onDragStart: (e: KonvaEventObject<DragEvent>) => void;
 	onObjectClick: (
 		id: string,
 		type: "table" | "feature",
@@ -295,8 +308,8 @@ export interface DragAndDropComponentProps {
 	) => void;
 
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
-	onTouchStart?: (e: any) => void;
-	onTap?: (e: any) => void;
+	onTouchStart?: (e: KonvaEventObject<MouseEvent>) => void;
+	onTap?: (e: KonvaEventObject<MouseEvent>) => void;
 	rotation?: number;
 }
 
@@ -318,7 +331,7 @@ export interface DragAndDropHandlerProps {
 
 	Component: React.FC<DragAndDropComponentProps>;
 	vendors?: Vendor[]; // For color change of Table based on Vendor signed in or not.
-	stageRef: React.RefObject<any>;
+	stageRef: React.RefObject<Konva.Stage>;
 	setShowGrid: (show: boolean) => void;
 	onGlobalDragStart: () => void;
 	onGlobalDragEnd: () => void;
@@ -419,7 +432,7 @@ export interface RoomOptionsProps {
 export interface DeleteConfirmationModalProps {
 	onConfirm: () => void;
 	message?: string;
-	triggerComponent: React.ReactNode; // A button or any element that triggers the modal
+	triggerComponent: React.ReactNode;
 }
 
 export interface ClearAllTablesButtonProps {
@@ -447,4 +460,36 @@ export interface EditVendorModalProps {
 	onSave: (updatedVendor: Vendor) => void;
 	onClose: () => void;
 	vendors: Vendor[]; // To check for duplicate names
+}
+
+export type SelectedObject = {
+	id: string;
+	type: ObjectType;
+	x: number;
+	y: number;
+};
+
+export type TableType = "table-6" | "table-8" | "table-5";
+export type FeatureType = "door" | "obstacle";
+
+// Type for the data used to create a new table
+export interface TableData {
+	type: TableType;
+	id: string;
+	details?: string;
+	tableNumber?: number; // Optional if you generate it in the function
+}
+
+// Type for the data used to create a new feature
+export interface FeatureData {
+	type: FeatureType;
+	id: string;
+	details?: string;
+}
+
+export type ObjectType = "table" | "feature";
+
+export interface Position {
+	x: number;
+	y: number;
 }

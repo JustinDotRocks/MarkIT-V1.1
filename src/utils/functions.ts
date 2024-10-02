@@ -1,3 +1,5 @@
+import { GridMode } from "../Types";
+
 export const handleRoomInputChange = (
 	e: React.ChangeEvent<HTMLInputElement>,
 	setRoomName: React.Dispatch<React.SetStateAction<string>>,
@@ -30,3 +32,25 @@ export const handleClickOutside =
 			onClose();
 		}
 	};
+
+export const cycleGridMode = (
+	setGridMode: React.Dispatch<React.SetStateAction<GridMode>>
+) => {
+	setGridMode((prevMode) => {
+		switch (prevMode) {
+			case "Off":
+				return "Drag";
+			case "Drag":
+				return "On";
+			case "On":
+				return "Off";
+			default:
+				return "Off";
+		}
+	});
+};
+
+export const findById = <T extends { id: string }>(
+	items: T[],
+	id: string
+): T | undefined => items.find((item) => item.id === id);

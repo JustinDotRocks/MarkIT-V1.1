@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
+import Konva from "konva";
 import { Stage, Layer, Rect, Group } from "react-konva";
+import { feetToPixels, gridSize } from "../utils/constants";
+
 import { CanvasAreaProps } from "../Types";
 
 import { useCanvasSize } from "../hooks/useCanvasSize";
@@ -44,7 +47,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 }) => {
 	const room = rooms.find((r) => r.id === selectedRoomId); // Ensure room is declared before being used
 	const containerRef = useRef<HTMLDivElement>(null); // Declare containerRef before usage
-	const stageRef = useRef<any>(null); // Declare stageRef before usage
+	const stageRef = useRef<Konva.Stage>(null); // Declare stageRef before usage
 
 	const {
 		containerSize,
@@ -92,11 +95,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	);
 
 	const [, setShowGrid] = useState(false);
-	const gridSize = 20;
+	// const gridSize = 20;
 
 	const [isMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
 
-	const feetToPixels = 25; // Scale factor
+	// const feetToPixels = 25; // Scale factor
 
 	const selectedTableOrFeature = selectedObject
 		? selectedObject.type === "table"
@@ -464,6 +467,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 												}
 												updateVendorDetails={
 													updateVendorDetails
+												}
+												vendors={
+													vendors
 												}
 											/>
 										</div>

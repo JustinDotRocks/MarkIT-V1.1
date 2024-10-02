@@ -1,31 +1,28 @@
 import { useState } from "react";
-import { Table, Feature } from "../Types";
+import { Table, Feature, ObjectType, SelectedObject } from "../Types";
+import { findById } from "../utils/functions";
 
 export const useObjectSelection = (
 	tables: Table[],
 	features: Feature[],
 	removeObjectFromCanvas: (id: string) => void
 ) => {
-	const [selectedObject, setSelectedObject] = useState<{
-		id: string;
-		type: "table" | "feature";
-		x: number;
-		y: number;
-	} | null>(null);
+	const [selectedObject, setSelectedObject] =
+		useState<SelectedObject | null>(null);
 
 	const selectedTable =
 		selectedObject && selectedObject.type === "table"
-			? tables.find((table) => table.id === selectedObject.id)
+			? findById(tables, selectedObject.id)
 			: null;
 
 	const selectedFeature =
 		selectedObject && selectedObject.type === "feature"
-			? features.find((feature) => feature.id === selectedObject.id)
+			? findById(features, selectedObject.id)
 			: null;
 
 	const handleObjectClick = (
 		id: string,
-		type: "table" | "feature",
+		type: ObjectType,
 		x: number,
 		y: number
 	) => {

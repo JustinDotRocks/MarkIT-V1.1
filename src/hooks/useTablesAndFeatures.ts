@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Feature, Table } from "../Types";
+import { Table, TableData, Feature, FeatureData } from "../Types";
 import {
 	loadFromLocalStorage,
 	saveToLocalStorage,
@@ -22,12 +22,11 @@ export const useTablesAndFeatures = (selectedRoomId: string | null) => {
 		saveToLocalStorage(getStorageKeys().TABLES, tables);
 	}, [features, tables]);
 
-	const addTableToCanvas = (tableData: {
-		type: "table-6" | "table-8" | "table-5";
-		id: string;
-		details?: string;
-		tableNumber: number;
-	}) => {
+	const addTableToCanvas = (
+		tableData: TableData,
+		selectedRoomId: string | null,
+		setTables: React.Dispatch<React.SetStateAction<Table[]>>
+	) => {
 		setTables((prevTables: Table[]) => {
 			const roomTables = prevTables.filter(
 				(table) => table.roomId === selectedRoomId
@@ -53,11 +52,11 @@ export const useTablesAndFeatures = (selectedRoomId: string | null) => {
 		});
 	};
 
-	const addFeatureToCanvas = (featureData: {
-		type: "door" | "obstacle";
-		id: string;
-		details?: string;
-	}) => {
+	const addFeatureToCanvas = (
+		featureData: FeatureData,
+		selectedRoomId: string | null,
+		setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>
+	) => {
 		const newFeature: Feature = {
 			...featureData,
 			roomId: selectedRoomId || "",

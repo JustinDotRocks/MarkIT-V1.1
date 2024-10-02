@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
+import Konva from "konva";
 
 export const useStageInteraction = (
-	stageRef: React.RefObject<any>,
-	handleWheel: (e: any) => void
+	stageRef: React.RefObject<Konva.Stage>,
+	handleWheel: (e: Konva.KonvaEventObject<WheelEvent>) => void
 ) => {
 	useEffect(() => {
 		const stage = stageRef.current;

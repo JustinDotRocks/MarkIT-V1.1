@@ -5,6 +5,7 @@ import AddFeaturesModal from "./Modals/AddFeaturesModal";
 import InfoModal from "./Modals/InfoModal";
 import { RoomOptionsProps } from "../Types";
 import ClearAllTablesButton from "./ClearAllTablesButton"; // Import the new component
+import { cycleGridMode } from "../utils/functions";
 
 const RoomOptions: React.FC<RoomOptionsProps> = ({
 	areAllObjectsLocked,
@@ -17,12 +18,7 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	room,
 	removeRoom,
 	openEditModal,
-	rooms,
-	setSelectedRoomId,
-	openAddRoomModal,
 	setTables,
-	// showGrid,
-	// toggleGridVisibility,
 	gridMode,
 	setGridMode,
 }) => {
@@ -35,33 +31,9 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	const closeAddFeaturesModal = () => setIsAddFeaturesModalOpen(false);
 	const closeInfoModal = () => setIsInfoModalOpen(false);
 
-	// const cycleGridMode = () => {
-	// 	setGridMode((prevMode) => {
-	// 		switch (prevMode) {
-	// 			case "Off":
-	// 				return "On";
-	// 			case "On":
-	// 				return "Drag";
-	// 			case "Drag":
-	// 				return "Off";
-	// 			default:
-	// 				return "Off";
-	// 		}
-	// 	});
-	// };
-	const cycleGridMode = () => {
-		setGridMode((prevMode) => {
-			switch (prevMode) {
-				case "Off":
-					return "Drag";
-				case "Drag":
-					return "On";
-				case "On":
-					return "Off";
-				default:
-					return "Off";
-			}
-		});
+	const handleCycleGridMode = () => {
+		// Call the extracted cycleGridMode function and pass setGridMode
+		cycleGridMode(setGridMode);
 	};
 
 	return (
@@ -76,7 +48,8 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							lockAllObjects={lockAllObjects}
 						/>
 						<button
-							onClick={cycleGridMode}
+							// onClick={cycleGridMode}
+							onClick={handleCycleGridMode}
 							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 						>
 							{gridMode === "Off" && "Grid Off"}
