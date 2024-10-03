@@ -35,7 +35,7 @@ const AccordionSection: React.FC<{
 
 const AboutPage: React.FC = () => {
 	return (
-		<div className="container mx-auto p-6 text-customBlue min-h-screen h-full">
+		<div className="container mx-auto mt-28 p-6 text-customBlue min-h-screen h-full">
 			<h1 className="text-3xl font-bold mb-4">About MarkIT</h1>
 			<p className="mb-6">
 				Welcome to <strong>MarkIT</strong>, your all-in-one

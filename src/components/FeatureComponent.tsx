@@ -16,29 +16,25 @@ const FeatureComponent: React.FC<DragAndDropComponentProps> = ({
 
 	// Define dimensions for different feature types
 	const featureDimensions: {
-		[key: string]: { width?: number; height?: number; radius?: number };
+		[key: string]: { width: number; height: number; radius?: number };
 	} = {
-		door: { width: 2.1, height: 1 },
+		door: { width: 3, height: 1.5 },
 		obstacle: { width: 1, height: 1 },
 	};
 
 	const isDoor = feature.type === "door";
 	const isObstacle = feature.type === "obstacle";
 
+	const scaleFactor =
+		containerSize.width /
+		(parseFloat(room?.depth || "1") * feetToPixels);
+
 	// Calculate dimensions in pixels
-	const dimensions = featureDimensions[feature.type] || {};
+	const dimensions = featureDimensions[feature.type];
 
-	const featureWidthPixels =
-		(dimensions.width || 0) *
-		feetToPixels *
-		(containerSize.width /
-			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
-
+	const featureWidthPixels = dimensions.width * feetToPixels * scaleFactor;
 	const featureHeightPixels =
-		(dimensions.height || 0) *
-		feetToPixels *
-		(containerSize.width /
-			(room?.width ? parseFloat(room.width) * feetToPixels : 1));
+		dimensions.height * feetToPixels * scaleFactor;
 
 	const handleClick = (e: KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true; // Prevent event bubbling

@@ -110,7 +110,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const optionsBarPosition = getOptionsBarPosition();
 
 	return (
-		<div ref={containerRef} className="flex flex-col h-screen">
+		<div ref={containerRef} className="flex flex-col h-screen mt-28">
 			<div className="canvas-area flex flex-col ">
 				<RoomDetailsDisplay
 					rooms={rooms}
@@ -125,7 +125,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 			{room !== undefined &&
 				(isMobile ? (
-					<div className="fixed top-20 right-10 z-50">
+					<div className="fixed top-22 right-10 z-50">
 						<RoomOptionsHamburger
 							areAllObjectsLocked={
 								areAllObjectsLocked
