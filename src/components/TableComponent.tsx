@@ -65,9 +65,11 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 		}
 	};
 
-	const { tableNumberFontSize, xOffset, yOffset } = room
+	// const { tableNumberFontSize, xOffset, yOffset } = room
+	const { tableNumberFontSize } = room
 		? getFontSizes(parseFloat(room.width), isCircle)
-		: { tableNumberFontSize: 12, xOffset: 35, yOffset: 0 };
+		: // : { tableNumberFontSize: 12, xOffset: 35, yOffset: 0 };
+		  { tableNumberFontSize: 12 };
 
 	// Calculate the radius based on the table's actual dimensions
 	const circleRadiusPixels = isCircle

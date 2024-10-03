@@ -33,7 +33,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 		saveToLocalStorage(STORAGE_KEYS.VENDORS, vendors);
 	}, [vendors]);
 
-	const openAddVendorModal = () => setIsAddVendorModalOpen(true);
+	// const openAddVendorModal = () => setIsAddVendorModalOpen(true);
 	const closeAddVendorModal = () => setIsAddVendorModalOpen(false);
 
 	const addVendor = (newVendor: Vendor) => {

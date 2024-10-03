@@ -60,7 +60,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 		node.y(y);
 	};
 
-	const handleDragStart = (e: KonvaEventObject<DragEvent>) => {
+	const handleDragStart = (_e: KonvaEventObject<DragEvent>) => {
 		if (onGlobalDragStart) {
 			onGlobalDragStart();
 		}

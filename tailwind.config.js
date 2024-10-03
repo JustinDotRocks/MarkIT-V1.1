@@ -1,18 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: [
-		"./src/**/*.{js,jsx,ts,tsx}", // Adjust this line according to your project structure
+		"./index.html",
+		"./src/**/*.{js,jsx,ts,tsx}",
+		"./components/**/*.{js,jsx,ts,tsx}",
+		"./hooks/**/*.{js,jsx,ts,tsx}",
+		"./utils/**/*.{js,jsx,ts,tsx}",
 	],
 	theme: {
 		extend: {
 			colors: {
-				// customOrange: "#ffa726", // Define custom orange color
-				customOrange: "#de5e46", // Define custom orange color
+				customOrange: "#de5e46",
 				customBlue2: "#628b98",
-				customLightPink: "#fff2f3", // Define custom light pink color
-				// customLightGreen: "#6edbb3",
+				customLightPink: "#fff2f3",
 				customLightGreen: "#b0dd63",
-				customRed: "#cb0a00", // Add your custom red color
+				customRed: "#cb0a00",
 				customGreen: "#496f3d",
 				customWhite: "#f8f1dd",
 				customOrange2: "#e69532",
