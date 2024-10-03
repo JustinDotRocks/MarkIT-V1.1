@@ -4,7 +4,7 @@ import { Vendor, Table } from "../Types";
 export const useVendorManagement = (
 	tables: Table[],
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>,
-	// vendors: Vendor[],
+	_vendors: Vendor[],
 	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>
 ) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);

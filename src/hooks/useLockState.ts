@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Table, Feature } from "../Types";
 
 export const useLockState = (
-	// tables: Table[],
-	// features: Feature[],
+	_tables: Table[],
+	_features: Feature[],
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>,
 	setFeatures: React.Dispatch<React.SetStateAction<Feature[]>>
 ) => {
