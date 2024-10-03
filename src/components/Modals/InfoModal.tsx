@@ -41,7 +41,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			)}
 			{isRoomInfoModalOpen && (
 				<div
-					className="fixed bg-customBlue text-white p-4 rounded shadow-lg z-50 top-48 right-60"
+					className="fixed bg-customBlue text-white p-4 rounded shadow-lg z-50 top-56 right-60"
 					ref={modalRef}
 				>
 					<h2 className="text-xl font-bold mb-2">
