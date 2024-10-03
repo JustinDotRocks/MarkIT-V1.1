@@ -6,7 +6,7 @@ import {
 	getStorageKeys,
 } from "../utils/storageUtils";
 
-export const useTablesAndFeatures = () => {
+export const useTablesAndFeatures = (_selectedRoomId: string | null) => {
 	const [features, setFeatures] = useState<Feature[]>(
 		() =>
 			loadFromLocalStorage<Feature[]>(getStorageKeys().FEATURES) ||
