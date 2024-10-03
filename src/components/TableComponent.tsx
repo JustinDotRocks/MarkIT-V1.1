@@ -65,11 +65,9 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 		}
 	};
 
-	// const { tableNumberFontSize, xOffset, yOffset } = room
 	const { tableNumberFontSize } = room
 		? getFontSizes(parseFloat(room.width), isCircle)
-		: // : { tableNumberFontSize: 12, xOffset: 35, yOffset: 0 };
-		  { tableNumberFontSize: 12 };
+		: { tableNumberFontSize: 12 };
 
 	// Calculate the radius based on the table's actual dimensions
 	const circleRadiusPixels = isCircle
@@ -102,7 +100,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					x={table.x * containerSize.width}
 					y={table.y * containerSize.height}
 					radius={circleRadiusPixels}
-					fill={fillColor} // Use dynamic color
+					fill={fillColor}
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}
@@ -120,7 +118,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 					y={table.y * containerSize.height}
 					width={tableWidthPixels}
 					height={tableHeightPixels}
-					fill={fillColor} // Use dynamic color
+					fill={fillColor}
 					draggable={!table.isLocked}
 					onDragMove={onDragMove}
 					onDragEnd={onDragEnd}

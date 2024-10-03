@@ -65,7 +65,6 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 		// Update the vendor's signedIn status
 		updateVendorDetails({
-			// id: vendorId,
 			...vendor, // Spread the existing vendor properties
 			signedIn: newSignedInState,
 		});

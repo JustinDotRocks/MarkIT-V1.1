@@ -143,6 +143,10 @@ const AboutPage: React.FC = () => {
 					slider or scroll to adjust the room layout view.
 				</p>
 				<p className="mb-2">
+					<strong>Drag the Room:</strong> Click on an empty
+					part of the room and drag it around the screen.
+				</p>
+				<p className="mb-2">
 					<strong>Rotate Objects:</strong> Use the rotate
 					handler to change the orientation of objects.
 				</p>

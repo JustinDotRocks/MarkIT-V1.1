@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Vendor, EditVendorModalProps } from "../../Types";
-import { handleClickOutside } from "../../utils/functions"; // Import the utility functions
+import { handleClickOutside } from "../../utils/functions";
 
 const EditVendorModal: React.FC<EditVendorModalProps> = ({
 	vendorToEdit,

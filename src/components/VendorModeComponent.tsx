@@ -33,7 +33,6 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 		saveToLocalStorage(STORAGE_KEYS.VENDORS, vendors);
 	}, [vendors]);
 
-	// const openAddVendorModal = () => setIsAddVendorModalOpen(true);
 	const closeAddVendorModal = () => setIsAddVendorModalOpen(false);
 
 	const addVendor = (newVendor: Vendor) => {
@@ -41,7 +40,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 	};
 
 	return (
-		<div>
+		<div className="h-full min-h-screen">
 			<AddVendorModal
 				isOpen={isAddVendorModalOpen}
 				onClose={closeAddVendorModal}

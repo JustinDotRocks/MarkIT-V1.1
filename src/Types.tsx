@@ -189,7 +189,6 @@ export type Feature = {
 
 export interface Table {
 	id: string;
-	// type: "table-6" | "table-8" | "table-5";
 	type: TableType;
 	details?: string;
 	roomId: string;

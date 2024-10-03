@@ -123,7 +123,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 					setIsAddVendorModalOpen(true);
 					setErrorMessage(null); // Clear any previous error when opening the modal
 				}}
-				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-1 px-2 ml-4 rounded"
+				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-2 px-4 ml-4 mt-32 rounded"
 			>
 				Add Vendor
 			</button>

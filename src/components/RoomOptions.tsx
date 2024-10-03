@@ -48,7 +48,6 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 							lockAllObjects={lockAllObjects}
 						/>
 						<button
-							// onClick={cycleGridMode}
 							onClick={handleCycleGridMode}
 							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
 						>

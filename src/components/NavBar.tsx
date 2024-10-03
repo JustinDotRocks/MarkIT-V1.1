@@ -8,11 +8,14 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 		setActiveMode(activeMode === mode ? "" : mode);
 	};
 	return (
-		<nav className="bg-customBlue text-white p-4">
+		<nav className="fixed z-50 bg-customBlue text-white p-4 w-screen">
 			<div className="flex justify-between items-center">
 				<div className="text-md font-bold">
 					<Link to="/">
-						<Button onClick={() => toggleMode("")}>
+						<Button
+							className="p-0 sm:px-4 sm:py-2"
+							onClick={() => toggleMode("")}
+						>
 							MarkIT
 						</Button>
 					</Link>
@@ -20,7 +23,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 				<div>
 					<Link to="/venue">
 						<Button
-							className={`px-4 py-2 rounded ${
+							className={`rounded p-0 sm:px-4 sm:py-2 ${
 								activeMode === ""
 									? "bg-customLightBlue"
 									: "bg-customBlue2 hover:bg-customLightBlue"
@@ -32,7 +35,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 					</Link>
 					<Link to="/vendor-mode">
 						<Button
-							className={`ml-2 px-4 py-2 rounded ${
+							className={`ml-2 rounded p-0 sm:px-4 sm:py-2 ${
 								activeMode === "vendor"
 									? "bg-customLightBlue"
 									: "bg-customBlue2 hover:bg-customLightBlue"
@@ -44,7 +47,10 @@ const NavBar: React.FC<NavBarProps> = ({ activeMode, setActiveMode }) => {
 					</Link>
 				</div>
 				<Link to="/about">
-					<Button onClick={() => toggleMode("about")}>
+					<Button
+						className="p-0 sm:px-4 sm:py-2"
+						onClick={() => toggleMode("about")}
+					>
 						About
 					</Button>
 				</Link>
