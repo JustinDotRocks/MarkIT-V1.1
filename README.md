@@ -37,12 +37,13 @@ for event planners and venue managers. Key features include:
   locking all objects to prevent changes or lock individual items while
   adjusting others.
 
-## ![image](https://github.com/user-attachments/assets/a57de880-bdd1-47cb-8f36-b54a13051fa9)
+  ![image](https://github.com/user-attachments/assets/a57de880-bdd1-47cb-8f36-b54a13051fa9)
 
 - **Vendor Mode**: Efficiently manage your vendor list by adding vendor details
   such as names, products, descriptions, and electricity needs. Update vendor
   information anytime and sign in vendors upon arrival, which highlights their
   assigned tables in green.
+  
   ![image](https://github.com/user-attachments/assets/13da0256-1b24-47e9-8ced-185f8f181a64)
 
 ---
