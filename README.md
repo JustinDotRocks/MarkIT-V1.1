@@ -7,7 +7,7 @@ simplify the planning and organization of event layouts for event planners and
 venue managers.
 
 - **Live App**: [Use MarkIT](https://justindotrocks.github.io/MarkIT-V1.1/)  
-   **GitHub Repository**: [GitHub Profile](https://github.com/JustinDotRocks/MarkIT-V1.1)
+- **GitHub Repository**: [GitHub Profile](https://github.com/JustinDotRocks/MarkIT-V1.1)
 
 ![image](https://github.com/user-attachments/assets/b44a7b2f-1380-4f25-a2da-e00c838506fc)
 
