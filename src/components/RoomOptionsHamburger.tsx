@@ -68,15 +68,16 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 	}, [isMenuOpen]);
 
 	return (
-		<div>
+		<div className="relative">
 			{/* Hamburger button to open/close menu */}
-
-			<button
-				onClick={toggleMenu}
-				className="bg-customBlue text-white px-4 py-2 rounded-md focus:outline-none"
-			>
-				Options
-			</button>
+			{!isMenuOpen && (
+				<button
+					onClick={toggleMenu}
+					className="bg-customBlue text-white px-4 py-2 rounded-md focus:outline-none"
+				>
+					Options
+				</button>
+			)}
 
 			{/* Fullscreen menu when isMenuOpen is true */}
 			{isMenuOpen && (
@@ -84,7 +85,7 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 					{/* Close button */}
 					<button
 						onClick={toggleMenu}
-						className="absolute top-20 right-10 bg-red-500 text-white px-6 py-2 rounded-md focus:outline-none"
+						className="absolute top-28 right-10 bg-red-500 text-white px-6 py-2 rounded-md focus:outline-none"
 					>
 						Close
 					</button>

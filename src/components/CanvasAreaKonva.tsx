@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Konva from "konva";
 import { Stage, Layer, Rect, Group } from "react-konva";
 import { feetToPixels, gridSize } from "../utils/constants";
@@ -10,9 +10,10 @@ import { useObjectSelection } from "../hooks/useObjectSelection";
 import { useLockState } from "../hooks/useLockState";
 import { useVendorManagement } from "../hooks/useVendorManagement";
 import { useGridToggle } from "../hooks/useGridToggle";
-import { useStageInteraction } from "../hooks/useStageInteraction";
+// import { useStageInteraction } from "../hooks/useStageInteraction";
 import { useOptionsBarPosition } from "../hooks/useOptionsBarPosition";
 import { useVendorSelection } from "../hooks/useVendorSelection";
+import { useTouchZoom } from "../hooks/useTouchZoom";
 
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
@@ -49,6 +50,20 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const containerRef = useRef<HTMLDivElement>(null); // Declare containerRef before usage
 	const stageRef = useRef<Konva.Stage>(null); // Declare stageRef before usage
 
+	// Determine if the screen is mobile and update on window resize
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
+
 	const {
 		containerSize,
 		stageRotation,
@@ -56,7 +71,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		stagePosition,
 		handleWheel,
 		handleZoomChange,
+		setScale,
+		setStagePosition,
 	} = useCanvasSize(room, containerRef, stageRef);
+	useTouchZoom(stageRef, setScale, setStagePosition);
+
 	const {
 		selectedObject,
 		selectedTable,
@@ -83,7 +102,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		handleGlobalDragStart,
 		handleGlobalDragEnd,
 	} = useGridToggle();
-	useStageInteraction(stageRef, handleWheel);
+	// useStageInteraction(stageRef, handleWheel);
 	const getOptionsBarPosition = useOptionsBarPosition(
 		selectedObject,
 		stageRef,
@@ -97,7 +116,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const [, setShowGrid] = useState(false);
 	// const gridSize = 20;
 
-	const [isMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
+	// const [isMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
 
 	// const feetToPixels = 25; // Scale factor
 
@@ -188,6 +207,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							y={stagePosition.y}
 							onMouseDown={handleStageClick}
 							onTouchStart={handleStageClick}
+							onWheel={handleWheel} // Ensure the wheel event is handled
 							rotation={stageRotation}
 							offsetX={containerSize.width / 2}
 							offsetY={containerSize.height / 2}
