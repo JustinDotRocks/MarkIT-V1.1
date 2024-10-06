@@ -8,7 +8,7 @@
 - **Live App**: [Use MarkIT](https://justindotrocks.github.io/MarkIT-V1.1/)  
     **GitHub Repository**: [GitHub Profile](https://github.com/JustinDotRocks/MarkIT-V1.1)
     
-![[Pasted image 20241005234704.png]]
+![image](https://github.com/user-attachments/assets/b44a7b2f-1380-4f25-a2da-e00c838506fc)
 ## Motivation
 
 Having extensive experience in event management, I recognized the need for a tool that streamlines the design and organization of event spaces. Traditional methods can be time-consuming and lack flexibility. **MarkIT** was created to provide an intuitive platform that addresses these challenges, making event planning more effective and efficient.
@@ -23,11 +23,11 @@ MarkIT is an interactive tool that enhances event space planning and management 
 
 - **Venue Mode**: Design and customize event rooms by adding tables and features. Easily drag, drop (includes collision detection), reposition, rotate elements, and move the entire room to fit your layout. Assign vendors to tables directly from the options bar within Venue Mode. Control your layout by locking all objects to prevent changes or lock individual items while adjusting others.
     
-![[Pasted image 20241005234722.png]]
+![image](https://github.com/user-attachments/assets/a57de880-bdd1-47cb-8f36-b54a13051fa9)
 ---
 
 - **Vendor Mode**: Efficiently manage your vendor list by adding vendor details such as names, products, descriptions, and electricity needs. Update vendor information anytime and sign in vendors upon arrival, which highlights their assigned tables in green.
-    ![[Pasted image 20241005234730.png]]
+![image](https://github.com/user-attachments/assets/13da0256-1b24-47e9-8ced-185f8f181a64)
 
 ---
 
