@@ -208,6 +208,19 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						>
 							<Layer>
 								<Group>
+									<Rect
+										x={0}
+										y={0}
+										width={
+											containerSize.width
+										}
+										height={
+											containerSize.height
+										}
+										fill="#f0f0f0"
+										stroke="#1f5160"
+										strokeWidth={3}
+									/>
 									{(gridMode === "On" ||
 										(gridMode ===
 											"Drag" &&
@@ -221,18 +234,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											}
 										/>
 									)}
-									<Rect
-										x={0}
-										y={0}
-										width={
-											containerSize.width
-										}
-										height={
-											containerSize.height
-										}
-										stroke="#1f5160"
-										strokeWidth={3}
-									/>
 									{tables
 										.filter(
 											(table) =>
