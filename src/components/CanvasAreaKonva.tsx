@@ -521,7 +521,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								}}
 							/>
 						</div> */}
-						{/* <div
+						<div
 							className={`zoom-slider flex items-center absolute ${
 								isMobile
 									? "top-5 left-0 right-5 p-4"
@@ -562,7 +562,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									accentColor: "#1f5160",
 								}}
 							/>
-						</div> */}
+						</div>
 					</div>
 				)}
 			<AssignVendorModal
