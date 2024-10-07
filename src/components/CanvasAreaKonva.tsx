@@ -13,7 +13,6 @@ import { useGridToggle } from "../hooks/useGridToggle";
 import { useStageInteraction } from "../hooks/useStageInteraction";
 import { useOptionsBarPosition } from "../hooks/useOptionsBarPosition";
 import { useVendorSelection } from "../hooks/useVendorSelection";
-// import { useTouchZoom } from "../hooks/useTouchZoom";
 
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
@@ -492,35 +491,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								</RotateHandler>
 							)}
 						{/* Vertical Zoom Slider */}
-						{/* <div className="flex zoom-slider flex-col items-center absolute right-0 top-1/2 transform -translate-y-1/2 mr-4">
-							<label
-								htmlFor="zoom"
-								className="mb-2"
-							>
-								Zoom:{" "}
-							</label>
-							<input
-								id="zoom"
-								type="range"
-								min="0.25"
-								max="3"
-								step="0.01"
-								value={scale}
-								onChange={(e) =>
-									handleZoomChange(
-										parseFloat(
-											e.target.value
-										)
-									)
-								}
-								className="h-48 w-2 cursor-pointer appearance-none bg-gray-200"
-								style={{
-									writingMode:
-										"vertical-rl", // Change to a valid value for vertical slider
-									accentColor: "#1f5160",
-								}}
-							/>
-						</div> */}
 						<div
 							className={`zoom-slider flex items-center absolute ${
 								isMobile

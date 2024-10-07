@@ -68,98 +68,106 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 	}, [isMenuOpen]);
 
 	return (
-		<div className="relative">
-			{/* Hamburger button to open/close menu */}
-			{!isMenuOpen && (
-				<button
-					onClick={toggleMenu}
-					className="bg-customBlue text-white px-4 py-2 rounded-md focus:outline-none"
-				>
-					Options
-				</button>
-			)}
-
-			{/* Fullscreen menu when isMenuOpen is true */}
-			{isMenuOpen && (
-				<div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-col items-center justify-center z-50">
-					{/* Close button */}
+		<>
+			<div className="fixed top-30 right-12">
+				{/* Hamburger button to open/close menu */}
+				{!isMenuOpen ? (
 					<button
 						onClick={toggleMenu}
-						className="absolute top-28 right-10 bg-red-500 text-white px-6 py-2 rounded-md focus:outline-none"
+						className="bg-customBlue text-white px-4 py-2 rounded-md focus:outline-none"
+					>
+						Options
+					</button>
+				) : (
+					<button
+						onClick={toggleMenu}
+						className="bg-customBlue text-white px-4 py-2 rounded-md focus:outline-none"
 					>
 						Close
 					</button>
+				)}
+			</div>
+			<div className="fixed top-48 left-0 p-4 w-full">
+				{/* Fullscreen menu when isMenuOpen is true */}
+				{isMenuOpen && (
+					// <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-col items-center justify-center z-50">
+					<div className="flex flex-col items-center justify-center rounded bg-customBlue p-4 z-50">
+						<div className="text-white text-2xl mb-4">
+							Room Options
+						</div>
+						{/* Menu buttons */}
+						<div className="flex flex-col space-y-4 text-white font-bold text-lg">
+							{/* Grid Toggle */}
+							<button
+								onClick={() =>
+									handleButtonClick(
+										handleCycleGridMode
+									)
+								}
+								className="bg-customBlue2 hover:bg-blue-700 px-2 py-1 md:px-4 md:py-2 rounded"
+							>
+								{gridMode === "Off" &&
+									"Grid Off"}
+								{gridMode === "Drag" &&
+									"Grid Drag"}
+								{gridMode === "On" && "Grid On"}
+							</button>
 
-					{/* Menu buttons */}
-					<div className="flex flex-col space-y-4 text-white font-bold text-lg">
-						{/* Grid Toggle */}
-						<button
-							onClick={() =>
-								handleButtonClick(
-									handleCycleGridMode
-								)
-							}
-							className="bg-customBlue2 hover:bg-blue-700 px-2 py-1 md:px-4 md:py-2 rounded"
-						>
-							{gridMode === "Off" && "Grid Off"}
-							{gridMode === "Drag" && "Grid Drag"}
-							{gridMode === "On" && "Grid On"}
-						</button>
+							{/* Lock All Objects */}
+							<LockAllObjectsButton
+								areAllObjectsLocked={
+									areAllObjectsLocked
+								}
+								lockAllObjects={() =>
+									handleButtonClick(
+										lockAllObjects
+									)
+								}
+							/>
 
-						{/* Lock All Objects */}
-						<LockAllObjectsButton
-							areAllObjectsLocked={
-								areAllObjectsLocked
-							}
-							lockAllObjects={() =>
-								handleButtonClick(
-									lockAllObjects
-								)
-							}
-						/>
+							{/* Clear All Tables */}
+							<ClearAllTablesButton
+								tables={tables}
+								setTables={setTables}
+								selectedRoomId={selectedRoomId}
+							/>
+						</div>
+						<div className="mt-4 mb-4 text-lg">
+							{/* Add Tables Modal */}
+							<AddTablesModal
+								isOpen={isAddTablesModalOpen}
+								onClose={closeAddTablesModal}
+								addTable={addTable}
+								tables={tables}
+								selectedRoomId={selectedRoomId}
+							/>
+						</div>
+						<div className="mb-4 text-lg">
+							{/* Add Features Modal */}
+							<AddFeaturesModal
+								isOpen={isAddFeaturesModalOpen}
+								onClose={closeAddFeaturesModal}
+								addFeature={addFeature}
+								features={features}
+								selectedRoomId={selectedRoomId}
+							/>
+						</div>
 
-						{/* Clear All Tables */}
-						<ClearAllTablesButton
-							tables={tables}
-							setTables={setTables}
-							selectedRoomId={selectedRoomId}
-						/>
+						{/* Info Modal */}
+						{room && (
+							<InfoModal
+								isOpen={isInfoModalOpen}
+								onClose={closeInfoModal}
+								room={room}
+								openEditModal={openEditModal}
+								removeRoom={removeRoom}
+								selectedRoomId={selectedRoomId}
+							/>
+						)}
 					</div>
-					<div className="mt-4 mb-4 text-lg">
-						{/* Add Tables Modal */}
-						<AddTablesModal
-							isOpen={isAddTablesModalOpen}
-							onClose={closeAddTablesModal}
-							addTable={addTable}
-							tables={tables}
-							selectedRoomId={selectedRoomId}
-						/>
-					</div>
-					<div className="mb-4 text-lg">
-						{/* Add Features Modal */}
-						<AddFeaturesModal
-							isOpen={isAddFeaturesModalOpen}
-							onClose={closeAddFeaturesModal}
-							addFeature={addFeature}
-							features={features}
-							selectedRoomId={selectedRoomId}
-						/>
-					</div>
-
-					{/* Info Modal */}
-					{room && (
-						<InfoModal
-							isOpen={isInfoModalOpen}
-							onClose={closeInfoModal}
-							room={room}
-							openEditModal={openEditModal}
-							removeRoom={removeRoom}
-							selectedRoomId={selectedRoomId}
-						/>
-					)}
-				</div>
-			)}
-		</div>
+				)}
+			</div>
+		</>
 	);
 };
 

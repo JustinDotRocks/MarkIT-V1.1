@@ -48,7 +48,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 				selectedRoomId={selectedRoomId}
 				vendors={vendors}
 			/>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
+			<div className=" flex  items-center flex-col md:grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
 				{vendors.map((vendor) => {
 					const associatedTable = tables.find(
 						(table) => table.vendorId === vendor.id
