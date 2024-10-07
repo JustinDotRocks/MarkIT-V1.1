@@ -498,6 +498,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									? "top-5 left-0 right-5 p-4"
 									: "right-0 top-1/2 transform -translate-y-1/2 mr-4"
 							}`}
+							style={{
+								zIndex: 100,
+								pointerEvents: "auto",
+							}}
 						>
 							<label
 								htmlFor="zoom"
