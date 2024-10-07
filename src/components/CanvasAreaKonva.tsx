@@ -10,10 +10,10 @@ import { useObjectSelection } from "../hooks/useObjectSelection";
 import { useLockState } from "../hooks/useLockState";
 import { useVendorManagement } from "../hooks/useVendorManagement";
 import { useGridToggle } from "../hooks/useGridToggle";
-// import { useStageInteraction } from "../hooks/useStageInteraction";
+import { useStageInteraction } from "../hooks/useStageInteraction";
 import { useOptionsBarPosition } from "../hooks/useOptionsBarPosition";
 import { useVendorSelection } from "../hooks/useVendorSelection";
-import { useTouchZoom } from "../hooks/useTouchZoom";
+// import { useTouchZoom } from "../hooks/useTouchZoom";
 
 import OptionsBar from "./OptionsBar";
 import RoomDetailsDisplay from "./RoomDetailsDisplay";
@@ -71,10 +71,10 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		stagePosition,
 		handleWheel,
 		handleZoomChange,
-		setScale,
-		setStagePosition,
+		// setScale,
+		// setStagePosition,
 	} = useCanvasSize(room, containerRef, stageRef);
-	useTouchZoom(stageRef, setScale, setStagePosition);
+	// useTouchZoom(stageRef, setScale, setStagePosition);
 
 	const {
 		selectedObject,
@@ -102,7 +102,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		handleGlobalDragStart,
 		handleGlobalDragEnd,
 	} = useGridToggle();
-	// useStageInteraction(stageRef, handleWheel);
+	useStageInteraction(stageRef, handleWheel);
 	const getOptionsBarPosition = useOptionsBarPosition(
 		selectedObject,
 		stageRef,

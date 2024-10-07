@@ -3,7 +3,7 @@ import { Room } from "../Types";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { feetToPixels } from "../utils/constants";
-import { useTouchZoom } from "./useTouchZoom";
+// import { useTouchZoom } from "./useTouchZoom";
 
 export const useCanvasSize = (
 	room: Room | undefined,
@@ -169,7 +169,7 @@ export const useCanvasSize = (
 			stage.batchDraw(); // Update the stage
 		}
 	};
-	useTouchZoom(stageRef, setScale, setStagePosition);
+	// useTouchZoom(stageRef, setScale, setStagePosition);
 
 	return {
 		containerSize,
