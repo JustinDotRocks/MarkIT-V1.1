@@ -114,11 +114,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	);
 
 	const [, setShowGrid] = useState(false);
-	// const gridSize = 20;
-
-	// const [isMobile] = useState(window.innerWidth < 768); // Determine if the screen is mobile
-
-	// const feetToPixels = 25; // Scale factor
 
 	const selectedTableOrFeature = selectedObject
 		? selectedObject.type === "table"
@@ -497,7 +492,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								</RotateHandler>
 							)}
 						{/* Vertical Zoom Slider */}
-						<div className="hidden md:flex zoom-slider flex-col items-center absolute right-0 top-1/2 transform -translate-y-1/2 mr-4">
+						{/* <div className="flex zoom-slider flex-col items-center absolute right-0 top-1/2 transform -translate-y-1/2 mr-4">
 							<label
 								htmlFor="zoom"
 								className="mb-2"
@@ -522,6 +517,48 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								style={{
 									writingMode:
 										"vertical-rl", // Change to a valid value for vertical slider
+									accentColor: "#1f5160",
+								}}
+							/>
+						</div> */}
+						<div
+							className={`zoom-slider flex items-center absolute ${
+								isMobile
+									? "top-5 left-0 right-5 p-4"
+									: "right-0 top-1/2 transform -translate-y-1/2 mr-4"
+							}`}
+						>
+							<label
+								htmlFor="zoom"
+								className={`${
+									isMobile ? "mr-2" : "mb-2"
+								} text-customBlue`}
+							>
+								Zoom:
+							</label>
+							<input
+								id="zoom"
+								type="range"
+								min="0.25"
+								max="3"
+								step="0.01"
+								value={scale}
+								onChange={(e) =>
+									handleZoomChange(
+										parseFloat(
+											e.target.value
+										)
+									)
+								}
+								className={`${
+									isMobile
+										? "w-full h-2"
+										: "h-48 w-2"
+								} cursor-pointer appearance-none bg-gray-200`}
+								style={{
+									writingMode: isMobile
+										? "horizontal-tb"
+										: "vertical-rl",
 									accentColor: "#1f5160",
 								}}
 							/>
