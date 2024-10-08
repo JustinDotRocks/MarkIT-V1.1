@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ClearAllTablesButtonProps } from "../Types";
 import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
+import { MdTableRestaurant } from "react-icons/md";
 
 const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,
@@ -25,8 +26,8 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 			message="Are you sure you want to delete this item?"
 			onConfirm={handleClearTables}
 			triggerComponent={
-				<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-					Clear All Tables
+				<button className="flex items-center bg-red-500 hover:bg-customPurpleLight text-white font-bold py-0 px-2 rounded">
+					Remove <MdTableRestaurant className="ml-1" />
 				</button>
 			}
 		/>

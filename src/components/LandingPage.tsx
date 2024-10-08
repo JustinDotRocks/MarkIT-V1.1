@@ -11,7 +11,7 @@ const LandingPage: React.FC = () => {
 			}}
 		>
 			{/* White opacity overlay */}
-			<div className="absolute inset-0 bg-customWhite opacity-50"></div>
+			<div className="absolute inset-0 bg-white opacity-50"></div>
 
 			{/* Content */}
 			<div className="relative z-10 text-center text-customBlue p-6">
@@ -26,7 +26,7 @@ const LandingPage: React.FC = () => {
 					to="/venue" // Navigate to the venue page
 					className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-3 px-6 rounded inline-block"
 				>
-					Go to Venue
+					Get Started
 				</Link>
 			</div>
 		</div>

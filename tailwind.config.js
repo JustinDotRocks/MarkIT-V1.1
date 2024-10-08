@@ -22,6 +22,8 @@ export default {
 				customBurntOrange: "#be7327",
 				customYellow: "#d2a200",
 				customLightBlue: "#99bcc7",
+				customPurple: "#4a235a",
+				customPurpleLight: "#927b9c",
 			},
 		},
 	},

@@ -1,5 +1,6 @@
 import React from "react";
 import { LockAllObjectsButtonProps } from "../Types";
+import { FaLock, FaUnlock } from "react-icons/fa";
 
 const LockAllObjectsButton: React.FC<LockAllObjectsButtonProps> = ({
 	areAllObjectsLocked,
@@ -8,11 +9,9 @@ const LockAllObjectsButton: React.FC<LockAllObjectsButtonProps> = ({
 	return (
 		<button
 			onClick={lockAllObjects}
-			className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded"
+			className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded"
 		>
-			{areAllObjectsLocked
-				? "Unlock All Objects"
-				: "Lock All Objects"}
+			{areAllObjectsLocked ? <FaLock /> : <FaUnlock />}
 		</button>
 	);
 };

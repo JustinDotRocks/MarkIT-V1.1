@@ -4,6 +4,10 @@ import { KonvaEventObject } from "konva/lib/Node";
 export type NavBarProps = {
 	activeMode: "setup" | "vendor" | "about" | "";
 	setActiveMode: (mode: "setup" | "vendor" | "about" | "") => void;
+	rooms: Room[];
+	selectedRoomId: string | null;
+	setSelectedRoomId: (roomId: string) => void;
+	openAddRoomModal: () => void;
 };
 
 export type ButtonProps = {

@@ -34,7 +34,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			{selectedRoomId && (
 				<div
 					onClick={() => setIsRoomInfoModalOpen(true)}
-					className="cursor-pointer text-customBlue2 inline-block ml-2"
+					className="cursor-pointer text-customPruple hover:text-customPurpleLight inline-block ml-2"
 				>
 					<FiInfo size={24} />
 				</div>
@@ -59,7 +59,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 					<div className="flex justify-between mt-4">
 						<button
 							onClick={() => openEditModal(room)}
-							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mr-2"
+							className="bg-customPurpleLight hover:bg-customPurple text-white font-bold py-1 px-4 rounded mr-2"
 						>
 							Edit Room
 						</button>
@@ -67,7 +67,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 							message="Are you sure you want to delete this Room?"
 							onConfirm={() => removeRoom(room.id)}
 							triggerComponent={
-								<button className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+								<button className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
 									Delete
 								</button>
 							}

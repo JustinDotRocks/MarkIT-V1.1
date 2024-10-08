@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { AddFeaturesModalProps } from "../../Types";
 import { handleClickOutside } from "../../utils/functions";
+import { FaDoorOpen } from "react-icons/fa";
 
 const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 	addFeature,
@@ -53,9 +54,9 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 			{selectedRoomId && (
 				<button
 					onClick={() => setIsAddFeaturesModalOpen(true)}
-					className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded ml-2"
+					className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded ml-2"
 				>
-					Add Features
+					<FaDoorOpen />
 				</button>
 			)}
 			{isAddFeaturesModalOpen && (

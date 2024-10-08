@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { AddTablesModalProps } from "../../Types";
 import { handleClickOutside } from "../../utils/functions";
+import { MdTableRestaurant } from "react-icons/md";
 
 const AddTablesModal: React.FC<AddTablesModalProps> = ({
 	addTable,
@@ -60,9 +61,9 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 			{selectedRoomId && (
 				<button
 					onClick={() => setIsAddTablesModalOpen(true)}
-					className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ml-2"
+					className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded ml-2"
 				>
-					Add Tables
+					<MdTableRestaurant />
 				</button>
 			)}
 			{isAddTablesModalOpen && (

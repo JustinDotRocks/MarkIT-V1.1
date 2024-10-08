@@ -47,7 +47,7 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 			<div
 				ref={modalRef}
-				className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
+				className="bg-customPurple p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
 			>
 				<h2 className="text-xl text-white font-bold mb-4">
 					Add Room
@@ -58,7 +58,7 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 					name="room-name"
 					value={roomName}
 					onChange={handleInputChange}
-					className="w-full p-2 mb-4 rounded bg-customBlue2 text-white placeholder-white"
+					className="w-full p-2 mb-4 rounded bg-customPurpleLight text-white placeholder-white"
 				/>
 				<input
 					type="text"
@@ -66,7 +66,7 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 					name="room-width"
 					value={roomWidth}
 					onChange={handleInputChange}
-					className="w-full p-2 mb-4 rounded bg-customBlue2 text-white placeholder-white"
+					className="w-full p-2 mb-4 rounded bg-customPurpleLight text-white placeholder-white"
 				/>
 				<input
 					type="text"
@@ -74,18 +74,18 @@ const RoomSetupModal: React.FC<RoomSetupModalProps> = ({
 					name="room-depth"
 					value={roomDepth}
 					onChange={handleInputChange}
-					className="w-full p-2 mb-4 rounded bg-customBlue2 text-white placeholder-white"
+					className="w-full p-2 mb-4 rounded bg-customPurpleLight text-white placeholder-white"
 				/>
 				<div className="flex justify-end">
 					<button
 						onClick={handleAddRoom}
-						className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+						className="bg-customPurpleLight hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
 					>
 						Add Room
 					</button>
 					<button
 						onClick={onClose}
-						className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-customPurpleLight hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
 					>
 						Cancel
 					</button>

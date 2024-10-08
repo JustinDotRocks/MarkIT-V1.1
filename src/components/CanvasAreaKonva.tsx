@@ -123,8 +123,11 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	const optionsBarPosition = getOptionsBarPosition();
 
 	return (
-		<div ref={containerRef} className="flex flex-col h-screen mt-28">
-			<div className="canvas-area flex flex-col ">
+		<div
+			ref={containerRef}
+			className="flex flex-col h-screen mt-28 md:mt-14"
+		>
+			{/* <div className="canvas-area flex flex-col ">
 				<RoomDetailsDisplay
 					rooms={rooms}
 					handleRemoveRoom={removeRoom}
@@ -134,12 +137,32 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 					openAddRoomModal={openAddRoomModal}
 					selectedRoomId={selectedRoomId}
 				/>
-			</div>
+			</div> */}
 
 			{room !== undefined &&
 				(isMobile ? (
-					<div className="fixed top-22 right-10 z-50">
-						<RoomOptionsHamburger
+					<div className="fixed top-16 right-10 z-30">
+						{/* <RoomOptionsHamburger
+							areAllObjectsLocked={
+								areAllObjectsLocked
+							}
+							lockAllObjects={lockAllObjects}
+							selectedRoomId={selectedRoomId}
+							addTable={addTable}
+							tables={tables}
+							addFeature={addFeature}
+							features={features}
+							room={room}
+							removeRoom={removeRoom}
+							openEditModal={openEditModal}
+							rooms={rooms}
+							setSelectedRoomId={setSelectedRoomId}
+							openAddRoomModal={openAddRoomModal}
+							setTables={setTables}
+							gridMode={gridMode}
+							setGridMode={setGridMode}
+						/> */}
+						<RoomOptions
 							areAllObjectsLocked={
 								areAllObjectsLocked
 							}
@@ -184,7 +207,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 				containerRef.current &&
 				containerSize.width > 0 &&
 				containerSize.height > 0 && (
-					<div className="flex-1 flex relative ">
+					<div className="flex-1 flex relative z-10">
 						<Stage
 							ref={stageRef}
 							width={
@@ -384,7 +407,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													isMobile
 														? "translateX(-50%)"
 														: "none",
-												zIndex: 1,
+												zIndex: 40,
 												pointerEvents:
 													"auto",
 											}}
@@ -496,18 +519,20 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							className={`zoom-slider flex items-center absolute ${
 								isMobile
 									? "top-5 left-0 right-5 p-4"
-									: "right-0 top-1/2 transform -translate-y-1/2 mr-4"
+									: "right-1 top-20 transform -translate-y-1/2 mr-4"
 							}`}
 							style={{
-								zIndex: 100,
+								zIndex: 35,
 								pointerEvents: "auto",
 							}}
 						>
 							<label
 								htmlFor="zoom"
 								className={`${
-									isMobile ? "mr-2" : "mb-2"
-								} text-customBlue`}
+									isMobile
+										? "mr-2"
+										: "mb-2 mr-2"
+								} text-customPurple`}
 							>
 								Zoom:
 							</label>
@@ -528,13 +553,13 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								className={`${
 									isMobile
 										? "w-full h-2"
-										: "h-48 w-2"
+										: "h-52 w-2"
 								} cursor-pointer appearance-none bg-gray-200`}
 								style={{
 									writingMode: isMobile
 										? "horizontal-tb"
 										: "vertical-rl",
-									accentColor: "#1f5160",
+									accentColor: "#4a235a",
 								}}
 							/>
 						</div>

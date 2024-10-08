@@ -90,7 +90,6 @@ const RoomOptionsHamburger: React.FC<RoomOptionsProps> = ({
 			<div className="fixed top-48 left-0 p-4 w-full">
 				{/* Fullscreen menu when isMenuOpen is true */}
 				{isMenuOpen && (
-					// <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-col items-center justify-center z-50">
 					<div className="flex flex-col items-center justify-center rounded bg-customBlue p-4 z-50">
 						<div className="text-white text-2xl mb-4">
 							Room Options

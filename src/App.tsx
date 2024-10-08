@@ -59,10 +59,14 @@ const App: React.FC = () => {
 
 	return (
 		<Router>
-			<div className="flex flex-col h-full bg-customWhite">
+			<div className="flex flex-col h-full bg-white">
 				<NavBar
 					activeMode={activeMode}
 					setActiveMode={setActiveMode}
+					rooms={rooms}
+					selectedRoomId={selectedRoomId}
+					setSelectedRoomId={setSelectedRoomId}
+					openAddRoomModal={openRoomModal}
 				/>
 				<div className="relative flex flex-col flex-grow ">
 					<Routes>

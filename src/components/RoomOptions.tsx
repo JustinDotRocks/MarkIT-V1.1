@@ -4,8 +4,12 @@ import AddTablesModal from "./Modals/AddTablesModal";
 import AddFeaturesModal from "./Modals/AddFeaturesModal";
 import InfoModal from "./Modals/InfoModal";
 import { RoomOptionsProps } from "../Types";
-import ClearAllTablesButton from "./ClearAllTablesButton"; // Import the new component
+import ClearAllTablesButton from "./ClearAllTablesButton";
 import { cycleGridMode } from "../utils/functions";
+
+import { MdGridOn } from "react-icons/md";
+import { MdGridOff } from "react-icons/md";
+import { TbChartGridDotsFilled } from "react-icons/tb";
 
 const RoomOptions: React.FC<RoomOptionsProps> = ({
 	areAllObjectsLocked,
@@ -49,24 +53,26 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 						/>
 						<button
 							onClick={handleCycleGridMode}
-							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
+							className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded m-1"
 						>
-							{gridMode === "Off" && "Grid Off"}
-							{gridMode === "Drag" && "Grid Drag"}
-							{gridMode === "On" && "Grid On"}
+							{gridMode === "Off" && <MdGridOff />}
+							{gridMode === "Drag" && (
+								<TbChartGridDotsFilled />
+							)}
+							{gridMode === "On" && <MdGridOn />}
 						</button>
-						<AddTablesModal
-							isOpen={isAddTablesModalOpen}
-							onClose={closeAddTablesModal}
-							addTable={addTable}
-							tables={tables}
-							selectedRoomId={selectedRoomId}
-						/>
 						<AddFeaturesModal
 							isOpen={isAddFeaturesModalOpen}
 							onClose={closeAddFeaturesModal}
 							addFeature={addFeature}
 							features={features}
+							selectedRoomId={selectedRoomId}
+						/>
+						<AddTablesModal
+							isOpen={isAddTablesModalOpen}
+							onClose={closeAddTablesModal}
+							addTable={addTable}
+							tables={tables}
 							selectedRoomId={selectedRoomId}
 						/>
 						<ClearAllTablesButton
