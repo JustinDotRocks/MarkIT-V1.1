@@ -18,7 +18,7 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize }) => {
 					i * gridSize,
 					containerSize.height,
 				]}
-				stroke="#1f5160"
+				stroke="#4a235a"
 				strokeWidth={1}
 				opacity={0.1}
 			/>
@@ -36,7 +36,7 @@ const Grid: React.FC<GridProps> = ({ containerSize, gridSize }) => {
 					containerSize.width,
 					j * gridSize,
 				]}
-				stroke="#1f5160"
+				stroke="#4a235a"
 				strokeWidth={1}
 				opacity={0.1}
 			/>

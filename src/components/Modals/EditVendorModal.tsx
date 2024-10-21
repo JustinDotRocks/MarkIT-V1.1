@@ -70,19 +70,21 @@ const EditVendorModal: React.FC<EditVendorModalProps> = ({
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 			<div
 				ref={modalRef}
-				className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
+				className="bg-white p-4 rounded border-2 shadow-xl w-full max-w-md sm:w-1/2 md:w-1/4"
 			>
-				<h2 className="text-xl font-bold mb-4 text-white">
+				<h2 className="text-xl font-bold mb-4 text-customPurple">
 					Edit Vendor
 				</h2>
 				<div>
-					<label className="text-white">Vendor Name:</label>
+					<label className="text-customPurple">
+						Vendor Name:
+					</label>
 					<input
 						type="text"
 						name="name"
 						value={editableVendor.name}
 						onChange={handleInputChange}
-						className={`w-full p-2 mb-4 rounded bg-customBlue2 text-white ${
+						className={`w-full p-1 mb-4 rounded bg-gray-100 text-customPurple ${
 							errorMessage
 								? "border-2 border-red-500"
 								: ""
@@ -95,28 +97,32 @@ const EditVendorModal: React.FC<EditVendorModalProps> = ({
 					)}
 				</div>
 				<div>
-					<label className="text-white">Products:</label>
+					{/* <label className="text-customPurple">
+						Products:
+					</label> */}
 					<input
 						type="text"
 						name="products"
+						placeholder="Products"
 						value={editableVendor.products}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
+						className="w-full p-1 mb-4 rounded bg-gray-100 text-customPurple placeholder:text-customPurple"
 					/>
 				</div>
 				<div>
-					<label className="text-white">
+					{/* <label className="text-white">
 						Vendor Details:
-					</label>
+					</label> */}
 					<textarea
 						name="details"
+						placeholder="Details"
 						value={editableVendor.details}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
+						className="w-full p-1 mb-4 rounded bg-gray-100 text-customPurple placeholder:text-customPurple"
 					/>
 				</div>
 				<div className="mb-4">
-					<label className="text-white flex items-center">
+					<label className="text-customPurple flex items-center">
 						<input
 							type="checkbox"
 							name="electricityRequired"
@@ -124,7 +130,7 @@ const EditVendorModal: React.FC<EditVendorModalProps> = ({
 								editableVendor.electricityRequired
 							}
 							onChange={handleInputChange}
-							className="form-checkbox h-5 w-5 text-blue-600 mr-2"
+							className="form-checkbox h-6 w-6 text-blue-600 mr-2"
 						/>
 						Electricity Required
 					</label>
@@ -133,13 +139,13 @@ const EditVendorModal: React.FC<EditVendorModalProps> = ({
 				<div className="flex justify-end">
 					<button
 						onClick={handleUpdateVendor}
-						className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+						className="bg-customPurple hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-2"
 					>
 						Save
 					</button>
 					<button
 						onClick={onClose}
-						className="bg-customRed hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-customRed hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 					>
 						Cancel
 					</button>

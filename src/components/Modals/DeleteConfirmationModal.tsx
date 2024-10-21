@@ -35,10 +35,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
 					onClick={handleCancel} // Close modal when clicking outside of the content
 				>
 					<div
-						className="bg-customBlue p-6 rounded shadow-lg"
+						className="bg-white p-6 border-2 shadow-lg rounded shadow-lg"
 						onClick={handleModalClick} // Prevent clicks inside the modal from closing it
 					>
-						<p className="text-white">{message}</p>
+						<p className="text-customPurple">
+							{message}
+						</p>
 						<div className="flex justify-end mt-4">
 							<button
 								onClick={handleConfirmDelete}
@@ -48,7 +50,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
 							</button>
 							<button
 								onClick={handleCancel}
-								className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+								className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-2 px-4 rounded"
 							>
 								Cancel
 							</button>

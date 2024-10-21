@@ -22,9 +22,9 @@ const AccordionSection: React.FC<{
 			>
 				<h3 className="text-xl font-bold">{title}</h3>
 				{isOpen ? (
-					<FaChevronUp className="text-customBlue" />
+					<FaChevronUp className="text-customPurple" />
 				) : (
-					<FaChevronDown className="text-customBlue" />
+					<FaChevronDown className="text-customPurple" />
 				)}
 			</div>
 			{/* Conditionally render content based on isOpen */}

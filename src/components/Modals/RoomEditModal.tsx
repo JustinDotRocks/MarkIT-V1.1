@@ -54,9 +54,9 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 			<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 				<div
 					ref={modalRef}
-					className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
+					className="bg-white p-4 rounded border-2 shadow-xl w-full max-w-md sm:w-1/2 md:w-1/4"
 				>
-					<h2 className="text-xl font-bold mb-4 text-white">
+					<h2 className="text-xl font-bold mb-4 text-customPurple">
 						Edit Room
 					</h2>
 					<input
@@ -65,7 +65,7 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-name"
 						value={roomName}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
+						className="w-full p-1 mb-4 rounded bg-gray-100 text-customPurple"
 					/>
 					<input
 						type="text"
@@ -73,7 +73,7 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-width"
 						value={roomWidth}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
+						className="w-full p-1 mb-4 rounded bg-gray-100 text-customPurple"
 					/>
 					<input
 						type="text"
@@ -81,18 +81,18 @@ const RoomEditModal: React.FC<RoomEditModalProps> = ({
 						name="room-depth"
 						value={roomDepth}
 						onChange={handleInputChange}
-						className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
+						className="w-full p-1 mb-4 rounded bg-gray-100 text-customPurple"
 					/>
 					<div className="flex justify-end">
 						<button
 							onClick={handleUpdateRoom}
-							className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+							className="bg-customPurple hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
 						>
 							Update Room
 						</button>
 						<button
 							onClick={onClose}
-							className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 						>
 							Cancel
 						</button>

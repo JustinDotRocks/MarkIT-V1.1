@@ -22,7 +22,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendors,
 }) => {
 	// Define the width and height of the OptionsBar
-	const optionsBarWidth = 400;
+	const optionsBarWidth = 350;
 	const optionsBarHeight = 100; // Adjust height to accommodate vendor name
 	const margin = 5; // Margin between the object and the OptionsBar
 
@@ -72,7 +72,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 
 	return (
 		<div
-			className=" flex flex-col justify-center text-md bg-customBlue border border-black rounded p-2"
+			className=" flex flex-col justify-center text-md bg-white border border-customPurple rounded p-2"
 			style={{
 				width: optionsBarWidth,
 				height: optionsBarHeight,
@@ -80,7 +80,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 		>
 			{/* Vendor Name */}
 			{vendorName && (
-				<div className="flex justify-between items-center text-white mb-1">
+				<div className="flex justify-between items-center text-customPurple mb-1">
 					<p className="text-center text-lg flex-grow text-bold">
 						{vendorName}
 					</p>
@@ -100,14 +100,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Rotate Counter-Clockwise Button */}
 				<button
 					onClick={onRotateCCW}
-					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+					className="bg-customPurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
 				>
 					<FaUndo className="mr-1" />
 				</button>
 				{/* Rotate Clockwise Button */}
 				<button
 					onClick={onRotateCW}
-					className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+					className="bg-customPurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
 				>
 					<FaRedo className="mr-1" />
 				</button>
@@ -115,7 +115,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 				{/* Lock/Unlock Button */}
 				<button
 					onClick={onToggleLock}
-					className="bg-customBlue2 hover:bg-gray-700 text-white font-bold py-2 px-4 m-1 rounded flex items-center"
+					className="bg-customPurple hover:bg-gray-700 text-white font-bold py-2 px-4 m-1 rounded flex items-center"
 				>
 					{isLocked ? <FaUnlock /> : <FaLock />}
 				</button>
@@ -126,14 +126,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 						{vendorName ? (
 							<button
 								onClick={onRemoveVendor}
-								className="bg-customBlue2 hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-customYellow hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
 								Unasign
 							</button>
 						) : (
 							<button
 								onClick={onAddVendor}
-								className="bg-customBlue2 hover:bg-green-700 text-white font-bold py-1 px-2 m-1 rounded"
+								className="bg-green-700 hover:bg-green-900 text-white font-bold py-1 px-2 m-1 rounded"
 							>
 								Asign
 							</button>

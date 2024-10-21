@@ -20,7 +20,9 @@ const VendorSignInComponent: React.FC<VendorSignInComponentProps> = ({
 			}
 		>
 			<FaCheckCircle
-				className={signedIn ? "text-green-500" : "text-red-500"}
+				className={
+					signedIn ? "text-customGreen" : "text-red-500"
+				}
 				size={size}
 			/>
 		</button>

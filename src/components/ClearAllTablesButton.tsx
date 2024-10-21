@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { ClearAllTablesButtonProps } from "../Types";
+import { ClearAllTablesButtonProps, Vendor } from "../Types";
 import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
-import { MdTableRestaurant } from "react-icons/md";
+import { MdOutlineCancelPresentation } from "react-icons/md";
+import { clearTablesForRoom } from "../utils/functions";
+import {
+	loadFromLocalStorage,
+	saveToLocalStorage,
+	STORAGE_KEYS,
+} from "../utils/storageUtils";
 
 const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,
@@ -11,23 +17,56 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	const [, setIsModalOpen] = useState(false);
 	const closeModal = () => setIsModalOpen(false);
 
+	// const handleClearTables = () => {
+	// 	if (selectedRoomId) {
+	// 		const updatedTables = clearTablesForRoom(
+	// 			tables,
+	// 			selectedRoomId
+	// 		);
+	// 		setTables(updatedTables);
+	// 	}
+
+	// 	closeModal();
+	// };
 	const handleClearTables = () => {
 		if (selectedRoomId) {
-			const filteredTables = tables.filter(
-				(table) => table.roomId !== selectedRoomId
+			// Remove tables associated with the selected room
+			const updatedTables = clearTablesForRoom(
+				tables,
+				selectedRoomId
 			);
-			setTables(filteredTables);
+			setTables(updatedTables);
+
+			// Read vendors from local storage
+			const vendors: Vendor[] =
+				loadFromLocalStorage<Vendor[]>(STORAGE_KEYS.VENDORS) ||
+				[];
+
+			// Update vendors to remove the room assignment
+			const updatedVendors = vendors.map((vendor) => {
+				if (vendor.room === selectedRoomId) {
+					return {
+						...vendor,
+						room: null,
+					};
+				}
+				return vendor;
+			});
+
+			// Save updated vendors back to local storage
+			saveToLocalStorage(STORAGE_KEYS.VENDORS, updatedVendors);
 		}
+
 		closeModal();
 	};
 
 	return (
 		<DeleteConfirmationModal
-			message="Are you sure you want to delete this item?"
+			message="Are you sure you want to delete ALL TABLES?"
 			onConfirm={handleClearTables}
 			triggerComponent={
-				<button className="flex items-center bg-red-500 hover:bg-customPurpleLight text-white font-bold py-0 px-2 rounded">
-					Remove <MdTableRestaurant className="ml-1" />
+				<button className="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mb-1 rounded">
+					<MdOutlineCancelPresentation className="" />
 				</button>
 			}
 		/>

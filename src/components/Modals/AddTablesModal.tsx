@@ -61,7 +61,7 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 			{selectedRoomId && (
 				<button
 					onClick={() => setIsAddTablesModalOpen(true)}
-					className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded ml-2"
+					className="bg-customGreen hover:bg-customGreenDark text-white font-bold py-1 px-2 rounded mr-2"
 				>
 					<MdTableRestaurant />
 				</button>
@@ -70,62 +70,68 @@ const AddTablesModal: React.FC<AddTablesModalProps> = ({
 				<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
+						className="bg-white p-4 border-2 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/4"
 					>
-						<h2 className="text-xl font-bold text-white mb-4">
+						<h2 className="text-xl font-bold text-customPurple mb-4">
 							Add Table
 						</h2>
-						<select
-							value={tableType}
-							onChange={(e) =>
-								setTableType(
-									e.target.value as
-										| "table-6"
-										| "table-8"
-										| "table-5"
-								)
-							}
-							className="w-full p-2 mb-4 rounded bg-customBlue2 text-white placeholder-white"
-						>
-							<option value="table-6">
-								6-Foot Table
-							</option>
-							<option value="table-8">
-								8-Foot Table
-							</option>
-							<option value="table-5">
-								5-Foot Round Table
-							</option>
-						</select>
-						<input
-							type="number"
-							value={quantity}
-							onChange={(e) =>
-								setQuantity(
-									parseInt(e.target.value)
-								)
-							}
-							min={1}
-							placeholder="Quantity"
-							className="w-full p-2 mb-4 rounded bg-customBlue2 text-white placeholder-white"
-						/>
-						<div className="flex justify-end">
-							<button
-								onClick={handleAddTableClick}
-								className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-							>
-								Add Table
-							</button>
-							<button
-								onClick={() =>
-									setIsAddTablesModalOpen(
-										false
+						<div className="flex flex-col items-center">
+							<select
+								value={tableType}
+								onChange={(e) =>
+									setTableType(
+										e.target.value as
+											| "table-6"
+											| "table-8"
+											| "table-5"
 									)
 								}
-								className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+								className="w-3/4 p-1 mb-4 rounded bg-gray-100 text-customPurple placeholder-customPurple"
 							>
-								Cancel
-							</button>
+								<option value="table-6">
+									6-Foot Table
+								</option>
+								<option value="table-8">
+									8-Foot Table
+								</option>
+								<option value="table-5">
+									5-Foot Round Table
+								</option>
+							</select>
+							<input
+								type="number"
+								value={quantity}
+								onChange={(e) =>
+									setQuantity(
+										parseInt(
+											e.target.value
+										)
+									)
+								}
+								min={1}
+								placeholder="Quantity"
+								className="w-3/4 p-1 mb-4 rounded bg-gray-100 text-customPurple placeholder-customPurple"
+							/>
+							<div className="flex justify-end">
+								<button
+									onClick={
+										handleAddTableClick
+									}
+									className="bg-customPurple hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+								>
+									Add Table
+								</button>
+								<button
+									onClick={() =>
+										setIsAddTablesModalOpen(
+											false
+										)
+									}
+									className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+								>
+									Cancel
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

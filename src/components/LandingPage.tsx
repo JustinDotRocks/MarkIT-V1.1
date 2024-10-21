@@ -1,7 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link component
+import { Link, useNavigate } from "react-router-dom";
+import { LandingPageProps } from "../Types";
 
-const LandingPage: React.FC = () => {
+const LandingPage: React.FC<LandingPageProps> = ({
+	roomsLength,
+	openAddRoomModal,
+}) => {
+	const navigate = useNavigate(); // Initialize navigate here
+
+	const handleGetStarted = () => {
+		if (roomsLength === 0) {
+			openAddRoomModal(); // Open the add room modal if no rooms exist
+		}
+		navigate("/venue"); // Always navigate to venue
+	};
+
 	return (
 		<div
 			className="relative min-h-screen bg-cover bg-center flex items-center justify-center"
@@ -14,7 +27,7 @@ const LandingPage: React.FC = () => {
 			<div className="absolute inset-0 bg-white opacity-50"></div>
 
 			{/* Content */}
-			<div className="relative z-10 text-center text-customBlue p-6">
+			<div className="relative z-10 text-center text-customPurple p-6">
 				<h1 className="text-4xl font-bold mb-4">
 					Welcome to MarkIT
 				</h1>
@@ -24,7 +37,8 @@ const LandingPage: React.FC = () => {
 				</p>
 				<Link
 					to="/venue" // Navigate to the venue page
-					className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-3 px-6 rounded inline-block"
+					onClick={handleGetStarted}
+					className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-3 px-6 rounded inline-block"
 				>
 					Get Started
 				</Link>

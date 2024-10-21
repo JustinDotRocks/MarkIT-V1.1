@@ -11,7 +11,7 @@ const Button: React.FC<ButtonProps> = ({
 	return (
 		<button
 			type={type}
-			className={`px-4 py-2 rounded text-white ${className}`}
+			className={` px-2 md:px-4 py-2 rounded text-white ${className}`}
 			onClick={onClick}
 			disabled={disabled}
 		>

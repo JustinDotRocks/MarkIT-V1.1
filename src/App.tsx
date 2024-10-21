@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { TableData, FeatureData } from "./Types";
 import { useRooms } from "./hooks/useRooms";
@@ -17,6 +17,18 @@ import LandingPage from "./components/LandingPage";
 const App: React.FC = () => {
 	const { activeMode, setActiveMode } = useActiveMode();
 	const {
+		features,
+		tables,
+		setFeatures,
+		setTables,
+		addTableToCanvas,
+		addFeatureToCanvas,
+		toggleLockObject,
+		removeObjectFromCanvas,
+		areAllObjectsLocked,
+		setAreAllObjectsLocked,
+	} = useTablesAndFeatures("");
+	const {
 		rooms,
 		selectedRoomId,
 		setSelectedRoomId,
@@ -30,22 +42,18 @@ const App: React.FC = () => {
 		closeRoomModal,
 		openEditModal,
 		closeEditModal,
-	} = useRooms();
-	const {
-		features,
-		tables,
-		setFeatures,
-		setTables,
-		addTableToCanvas,
-		addFeatureToCanvas,
-		toggleLockObject,
-		removeObjectFromCanvas,
-		areAllObjectsLocked,
-		setAreAllObjectsLocked,
-	} = useTablesAndFeatures(selectedRoomId);
+	} = useRooms(tables, setTables);
+
 	const { vendors, setVendors, updateVendorDetails } = useVendors();
 	// Automatically save state to localStorage
 	useAutoSave(features, rooms, vendors, tables);
+
+	// Automatically select the first room if it exists
+	useEffect(() => {
+		if (rooms.length > 0 && !selectedRoomId) {
+			setSelectedRoomId(rooms[0].id);
+		}
+	}, [rooms, selectedRoomId]);
 
 	// Wrapper function for addTable
 	const handleAddTable = (tableData: TableData) => {
@@ -70,7 +78,18 @@ const App: React.FC = () => {
 				/>
 				<div className="relative flex flex-col flex-grow ">
 					<Routes>
-						<Route path="/" Component={LandingPage} />
+						{/* <Route path="/" Component={LandingPage} /> */}
+						<Route
+							path="/"
+							element={
+								<LandingPage
+									roomsLength={rooms.length}
+									openAddRoomModal={
+										openRoomModal
+									}
+								/>
+							}
+						/>
 
 						<Route
 							path="/venue"

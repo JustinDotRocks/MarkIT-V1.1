@@ -123,7 +123,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 					setIsAddVendorModalOpen(true);
 					setErrorMessage(null); // Clear any previous error when opening the modal
 				}}
-				className="bg-customBlue hover:bg-blue-700 text-white font-bold py-2 px-4 ml-4 mt-32 rounded"
+				className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-2 px-4 ml-4 mt-32 rounded"
 			>
 				Add Vendor
 			</button>
@@ -131,9 +131,9 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-customBlue text-white p-6 rounded-lg shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3"
+						className="bg-white text-customPurple p-4 border-2 rounded-lg shadow-lg w-full max-w-md sm:w-1/2 md:w-1/4"
 					>
-						<h2 className="text-lg font-bold mb-4">
+						<h2 className="text-lg text-customPurple font-bold mb-4">
 							Add Vendor
 						</h2>
 						<div className="mb-4">
@@ -143,10 +143,10 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 								value={vendorName}
 								onChange={handleInputChange}
 								placeholder="Vendor name"
-								className={`w-full p-2 rounded ${
+								className={`w-full p-1 rounded ${
 									errorMessage
 										? "border-2 border-red-500 bg-red-100 placeholder-red-500 text-red-500"
-										: "bg-customBlue2 text-white placeholder-white"
+										: "bg-gray-100 text-customPurple placeholder-customPurple"
 								}`}
 							/>
 							{errorMessage && (
@@ -162,19 +162,19 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 							value={vendorProducts}
 							onChange={handleInputChange}
 							placeholder="Products"
-							className="w-full p-2 rounded bg-customBlue2 text-white placeholder-white mb-4"
+							className="w-full p-1 rounded bg-gray-100 text-customPurple placeholder-customPurple mb-4"
 						/>
 						<textarea
 							name="vendor-details"
 							value={vendorDetails.details}
 							onChange={handleVendorDetailsChange}
 							placeholder="Details"
-							className="w-full p-2 rounded bg-customBlue2 text-white placeholder-white mb-4"
+							className="w-full p-1 rounded bg-gray-100 text-wcustomPurplehite placeholder-customPurple mb-4"
 							rows={3}
 						/>
 						<div className="flex items-center mb-4">
 							<label
-								className="mr-2 text-white"
+								className="mr-2 text-customPurple"
 								htmlFor="vendor-electricity-required"
 							>
 								Electricity Required
@@ -196,7 +196,7 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 										})
 									)
 								}
-								className="form-checkbox h-5 w-5 text-customBlue2"
+								className="form-checkbox h-6 w-6 text-customPurple"
 							/>
 						</div>
 						<div className="flex justify-end space-x-4">
@@ -206,13 +206,13 @@ const AddVendorModal: React.FC<AddVendorModalProps> = ({
 										false
 									)
 								}
-								className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+								className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
 							>
 								Cancel
 							</Button>
 							<Button
 								onClick={handleAddVendor}
-								className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+								className="bg-customPurple hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
 							>
 								Add Vendor
 							</Button>

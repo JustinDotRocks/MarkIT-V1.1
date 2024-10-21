@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import { Room } from "../Types"; // Adjust the import based on your structure
+import { Room, Table } from "../Types";
 import {
 	loadFromLocalStorage,
 	saveToLocalStorage,
 	getStorageKeys,
 } from "../utils/storageUtils";
+import { clearTablesForRoom } from "../utils/functions";
 
-export const useRooms = () => {
+export const useRooms = (
+	tables: Table[],
+	setTables: React.Dispatch<React.SetStateAction<Table[]>>
+) => {
 	const [rooms, setRooms] = useState<Room[]>(
 		() => loadFromLocalStorage<Room[]>(getStorageKeys().ROOMS) || []
 	);
@@ -42,10 +46,44 @@ export const useRooms = () => {
 	};
 
 	// Remove a room and associated objects (e.g., features, tables)
+	// const removeRoom = (roomId: string) => {
+	// 	setRooms((prevRooms) =>
+	// 		prevRooms.filter((room) => room.id !== roomId)
+	// 	);
+	// };
+	// const removeRoom = (roomId: string) => {
+	// 	// Remove the room from the rooms list
+	// 	setRooms((prevRooms) =>
+	// 		prevRooms.filter((room) => room.id !== roomId)
+	// 	);
+
+	// 	// Unassign vendors from tables in the deleted room
+	// 	setTables((prevTables) =>
+	// 		prevTables.map((table) =>
+	// 			table.roomId === roomId
+	// 				? { ...table, vendorId: "", roomId: "" } // Use empty strings
+	// 				: table
+	// 		)
+	// 	);
+
+	// 	// Optionally clear selected room if it was the one removed
+	// 	if (selectedRoomId === roomId) {
+	// 		setSelectedRoomId(null);
+	// 	}
+	// };
 	const removeRoom = (roomId: string) => {
+		// Remove the room from the list
 		setRooms((prevRooms) =>
 			prevRooms.filter((room) => room.id !== roomId)
 		);
+
+		// Remove tables associated with the room
+		const updatedTables = clearTablesForRoom(tables, roomId);
+		setTables(updatedTables);
+
+		if (selectedRoomId === roomId) {
+			setSelectedRoomId(null);
+		}
 	};
 
 	// Open and close modals

@@ -9,7 +9,7 @@ const LockAllObjectsButton: React.FC<LockAllObjectsButtonProps> = ({
 	return (
 		<button
 			onClick={lockAllObjects}
-			className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded"
+			className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 mb-1 rounded"
 		>
 			{areAllObjectsLocked ? <FaLock /> : <FaUnlock />}
 		</button>

@@ -22,7 +22,8 @@ import RotateHandler from "./RotateHandler";
 import DragAndDropHandler from "./DragAndDropHandler";
 import AssignVendorModal from "./Modals/AssignVendorModal";
 import RoomOptions from "./RoomOptions";
-import RoomOptionsHamburger from "./RoomOptionsHamburger";
+import RoomOptionsMobile from "./RoomOptionsMobile";
+
 import Grid from "./Grid";
 
 const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
@@ -141,7 +142,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 			{room !== undefined &&
 				(isMobile ? (
-					<div className="fixed top-16 right-10 z-30">
+					<div className="fixed top-20 right-0 z-30">
 						{/* <RoomOptionsHamburger
 							areAllObjectsLocked={
 								areAllObjectsLocked
@@ -162,7 +163,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							gridMode={gridMode}
 							setGridMode={setGridMode}
 						/> */}
-						<RoomOptions
+						{/* <RoomOptions
 							areAllObjectsLocked={
 								areAllObjectsLocked
 							}
@@ -181,6 +182,32 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							setTables={setTables}
 							gridMode={gridMode}
 							setGridMode={setGridMode}
+							scale={scale}
+							handleZoomChange={handleZoomChange}
+							isMobile={isMobile}
+						/> */}
+						<RoomOptionsMobile
+							areAllObjectsLocked={
+								areAllObjectsLocked
+							}
+							lockAllObjects={lockAllObjects}
+							selectedRoomId={selectedRoomId}
+							addTable={addTable}
+							tables={tables}
+							addFeature={addFeature}
+							features={features}
+							room={room}
+							removeRoom={removeRoom}
+							openEditModal={openEditModal}
+							rooms={rooms}
+							setSelectedRoomId={setSelectedRoomId}
+							openAddRoomModal={openAddRoomModal}
+							setTables={setTables}
+							gridMode={gridMode}
+							setGridMode={setGridMode}
+							scale={scale}
+							handleZoomChange={handleZoomChange}
+							isMobile={isMobile}
 						/>
 					</div>
 				) : (
@@ -201,6 +228,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						setTables={setTables}
 						gridMode={gridMode}
 						setGridMode={setGridMode}
+						scale={scale}
+						handleZoomChange={handleZoomChange}
+						isMobile={isMobile}
 					/>
 				))}
 			{room &&
@@ -241,7 +271,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											containerSize.height
 										}
 										fill="#f0f0f0"
-										stroke="#1f5160"
+										stroke="#4a235a"
 										strokeWidth={3}
 									/>
 									{(gridMode === "On" ||
@@ -515,7 +545,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 								</RotateHandler>
 							)}
 						{/* Vertical Zoom Slider */}
-						<div
+						{/* <div
 							className={`zoom-slider flex items-center absolute ${
 								isMobile
 									? "top-5 left-0 right-5 p-4"
@@ -562,7 +592,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									accentColor: "#4a235a",
 								}}
 							/>
-						</div>
+						</div> */}
 					</div>
 				)}
 			<AssignVendorModal

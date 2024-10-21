@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { VendorModeComponentProps, Vendor } from "../Types";
 import VendorCard from "./VendorCard";
-import AddVendorModal from "./Modals/AddVendorModal"; // Import the modal
+import AddVendorModal from "./Modals/AddVendorModal";
 import {
 	saveToLocalStorage,
 	loadFromLocalStorage,
@@ -48,7 +48,7 @@ const VendorModeComponent: React.FC<VendorModeComponentProps> = ({
 				selectedRoomId={selectedRoomId}
 				vendors={vendors}
 			/>
-			<div className=" flex  items-center flex-col md:grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
+			<div className=" flex items-center flex-col md:grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 mt-4">
 				{vendors.map((vendor) => {
 					const associatedTable = tables.find(
 						(table) => table.vendorId === vendor.id

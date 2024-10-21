@@ -1,4 +1,3 @@
-// InfoModal.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { InfoModalProps } from "../../Types";
 import { handleClickOutside } from "../../utils/functions";
@@ -34,14 +33,14 @@ const InfoModal: React.FC<InfoModalProps> = ({
 			{selectedRoomId && (
 				<div
 					onClick={() => setIsRoomInfoModalOpen(true)}
-					className="cursor-pointer text-customPruple hover:text-customPurpleLight inline-block ml-2"
+					className="cursor-pointer text-customPurple hover:text-customPurpleLight inline-block ml-0"
 				>
 					<FiInfo size={24} />
 				</div>
 			)}
 			{isRoomInfoModalOpen && (
 				<div
-					className="fixed bg-customBlue text-white p-4 rounded shadow-lg z-50 top-2/3 md:top-56 md:right-60"
+					className="fixed bg-white text-customPurple p-4 border-2 rounded shadow-lg z-50 top-2/3  md:top-36 md:right-58"
 					ref={modalRef}
 				>
 					<h2 className="text-xl font-bold mb-2">
@@ -59,7 +58,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 					<div className="flex justify-between mt-4">
 						<button
 							onClick={() => openEditModal(room)}
-							className="bg-customPurpleLight hover:bg-customPurple text-white font-bold py-1 px-4 rounded mr-2"
+							className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-4 rounded mr-2"
 						>
 							Edit Room
 						</button>
@@ -67,7 +66,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 							message="Are you sure you want to delete this Room?"
 							onConfirm={() => removeRoom(room.id)}
 							triggerComponent={
-								<button className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+								<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
 									Delete
 								</button>
 							}
@@ -77,7 +76,7 @@ const InfoModal: React.FC<InfoModalProps> = ({
 						onClick={() =>
 							setIsRoomInfoModalOpen(false)
 						}
-						className="mt-4 text-white font-bold"
+						className="mt-4 text-customPurple font-bold"
 					>
 						Close
 					</button>

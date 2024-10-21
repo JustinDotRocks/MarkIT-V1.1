@@ -83,7 +83,7 @@ const TableComponent: React.FC<DragAndDropComponentProps> = ({
 		? associatedVendor.signedIn
 			? "#496f3d" // Green color to match "bg-green-500"
 			: "#de5e46" // Red color to match "bg-red-500"
-		: "#628b98"; // Grey color if no vendor is associated
+		: "#927b9c"; // Grey color if no vendor is associated
 
 	const handleClick = (e: KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true; // Prevent event bubbling

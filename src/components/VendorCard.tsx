@@ -108,7 +108,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 	const hasDetails = vendorDetails && vendorDetails.trim() !== "";
 
 	// Define background color based on signedIn state
-	const backgroundColor = signedIn ? "bg-customBlue" : "bg-customBlue";
+	const backgroundColor = signedIn ? "bg-white" : "bg-white";
 
 	// Get assigned room and table details
 	const assignedRoom = rooms.find(
@@ -137,7 +137,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 
 	return (
 		<div
-			className={`card-container ${backgroundColor} text-white rounded-lg shadow-md p-4 m-4 w-72 relative`}
+			className={`card-container ${backgroundColor} text-customPurple border-2 rounded-lg shadow-xl p-4 m-4 w-72 relative`}
 		>
 			{isRoomAndTableSelected && (
 				<div className="absolute top-2 right-2">
@@ -149,9 +149,9 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				</div>
 			)}
 			<>
-				<div className="flex m-2">
+				<div className="flex font-bold m-2">
 					Vendor:
-					<div className="font-bold ml-2">{vendorName}</div>
+					<div className=" ml-2">{vendorName}</div>
 				</div>
 				<div className="m-2">Products: {vendorProducts}</div>
 				<div className="flex justify-between items-center m-2">
@@ -188,11 +188,11 @@ const VendorCard: React.FC<VendorCardProps> = ({
 					Electricity?: {electricityRequired ? "Yes" : "No"}
 				</div>
 
-				<div className="m-2 text-white">
+				<div className="m-2 text-customPurple">
 					<strong>Room:</strong>
 					{assignedRoom ? " " + assignedRoom.name : " None"}
 				</div>
-				<div className="m-2 text-white">
+				<div className="m-2 text-customPurple">
 					<strong>Table:</strong>
 					{assignedTable
 						? " " + getTableLabel(assignedTable)
@@ -201,7 +201,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 				<div className="flex items-center justify-end mt-6">
 					<button
 						onClick={() => setIsModalOpen(true)}
-						className="mt-2 bg-customBlue2 hover:bg-blue-700 text-white font-bold py-1 px-2 mr-4 rounded"
+						className="mt-2 bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 mr-4 rounded"
 					>
 						Edit Vendor
 					</button>
@@ -209,7 +209,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 						message="Are you sure you want to delete this Vendor?"
 						onConfirm={() => deleteVendor(id)}
 						triggerComponent={
-							<button className="bg-customRed hover:bg-red-700 text-white font-bold mt-2 py-1 px-2 rounded">
+							<button className="bg-customRed hover:bg-red-900 text-white font-bold mt-2 py-1 px-2 rounded">
 								Delete
 							</button>
 						}

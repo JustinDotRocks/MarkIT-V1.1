@@ -54,7 +54,7 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 			{selectedRoomId && (
 				<button
 					onClick={() => setIsAddFeaturesModalOpen(true)}
-					className="bg-customPurple hover:bg-customPurpleLight text-white font-bold py-1 px-2 rounded ml-2"
+					className="bg-customOrange2 hover:bg-customYellow text-white font-bold py-1 px-2 rounded "
 				>
 					<FaDoorOpen />
 				</button>
@@ -63,56 +63,64 @@ const AddFeaturesModal: React.FC<AddFeaturesModalProps> = ({
 				<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 					<div
 						ref={modalRef}
-						className="bg-customBlue p-8 rounded shadow-lg w-full max-w-md sm:w-1/2 md:w-1/3	"
+						className="bg-white p-4 rounded  border-2 shadow-lg w-full max-w-md sm:w-1/2 md:w-1/4"
 					>
-						<h2 className="text-xl text-white font-bold mb-4">
+						<h2 className="text-xl text-customPurple font-bold mb-4">
 							Add Feature
 						</h2>
-						<select
-							value={featureType}
-							onChange={(e) =>
-								setFeatureType(
-									e.target.value as
-										| "door"
-										| "obstacle"
-								)
-							}
-							className="w-full p-2 mb-4 rounded bg-customBlue2 text-white"
-						>
-							<option value="door">Door</option>
-							<option value="obstacle">
-								Obstacle
-							</option>
-						</select>
-						<input
-							type="number"
-							value={quantity}
-							onChange={(e) =>
-								setQuantity(
-									parseInt(e.target.value)
-								)
-							}
-							min={1}
-							className="w-full p-2 mb-4 rounded bg-customBlue2	 text-white"
-							placeholder="Quantity"
-						/>
-						<div className="flex justify-end">
-							<button
-								onClick={handleAddFeatureClick}
-								className="bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-							>
-								Add Feature
-							</button>
-							<button
-								onClick={() =>
-									setIsAddFeaturesModalOpen(
-										false
+						<div className="flex flex-col items-center">
+							<select
+								value={featureType}
+								onChange={(e) =>
+									setFeatureType(
+										e.target.value as
+											| "door"
+											| "obstacle"
 									)
 								}
-								className="bg-customBlue2 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+								className="w-3/4 p-1 mb-4 rounded bg-gray-100 text-customPurple"
 							>
-								Cancel
-							</button>
+								<option value="door">
+									Door
+								</option>
+								<option value="obstacle">
+									Obstacle
+								</option>
+							</select>
+							<input
+								type="number"
+								value={quantity}
+								onChange={(e) =>
+									setQuantity(
+										parseInt(
+											e.target.value
+										)
+									)
+								}
+								min={1}
+								className="w-3/4 p-1 mb-4 rounded bg-gray-100	 text-customPurple"
+								placeholder="Quantity"
+							/>
+							<div className="flex justify-end">
+								<button
+									onClick={
+										handleAddFeatureClick
+									}
+									className="bg-customPurple hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mr-2"
+								>
+									Add Feature
+								</button>
+								<button
+									onClick={() =>
+										setIsAddFeaturesModalOpen(
+											false
+										)
+									}
+									className="bg-customPurple hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+								>
+									Cancel
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

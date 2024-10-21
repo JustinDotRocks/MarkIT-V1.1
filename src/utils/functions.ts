@@ -1,4 +1,4 @@
-import { GridMode } from "../Types";
+import { GridMode, Table, Vendor } from "../Types";
 
 export const handleRoomInputChange = (
 	e: React.ChangeEvent<HTMLInputElement>,
@@ -54,3 +54,11 @@ export const findById = <T extends { id: string }>(
 	items: T[],
 	id: string
 ): T | undefined => items.find((item) => item.id === id);
+
+// Utility to clear all tables from a specific room and unassign vendors
+export const clearTablesForRoom = (
+	tables: Table[],
+	roomId: string
+): Table[] => {
+	return tables.filter((table) => table.roomId !== roomId);
+};

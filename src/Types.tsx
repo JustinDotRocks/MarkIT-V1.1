@@ -178,6 +178,7 @@ export interface Vendor {
 	roomId: string;
 	signedIn: boolean;
 	electricityRequired: boolean;
+	room?: string | null;
 }
 
 export type Feature = {
@@ -430,6 +431,9 @@ export interface RoomOptionsProps {
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	gridMode: GridMode;
 	setGridMode: React.Dispatch<React.SetStateAction<GridMode>>;
+	scale: number;
+	handleZoomChange: (zoomLevel: number) => void;
+	isMobile: boolean;
 }
 
 export interface DeleteConfirmationModalProps {
@@ -442,6 +446,8 @@ export interface ClearAllTablesButtonProps {
 	tables: Table[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedRoomId: string | null;
+	// vendors: Vendor[];
+	// setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 }
 
 export interface GridProps {
@@ -495,4 +501,9 @@ export type ObjectType = "table" | "feature";
 export interface Position {
 	x: number;
 	y: number;
+}
+
+export interface LandingPageProps {
+	roomsLength: number;
+	openAddRoomModal: () => void;
 }
