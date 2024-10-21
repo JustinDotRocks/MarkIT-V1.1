@@ -3,7 +3,6 @@ import { Room } from "../Types";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { feetToPixels } from "../utils/constants";
-// import { useTouchZoom } from "./useTouchZoom";
 
 export const useCanvasSize = (
 	room: Room | undefined,

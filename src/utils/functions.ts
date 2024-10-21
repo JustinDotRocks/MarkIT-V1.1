@@ -1,4 +1,4 @@
-import { GridMode, Table, Vendor } from "../Types";
+import { GridMode, Table } from "../Types";
 
 export const handleRoomInputChange = (
 	e: React.ChangeEvent<HTMLInputElement>,

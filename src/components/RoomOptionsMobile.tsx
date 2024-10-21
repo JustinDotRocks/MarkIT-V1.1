@@ -103,7 +103,6 @@ const RoomOptionsMobile: React.FC<RoomOptionsProps> = ({
 					>
 						<MdMenu
 							style={{
-								// backgroundColor: "#4a235a", // Custom background color
 								color: "#4a235a",
 								zIndex: 100,
 							}}

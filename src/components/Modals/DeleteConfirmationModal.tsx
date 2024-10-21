@@ -35,7 +35,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
 					onClick={handleCancel} // Close modal when clicking outside of the content
 				>
 					<div
-						className="bg-white p-6 border-2 shadow-lg rounded shadow-lg"
+						className="bg-white p-6 border-2 shadow-lg rounded"
 						onClick={handleModalClick} // Prevent clicks inside the modal from closing it
 					>
 						<p className="text-customPurple">

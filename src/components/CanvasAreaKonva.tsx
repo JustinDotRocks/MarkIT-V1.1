@@ -15,7 +15,6 @@ import { useOptionsBarPosition } from "../hooks/useOptionsBarPosition";
 import { useVendorSelection } from "../hooks/useVendorSelection";
 
 import OptionsBar from "./OptionsBar";
-import RoomDetailsDisplay from "./RoomDetailsDisplay";
 import TableComponent from "./TableComponent";
 import FeatureComponent from "./FeatureComponent";
 import RotateHandler from "./RotateHandler";
@@ -71,10 +70,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 		stagePosition,
 		handleWheel,
 		handleZoomChange,
-		// setScale,
-		// setStagePosition,
 	} = useCanvasSize(room, containerRef, stageRef);
-	// useTouchZoom(stageRef, setScale, setStagePosition);
 
 	const {
 		selectedObject,
@@ -128,64 +124,9 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 			ref={containerRef}
 			className="flex flex-col h-screen mt-28 md:mt-14"
 		>
-			{/* <div className="canvas-area flex flex-col ">
-				<RoomDetailsDisplay
-					rooms={rooms}
-					handleRemoveRoom={removeRoom}
-					openEditModal={openEditModal}
-					removeRoom={removeRoom}
-					setSelectedRoomId={setSelectedRoomId}
-					openAddRoomModal={openAddRoomModal}
-					selectedRoomId={selectedRoomId}
-				/>
-			</div> */}
-
 			{room !== undefined &&
 				(isMobile ? (
 					<div className="fixed top-20 right-0 z-30">
-						{/* <RoomOptionsHamburger
-							areAllObjectsLocked={
-								areAllObjectsLocked
-							}
-							lockAllObjects={lockAllObjects}
-							selectedRoomId={selectedRoomId}
-							addTable={addTable}
-							tables={tables}
-							addFeature={addFeature}
-							features={features}
-							room={room}
-							removeRoom={removeRoom}
-							openEditModal={openEditModal}
-							rooms={rooms}
-							setSelectedRoomId={setSelectedRoomId}
-							openAddRoomModal={openAddRoomModal}
-							setTables={setTables}
-							gridMode={gridMode}
-							setGridMode={setGridMode}
-						/> */}
-						{/* <RoomOptions
-							areAllObjectsLocked={
-								areAllObjectsLocked
-							}
-							lockAllObjects={lockAllObjects}
-							selectedRoomId={selectedRoomId}
-							addTable={addTable}
-							tables={tables}
-							addFeature={addFeature}
-							features={features}
-							room={room}
-							removeRoom={removeRoom}
-							openEditModal={openEditModal}
-							rooms={rooms}
-							setSelectedRoomId={setSelectedRoomId}
-							openAddRoomModal={openAddRoomModal}
-							setTables={setTables}
-							gridMode={gridMode}
-							setGridMode={setGridMode}
-							scale={scale}
-							handleZoomChange={handleZoomChange}
-							isMobile={isMobile}
-						/> */}
 						<RoomOptionsMobile
 							areAllObjectsLocked={
 								areAllObjectsLocked
@@ -544,55 +485,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 									)}
 								</RotateHandler>
 							)}
-						{/* Vertical Zoom Slider */}
-						{/* <div
-							className={`zoom-slider flex items-center absolute ${
-								isMobile
-									? "top-5 left-0 right-5 p-4"
-									: "right-1 top-20 transform -translate-y-1/2 mr-4"
-							}`}
-							style={{
-								zIndex: 35,
-								pointerEvents: "auto",
-							}}
-						>
-							<label
-								htmlFor="zoom"
-								className={`${
-									isMobile
-										? "mr-2"
-										: "mb-2 mr-2"
-								} text-customPurple`}
-							>
-								Zoom:
-							</label>
-							<input
-								id="zoom"
-								type="range"
-								min="0.25"
-								max="3"
-								step="0.01"
-								value={scale}
-								onChange={(e) =>
-									handleZoomChange(
-										parseFloat(
-											e.target.value
-										)
-									)
-								}
-								className={`${
-									isMobile
-										? "w-full h-2"
-										: "h-52 w-2"
-								} cursor-pointer appearance-none bg-gray-200`}
-								style={{
-									writingMode: isMobile
-										? "horizontal-tb"
-										: "vertical-rl",
-									accentColor: "#4a235a",
-								}}
-							/>
-						</div> */}
 					</div>
 				)}
 			<AssignVendorModal

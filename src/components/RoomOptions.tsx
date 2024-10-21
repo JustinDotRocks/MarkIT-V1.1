@@ -221,16 +221,6 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 												"auto",
 										}}
 									>
-										{/* <label
-										htmlFor="zoom"
-										className={`${
-											isMobile
-												? "mr-2"
-												: "mb-2 mr-2"
-										} text-customPurple`}
-									>
-										Zoom:
-									</label> */}
 										<input
 											id="zoom"
 											type="range"

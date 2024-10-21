@@ -85,7 +85,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 						{vendorName}
 					</p>
 					{/* Sign-In Button */}
-					<div className="	 ">
+					<div className="">
 						<VendorSignInComponent
 							signedIn={signedIn || false}
 							onToggleSignedIn={toggleSignedIn}

@@ -178,7 +178,7 @@ const DragAndDropHandler: React.FC<DragAndDropHandlerProps> = ({
 			room={room}
 			vendors={vendors}
 			onTouchStart={handleTouchStart}
-			onTap={handleTouchStart} // Use Konva's `onTap` for better touch support
+			onTap={handleTouchStart} // Konva's `onTap` for better touch support
 		/>
 	);
 };

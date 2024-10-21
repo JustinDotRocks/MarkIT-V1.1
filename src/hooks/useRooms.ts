@@ -45,32 +45,6 @@ export const useRooms = (
 		);
 	};
 
-	// Remove a room and associated objects (e.g., features, tables)
-	// const removeRoom = (roomId: string) => {
-	// 	setRooms((prevRooms) =>
-	// 		prevRooms.filter((room) => room.id !== roomId)
-	// 	);
-	// };
-	// const removeRoom = (roomId: string) => {
-	// 	// Remove the room from the rooms list
-	// 	setRooms((prevRooms) =>
-	// 		prevRooms.filter((room) => room.id !== roomId)
-	// 	);
-
-	// 	// Unassign vendors from tables in the deleted room
-	// 	setTables((prevTables) =>
-	// 		prevTables.map((table) =>
-	// 			table.roomId === roomId
-	// 				? { ...table, vendorId: "", roomId: "" } // Use empty strings
-	// 				: table
-	// 		)
-	// 	);
-
-	// 	// Optionally clear selected room if it was the one removed
-	// 	if (selectedRoomId === roomId) {
-	// 		setSelectedRoomId(null);
-	// 	}
-	// };
 	const removeRoom = (roomId: string) => {
 		// Remove the room from the list
 		setRooms((prevRooms) =>

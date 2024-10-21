@@ -17,17 +17,6 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	const [, setIsModalOpen] = useState(false);
 	const closeModal = () => setIsModalOpen(false);
 
-	// const handleClearTables = () => {
-	// 	if (selectedRoomId) {
-	// 		const updatedTables = clearTablesForRoom(
-	// 			tables,
-	// 			selectedRoomId
-	// 		);
-	// 		setTables(updatedTables);
-	// 	}
-
-	// 	closeModal();
-	// };
 	const handleClearTables = () => {
 		if (selectedRoomId) {
 			// Remove tables associated with the selected room
