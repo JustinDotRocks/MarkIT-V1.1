@@ -29,6 +29,8 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 	scale,
 	handleZoomChange,
 	isMobile,
+	vendors,
+	setVendors,
 }) => {
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
@@ -167,6 +169,8 @@ const RoomOptions: React.FC<RoomOptionsProps> = ({
 									selectedRoomId={
 										selectedRoomId
 									}
+									vendors={vendors}
+									setVendors={setVendors}
 								/>
 							</button>
 						</CustomTooltip>

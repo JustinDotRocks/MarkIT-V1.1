@@ -224,8 +224,8 @@ export interface RoomEditModalProps {
 }
 
 export interface OptionsBarProps {
-	x: number;
-	y: number;
+	// x: number;
+	// y: number;
 	onDelete: () => void;
 	onRotateCW: () => void;
 	onRotateCCW: () => void;
@@ -434,6 +434,8 @@ export interface RoomOptionsProps {
 	scale: number;
 	handleZoomChange: (zoomLevel: number) => void;
 	isMobile: boolean;
+	vendors: Vendor[];
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 }
 
 export interface DeleteConfirmationModalProps {
@@ -446,8 +448,8 @@ export interface ClearAllTablesButtonProps {
 	tables: Table[];
 	setTables: React.Dispatch<React.SetStateAction<Table[]>>;
 	selectedRoomId: string | null;
-	// vendors: Vendor[];
-	// setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
+	vendors: Vendor[];
+	setVendors: React.Dispatch<React.SetStateAction<Vendor[]>>;
 }
 
 export interface GridProps {

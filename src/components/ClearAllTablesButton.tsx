@@ -13,6 +13,8 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,
 	setTables,
 	selectedRoomId,
+	vendors,
+	setVendors,
 }) => {
 	const [, setIsModalOpen] = useState(false);
 	const closeModal = () => setIsModalOpen(false);
@@ -27,20 +29,33 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 			setTables(updatedTables);
 
 			// Read vendors from local storage
-			const vendors: Vendor[] =
-				loadFromLocalStorage<Vendor[]>(STORAGE_KEYS.VENDORS) ||
-				[];
+			// const vendors: Vendor[] =
+			// 	loadFromLocalStorage<Vendor[]>(STORAGE_KEYS.VENDORS) ||
+			// 	[];
 
-			// Update vendors to remove the room assignment
-			const updatedVendors = vendors.map((vendor) => {
-				if (vendor.room === selectedRoomId) {
+			// // Update vendors to remove the room assignment
+			// const updatedVendors = vendors.map((vendor) => {
+			// 	if (vendor.room === selectedRoomId) {
+			// 		return {
+			// 			...vendor,
+			// 			room: null,
+			// 		};
+			// 	}
+			// 	return vendor;
+			// });
+			const updatedVendors = vendors.map((vendor: Vendor) => {
+				if (vendor.roomId === selectedRoomId) {
 					return {
 						...vendor,
-						room: null,
+						roomId: "",
+						roomName: "",
 					};
 				}
 				return vendor;
 			});
+
+			// Update the state
+			setVendors(updatedVendors);
 
 			// Save updated vendors back to local storage
 			saveToLocalStorage(STORAGE_KEYS.VENDORS, updatedVendors);

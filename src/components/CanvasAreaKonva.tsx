@@ -119,6 +119,54 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 
 	const optionsBarPosition = getOptionsBarPosition();
 
+	// Adjust optionsBarPosition to keep it within the viewport
+	const adjustedOptionsBarPosition = { ...optionsBarPosition };
+
+	const optionsBarWidth = 350; // Adjust to your OptionsBar width
+	const optionsBarHeight = 100; // Adjust to your OptionsBar height
+
+	if (!isMobile) {
+		if (optionsBarPosition.x - optionsBarWidth / 2 < 0) {
+			adjustedOptionsBarPosition.x = optionsBarWidth / 2;
+		} else if (
+			optionsBarPosition.x + optionsBarWidth / 2 >
+			window.innerWidth
+		) {
+			adjustedOptionsBarPosition.x =
+				window.innerWidth - optionsBarWidth / 2;
+		}
+
+		if (optionsBarPosition.y - optionsBarHeight < 0) {
+			adjustedOptionsBarPosition.y = optionsBarHeight;
+		} else if (
+			optionsBarPosition.y + optionsBarHeight >
+			window.innerHeight
+		) {
+			adjustedOptionsBarPosition.y =
+				window.innerHeight - optionsBarHeight;
+		}
+	}
+
+	// Function to handle removing a room and updating vendors
+	const handleRemoveRoom = (roomId: string) => {
+		// Call removeRoom to remove the room and associated tables
+		removeRoom(roomId);
+
+		// Update vendors to remove the room assignment
+		setVendors((prevVendors) =>
+			prevVendors.map((vendor) => {
+				if (vendor.roomId === roomId || vendor.room) {
+					return {
+						...vendor,
+						roomId: "",
+						roomName: "",
+					};
+				}
+				return vendor;
+			})
+		);
+	};
+
 	return (
 		<div
 			ref={containerRef}
@@ -138,7 +186,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							addFeature={addFeature}
 							features={features}
 							room={room}
-							removeRoom={removeRoom}
+							removeRoom={handleRemoveRoom}
 							openEditModal={openEditModal}
 							rooms={rooms}
 							setSelectedRoomId={setSelectedRoomId}
@@ -149,6 +197,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 							scale={scale}
 							handleZoomChange={handleZoomChange}
 							isMobile={isMobile}
+							vendors={vendors}
+							setVendors={setVendors}
 						/>
 					</div>
 				) : (
@@ -161,7 +211,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						addFeature={addFeature}
 						features={features}
 						room={room}
-						removeRoom={removeRoom}
+						removeRoom={handleRemoveRoom}
 						openEditModal={openEditModal}
 						rooms={rooms}
 						setSelectedRoomId={setSelectedRoomId}
@@ -172,6 +222,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 						scale={scale}
 						handleZoomChange={handleZoomChange}
 						isMobile={isMobile}
+						vendors={vendors}
+						setVendors={setVendors}
 					/>
 				))}
 			{room &&
@@ -365,31 +417,53 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										rotateCW,
 										rotateCCW,
 									}) => (
+										// <div
+										// 	style={{
+										// 		position: "absolute",
+										// 		left: isMobile
+										// 			? "50%"
+										// 			: `${optionsBarPosition.x}px`,
+										// 		top: isMobile
+										// 			? "1%"
+										// 			: `${optionsBarPosition.y}px`,
+										// 		transform:
+										// 			isMobile
+										// 				? "translateX(-50%)"
+										// 				: "none",
+										// 		zIndex: 40,
+										// 		pointerEvents:
+										// 			"auto",
+										// 	}}
+										// >
 										<div
 											style={{
 												position: "absolute",
 												left: isMobile
 													? "50%"
-													: `${optionsBarPosition.x}px`,
+													: `${adjustedOptionsBarPosition.x}px`,
 												top: isMobile
 													? "1%"
-													: `${optionsBarPosition.y}px`,
+													: `${adjustedOptionsBarPosition.y}px`,
+												// transform:
+												// 	isMobile
+												// 		? "translateX(-50%)"
+												// 		: "translate(-50%, -100%)",
 												transform:
 													isMobile
 														? "translateX(-50%)"
-														: "none",
+														: "translate(-50%, -100%) translateY(-20px)", // Adjusted here
 												zIndex: 40,
 												pointerEvents:
 													"auto",
 											}}
 										>
 											<OptionsBar
-												x={
-													selectedObject.x
-												}
-												y={
-													selectedObject.y
-												}
+												// x={
+												// 	selectedObject.x
+												// }
+												// y={
+												// 	selectedObject.y
+												// }
 												onDelete={
 													handleDelete
 												}

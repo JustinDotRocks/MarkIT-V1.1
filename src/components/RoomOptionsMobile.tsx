@@ -26,6 +26,8 @@ const RoomOptionsMobile: React.FC<RoomOptionsProps> = ({
 	setTables,
 	gridMode,
 	setGridMode,
+	vendors,
+	setVendors,
 }) => {
 	const [isAddTablesModalOpen, setIsAddTablesModalOpen] = useState(false);
 	const [isAddFeaturesModalOpen, setIsAddFeaturesModalOpen] =
@@ -160,6 +162,8 @@ const RoomOptionsMobile: React.FC<RoomOptionsProps> = ({
 								tables={tables}
 								setTables={setTables}
 								selectedRoomId={selectedRoomId}
+								vendors={vendors}
+								setVendors={setVendors}
 							/>
 						</button>
 

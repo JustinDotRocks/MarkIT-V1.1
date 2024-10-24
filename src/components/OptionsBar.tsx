@@ -5,8 +5,8 @@ import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 import VendorSignInComponent from "./VendorSignInComponent";
 
 const OptionsBar: React.FC<OptionsBarProps> = ({
-	x,
-	y,
+	// x,
+	// y,
 	onDelete,
 	onRotateCW,
 	onRotateCCW,
@@ -22,32 +22,32 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	vendors,
 }) => {
 	// Define the width and height of the OptionsBar
-	const optionsBarWidth = 350;
-	const optionsBarHeight = 100; // Adjust height to accommodate vendor name
-	const margin = 5; // Margin between the object and the OptionsBar
+	// const optionsBarWidth = 350;
+	// const optionsBarHeight = 100; // Adjust height to accommodate vendor name
+	// const margin = 5; // Margin between the object and the OptionsBar
 
-	// Position directly below the object with the specified margin
-	let adjustedX = x - optionsBarWidth / 2; // Center horizontally
-	let adjustedY = y + margin; // Place below the object with a margin
+	// // Position directly below the object with the specified margin
+	// let adjustedX = x - optionsBarWidth / 2; // Center horizontally
+	// let adjustedY = y + margin; // Place below the object with a margin
 
-	// Ensure the OptionsBar stays within the viewport
-	const viewportWidth = window.innerWidth;
-	const viewportHeight = window.innerHeight;
+	// // Ensure the OptionsBar stays within the viewport
+	// const viewportWidth = window.innerWidth;
+	// const viewportHeight = window.innerHeight;
 
-	// Adjust X to keep the OptionsBar within the viewport
-	adjustedX = Math.max(
-		0,
-		Math.min(adjustedX, viewportWidth - optionsBarWidth)
-	);
+	// // Adjust X to keep the OptionsBar within the viewport
+	// adjustedX = Math.max(
+	// 	0,
+	// 	Math.min(adjustedX, viewportWidth - optionsBarWidth)
+	// );
 
-	// Adjust Y if the OptionsBar goes off the bottom of the viewport
-	if (adjustedY + optionsBarHeight > viewportHeight) {
-		// Place the OptionsBar above the object if it would go off-screen
-		adjustedY = y - optionsBarHeight - margin;
-		if (adjustedY < 0) {
-			adjustedY = viewportHeight / 2 - optionsBarHeight / 2; // Center vertically if necessary
-		}
-	}
+	// // Adjust Y if the OptionsBar goes off the bottom of the viewport
+	// if (adjustedY + optionsBarHeight > viewportHeight) {
+	// 	// Place the OptionsBar above the object if it would go off-screen
+	// 	adjustedY = y - optionsBarHeight - margin;
+	// 	if (adjustedY < 0) {
+	// 		adjustedY = viewportHeight / 2 - optionsBarHeight / 2; // Center vertically if necessary
+	// 	}
+	// }
 
 	// Function to handle signedIn state change
 	const toggleSignedIn = () => {
@@ -73,10 +73,10 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	return (
 		<div
 			className=" flex flex-col justify-center text-md bg-white border border-customPurple rounded p-2"
-			style={{
-				width: optionsBarWidth,
-				height: optionsBarHeight,
-			}}
+			// style={{
+			// 	width: optionsBarWidth,
+			// 	height: optionsBarHeight,
+			// }}
 		>
 			{/* Vendor Name */}
 			{vendorName && (
