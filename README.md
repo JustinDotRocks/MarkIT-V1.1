@@ -9,7 +9,7 @@ venue managers.
 - **Live App**: [Use MarkIT](https://justindotrocks.github.io/MarkIT-V1.1/)  
 - **GitHub Repository**: [GitHub Profile](https://github.com/JustinDotRocks/MarkIT-V1.1)
 
-![image](https://github.com/user-attachments/assets/b44a7b2f-1380-4f25-a2da-e00c838506fc)
+<img width="1415" alt="MarkIT-Landing" src="https://github.com/user-attachments/assets/971cdc94-1b16-4c1c-98e3-58a8b899f485">
 
 ## Motivation
 
@@ -37,14 +37,18 @@ for event planners and venue managers. Key features include:
   locking all objects to prevent changes or lock individual items while
   adjusting others.
 
-  ![image](https://github.com/user-attachments/assets/a57de880-bdd1-47cb-8f36-b54a13051fa9)
+  <img width="1420" alt="MarkIT-Venue-Setup" src="https://github.com/user-attachments/assets/678b1cdb-8339-4048-a060-d4dcb802d2ba">
+  
+  <img width="1416" alt="MarkIT-OptionsBar" src="https://github.com/user-attachments/assets/67b41b64-e7d9-4d9e-b09f-8d89d329e6b2">
 
 - **Vendor Mode**: Efficiently manage your vendor list by adding vendor details
   such as names, products, descriptions, and electricity needs. Update vendor
   information anytime and sign in vendors upon arrival, which highlights their
   assigned tables in green.
   
-  ![image](https://github.com/user-attachments/assets/13da0256-1b24-47e9-8ced-185f8f181a64)
+<img width="1417" alt="MarkIT-Vendors-SignIn" src="https://github.com/user-attachments/assets/4371d6e2-3a64-4c68-8c92-7dcff0de6ba4">
+<img width="1418" alt="MarkIT-Assign-Vendor" src="https://github.com/user-attachments/assets/afb5d2c6-6ee3-4c89-b270-7a3df9e5abc2">
+
 
 ---
 
