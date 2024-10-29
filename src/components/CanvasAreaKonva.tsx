@@ -101,8 +101,8 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 	useStageInteraction(stageRef, handleWheel);
 	const getOptionsBarPosition = useOptionsBarPosition(
 		selectedObject,
-		stageRef,
-		scale
+		stageRef
+		// scale
 	);
 	const { selectedVendor } = useVendorSelection(
 		selectedTable || null,

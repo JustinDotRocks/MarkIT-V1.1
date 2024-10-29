@@ -21,34 +21,6 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	signedIn,
 	vendors,
 }) => {
-	// Define the width and height of the OptionsBar
-	// const optionsBarWidth = 350;
-	// const optionsBarHeight = 100; // Adjust height to accommodate vendor name
-	// const margin = 5; // Margin between the object and the OptionsBar
-
-	// // Position directly below the object with the specified margin
-	// let adjustedX = x - optionsBarWidth / 2; // Center horizontally
-	// let adjustedY = y + margin; // Place below the object with a margin
-
-	// // Ensure the OptionsBar stays within the viewport
-	// const viewportWidth = window.innerWidth;
-	// const viewportHeight = window.innerHeight;
-
-	// // Adjust X to keep the OptionsBar within the viewport
-	// adjustedX = Math.max(
-	// 	0,
-	// 	Math.min(adjustedX, viewportWidth - optionsBarWidth)
-	// );
-
-	// // Adjust Y if the OptionsBar goes off the bottom of the viewport
-	// if (adjustedY + optionsBarHeight > viewportHeight) {
-	// 	// Place the OptionsBar above the object if it would go off-screen
-	// 	adjustedY = y - optionsBarHeight - margin;
-	// 	if (adjustedY < 0) {
-	// 		adjustedY = viewportHeight / 2 - optionsBarHeight / 2; // Center vertically if necessary
-	// 	}
-	// }
-
 	// Function to handle signedIn state change
 	const toggleSignedIn = () => {
 		if (!vendorId || !updateVendorDetails) return;
@@ -71,13 +43,7 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 	};
 
 	return (
-		<div
-			className=" flex flex-col justify-center text-md bg-white border border-customPurple rounded p-2"
-			// style={{
-			// 	width: optionsBarWidth,
-			// 	height: optionsBarHeight,
-			// }}
-		>
+		<div className=" flex flex-col justify-center text-md bg-white border border-customPurple rounded p-2">
 			{/* Vendor Name */}
 			{vendorName && (
 				<div className="flex justify-between items-center text-customPurple mb-1">
@@ -128,14 +94,14 @@ const OptionsBar: React.FC<OptionsBarProps> = ({
 								onClick={onRemoveVendor}
 								className="bg-customYellow hover:bg-yellow-700 text-white font-bold py-1 px-2 m-1 rounded"
 							>
-								Unasign
+								Unassign
 							</button>
 						) : (
 							<button
 								onClick={onAddVendor}
 								className="bg-green-700 hover:bg-green-900 text-white font-bold py-1 px-2 m-1 rounded"
 							>
-								Asign
+								Assign
 							</button>
 						)}
 					</>

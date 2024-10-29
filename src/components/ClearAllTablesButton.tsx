@@ -3,11 +3,7 @@ import { ClearAllTablesButtonProps, Vendor } from "../Types";
 import DeleteConfirmationModal from "./Modals/DeleteConfirmationModal";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import { clearTablesForRoom } from "../utils/functions";
-import {
-	loadFromLocalStorage,
-	saveToLocalStorage,
-	STORAGE_KEYS,
-} from "../utils/storageUtils";
+import { saveToLocalStorage, STORAGE_KEYS } from "../utils/storageUtils";
 
 const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 	tables,
@@ -28,21 +24,6 @@ const ClearAllTablesButton: React.FC<ClearAllTablesButtonProps> = ({
 			);
 			setTables(updatedTables);
 
-			// Read vendors from local storage
-			// const vendors: Vendor[] =
-			// 	loadFromLocalStorage<Vendor[]>(STORAGE_KEYS.VENDORS) ||
-			// 	[];
-
-			// // Update vendors to remove the room assignment
-			// const updatedVendors = vendors.map((vendor) => {
-			// 	if (vendor.room === selectedRoomId) {
-			// 		return {
-			// 			...vendor,
-			// 			room: null,
-			// 		};
-			// 	}
-			// 	return vendor;
-			// });
 			const updatedVendors = vendors.map((vendor: Vendor) => {
 				if (vendor.roomId === selectedRoomId) {
 					return {
