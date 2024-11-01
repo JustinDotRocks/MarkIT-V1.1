@@ -417,24 +417,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 										rotateCW,
 										rotateCCW,
 									}) => (
-										// <div
-										// 	style={{
-										// 		position: "absolute",
-										// 		left: isMobile
-										// 			? "50%"
-										// 			: `${optionsBarPosition.x}px`,
-										// 		top: isMobile
-										// 			? "1%"
-										// 			: `${optionsBarPosition.y}px`,
-										// 		transform:
-										// 			isMobile
-										// 				? "translateX(-50%)"
-										// 				: "none",
-										// 		zIndex: 40,
-										// 		pointerEvents:
-										// 			"auto",
-										// 	}}
-										// >
 										<div
 											style={{
 												position: "absolute",
@@ -442,7 +424,7 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 													? "50%"
 													: `${adjustedOptionsBarPosition.x}px`,
 												top: isMobile
-													? "1%"
+													? "2%"
 													: `${adjustedOptionsBarPosition.y}px`,
 												// transform:
 												// 	isMobile
@@ -458,12 +440,6 @@ const CanvasAreaKonva: React.FC<CanvasAreaProps> = ({
 											}}
 										>
 											<OptionsBar
-												// x={
-												// 	selectedObject.x
-												// }
-												// y={
-												// 	selectedObject.y
-												// }
 												onDelete={
 													handleDelete
 												}
